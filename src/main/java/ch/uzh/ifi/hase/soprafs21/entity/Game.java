@@ -6,11 +6,15 @@ public abstract class Game {
 
     public ArrayList<Hand> players = new ArrayList<Hand>();
     //public ArrayList<Card> playedCards = new ArrayList<Card>();
-
     public boolean gameDirection = false; //true = clockwise
 
+    //index of players ArrayList
+    public int currentPlayer = 0;
+
+
+
     public void setPlayers(Hand hand){
-        players.add(hand);
+        this.players.add(hand);
     }
 
 
@@ -19,7 +23,6 @@ public abstract class Game {
             i.initializeHand();
         }
     }
-
 
 
     /* public Card getLastCard(){

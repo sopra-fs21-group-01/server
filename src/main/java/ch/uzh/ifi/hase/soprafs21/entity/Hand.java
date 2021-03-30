@@ -5,7 +5,7 @@ public class Hand {
 
     public final User user;
     public boolean unoStatus = false;
-    // public ArrayList<Card> cards = new ArrayList<Card>();
+    //private ArrayList<Card> cards = new ArrayList<Card>();
     public final int initialCards = 7;
 
     public Hand(User user) {
@@ -14,7 +14,13 @@ public class Hand {
 
     public void initializeHand(){
         for(int i=0; i<initialCards; i++){
-            //cards.add(Deck.drawCard());
+            //cards.add(addCard());
         }
     }
+
+    /* public void addCard(Card card){
+        cards.add(card);
+    }
+
+     */
 }
