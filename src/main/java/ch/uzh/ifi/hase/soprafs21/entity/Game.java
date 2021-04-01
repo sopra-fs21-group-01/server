@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public abstract class Game {
 
     public ArrayList<Hand> players = new ArrayList<Hand>();
-    //public ArrayList<Card> playedCards = new ArrayList<Card>();
+    public ArrayList<Card> playedCards = new ArrayList<Card>();
     public boolean gameDirection = false; //true = clockwise
 
     //index of players ArrayList
@@ -25,8 +25,8 @@ public abstract class Game {
     }
 
 
-    /* public Card getLastCard(){
+    public Card getLastCard(){
         return playedCards.get(playedCards.size() - 1);
     }
-*/
+
 }
