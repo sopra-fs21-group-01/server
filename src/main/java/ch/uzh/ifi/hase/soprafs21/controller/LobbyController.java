@@ -50,7 +50,7 @@ public class LobbyController {
     @PutMapping("/lobby/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void updateEmployee(@PathVariable(value = "id") Long id, @RequestBody LobbyPostDTO updatedLobbyDetails) {
+    public void updateLobby(@PathVariable(value = "id") Long id, @RequestBody LobbyPostDTO updatedLobbyDetails) {
 
         Lobby lobbyOfId = lobbyService.getLobbyById(id);
 

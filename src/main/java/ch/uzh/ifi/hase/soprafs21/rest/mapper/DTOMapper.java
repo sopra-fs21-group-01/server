@@ -1,6 +1,9 @@
 package ch.uzh.ifi.hase.soprafs21.rest.mapper;
 
+import ch.uzh.ifi.hase.soprafs21.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs21.entity.User;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.LobbyGetDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.LobbyPostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPostDTO;
 import org.mapstruct.*;
@@ -28,4 +31,19 @@ public interface DTOMapper {
     @Mapping(source = "username", target = "username")
     @Mapping(source = "status", target = "status")
     UserGetDTO convertEntityToUserGetDTO(User user);
+
+    // Mapper for when Lobby gets posted
+    @Mapping(source = "host", target = "host")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "password", target = "password")
+    @Mapping(source = "playerList", target = "playerList")
+    Lobby convertLobbyPostDTOtoEntity(LobbyPostDTO lobbyPostDTO);
+
+    @Mapping(source = "host", target = "host")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "password", target = "password")
+    @Mapping(source = "playerList", target = "playerList")
+    @Mapping(source = "id", target = "id")
+    LobbyGetDTO convertEntityToLobbyGetDTO(Lobby lobby);
+
 }
