@@ -32,12 +32,12 @@ public interface DTOMapper {
     @Mapping(source = "status", target = "status")
     UserGetDTO convertEntityToUserGetDTO(User user);
 
-    // Mapper for when Lobby gets posted
+        // Mapper for when Lobby gets posted
     @Mapping(source = "host", target = "host")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "password", target = "password")
     @Mapping(source = "playerList", target = "playerList")
-    Lobby convertLobbyPostDTOtoEntity(LobbyPostDTO lobbyPostDTO);
+            Lobby convertLobbyPostDTOtoEntity(LobbyPostDTO lobbyPostDTO);
 
     @Mapping(source = "host", target = "host")
     @Mapping(source = "name", target = "name")
@@ -45,5 +45,4 @@ public interface DTOMapper {
     @Mapping(source = "playerList", target = "playerList")
     @Mapping(source = "id", target = "id")
     LobbyGetDTO convertEntityToLobbyGetDTO(Lobby lobby);
-
 }
