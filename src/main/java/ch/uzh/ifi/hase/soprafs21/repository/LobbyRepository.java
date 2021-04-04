@@ -6,9 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository("lobbyRepository")
 public interface LobbyRepository extends JpaRepository<Lobby, Long> {
-        Lobby findByUsername(String username);
-
-        // will return EmptyResultDataAccessException if the Lobby could not be found. Calls delete() internally
+                // will return EmptyResultDataAccessException if the Lobby could not be found. Calls delete() internally
         void deleteById(Long id);
 
 }
