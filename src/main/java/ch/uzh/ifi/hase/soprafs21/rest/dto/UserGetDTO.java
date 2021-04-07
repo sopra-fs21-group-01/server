@@ -5,9 +5,11 @@ import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
 public class UserGetDTO {
 
     private Long id;
-    private String name;
     private String username;
+    private String email;
+    private String password;
     private UserStatus status;
+    private String token;
 
     public Long getId() {
         return id;
@@ -17,13 +19,6 @@ public class UserGetDTO {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getUsername() {
         return username;
@@ -33,6 +28,24 @@ public class UserGetDTO {
         this.username = username;
     }
 
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
     public UserStatus getStatus() {
         return status;
     }
@@ -40,4 +53,12 @@ public class UserGetDTO {
     public void setStatus(UserStatus status) {
         this.status = status;
     }
+
+    public String getToken() {
+        return token;
+    }
+    public void setToken(String token) {
+        this.token = token;
+    }
+
 }

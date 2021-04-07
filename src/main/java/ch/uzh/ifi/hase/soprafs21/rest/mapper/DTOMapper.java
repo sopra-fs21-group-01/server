@@ -6,6 +6,7 @@ import ch.uzh.ifi.hase.soprafs21.rest.dto.LobbyGetDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.LobbyPostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPostDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.UserTokenDTO;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -21,14 +22,19 @@ import org.mapstruct.factory.Mappers;
 public interface DTOMapper {
 
     DTOMapper INSTANCE = Mappers.getMapper(DTOMapper.class);
-
-    @Mapping(source = "name", target = "name")
+    @Mapping(target  = "id", ignore = true)
     @Mapping(source = "username", target = "username")
+    @Mapping(source = "email", target = "email")
+    @Mapping(source = "password", target = "password")
+    @Mapping(target = "token", ignore = true)
+    @Mapping(target  = "status", ignore = true)
     User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
 
     @Mapping(source = "id", target = "id")
-    @Mapping(source = "name", target = "name")
     @Mapping(source = "username", target = "username")
+    @Mapping(source = "email", target = "email")
+    @Mapping(source = "password", target = "password")
+    @Mapping(source = "token", target = "token")
     @Mapping(source = "status", target = "status")
     UserGetDTO convertEntityToUserGetDTO(User user);
 
@@ -37,7 +43,7 @@ public interface DTOMapper {
     @Mapping(source = "name", target = "name")
     @Mapping(source = "password", target = "password")
     @Mapping(source = "playerList", target = "playerList")
-            Lobby convertLobbyPostDTOtoEntity(LobbyPostDTO lobbyPostDTO);
+    Lobby convertLobbyPostDTOtoEntity(LobbyPostDTO lobbyPostDTO);
 
     @Mapping(source = "host", target = "host")
     @Mapping(source = "name", target = "name")
@@ -45,4 +51,12 @@ public interface DTOMapper {
     @Mapping(source = "playerList", target = "playerList")
     @Mapping(source = "id", target = "id")
     LobbyGetDTO convertEntityToLobbyGetDTO(Lobby lobby);
+
+    @Mapping(target  = "id", ignore = true)
+    @Mapping(target  = "username", ignore = true)
+    @Mapping(target  = "email", ignore = true)
+    @Mapping(target  = "password", ignore = true)
+    @Mapping(source = "token", target = "token")
+    @Mapping(target  = "status", ignore = true)
+    User convertUserTokenDTOtoEntity(UserTokenDTO userTokenDTO);
 }

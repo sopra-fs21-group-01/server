@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs21.controller;
 import ch.uzh.ifi.hase.soprafs21.entity.User;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPostDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.UserTokenDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -53,4 +54,25 @@ public class UserController {
         // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
     }
+
+    @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public UserGetDTO getUser(@RequestBody UserPostDTO userPostDTO) {
+        User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO); // convert DTO to a user
+        
+        User loginUser = userService.login(userInput);
+
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(loginUser); // convert user to DTO
+    }
+
+    @PutMapping("/logout")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public UserGetDTO logout(@RequestBody UserTokenDTO userTokenDTO){
+        User userInput = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(userTokenDTO);
+        User loggedOutUser = userService.logout(userInput);
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(loggedOutUser);
+    }
+
 }
