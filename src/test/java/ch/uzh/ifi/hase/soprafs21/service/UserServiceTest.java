@@ -13,6 +13,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import javax.swing.table.TableStringConverter;
+
 public class UserServiceTest {
 
     @Mock
@@ -30,8 +32,9 @@ public class UserServiceTest {
         // given
         testUser = new User();
         testUser.setId(1L);
-        testUser.setName("testName");
         testUser.setUsername("testUsername");
+        testUser.setEmail("test@uzh.ch");
+        testUser.setPassword("Test1234");
 
         // when -> any object is being save in the userRepository -> return the dummy testUser
         Mockito.when(userRepository.save(Mockito.any())).thenReturn(testUser);
@@ -46,7 +49,8 @@ public class UserServiceTest {
         Mockito.verify(userRepository, Mockito.times(1)).save(Mockito.any());
 
         assertEquals(testUser.getId(), createdUser.getId());
-        assertEquals(testUser.getName(), createdUser.getName());
+        assertEquals(testUser.getEmail(), createdUser.getEmail());
+        assertEquals(testUser.getPassword(), createdUser.getPassword());
         assertEquals(testUser.getUsername(), createdUser.getUsername());
         assertNotNull(createdUser.getToken());
         assertEquals(UserStatus.OFFLINE, createdUser.getStatus());
@@ -58,7 +62,7 @@ public class UserServiceTest {
         userService.createUser(testUser);
 
         // when -> setup additional mocks for UserRepository
-        Mockito.when(userRepository.findByName(Mockito.any())).thenReturn(testUser);
+        Mockito.when(userRepository.findByEmail(Mockito.any())).thenReturn(testUser);
         Mockito.when(userRepository.findByUsername(Mockito.any())).thenReturn(null);
 
         // then -> attempt to create second user with same user -> check that an error is thrown
@@ -71,7 +75,7 @@ public class UserServiceTest {
         userService.createUser(testUser);
 
         // when -> setup additional mocks for UserRepository
-        Mockito.when(userRepository.findByName(Mockito.any())).thenReturn(testUser);
+        Mockito.when(userRepository.findByEmail(Mockito.any())).thenReturn(testUser);
         Mockito.when(userRepository.findByUsername(Mockito.any())).thenReturn(testUser);
 
         // then -> attempt to create second user with same user -> check that an error is thrown

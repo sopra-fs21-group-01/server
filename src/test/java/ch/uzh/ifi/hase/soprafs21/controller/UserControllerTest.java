@@ -47,8 +47,9 @@ public class UserControllerTest {
     public void givenUsers_whenGetUsers_thenReturnJsonArray() throws Exception {
         // given
         User user = new User();
-        user.setName("Firstname Lastname");
-        user.setUsername("firstname@lastname");
+        user.setUsername("testUsername");
+        user.setEmail("test@uzh.ch");
+        user.setPassword("Test1234");
         user.setStatus(UserStatus.OFFLINE);
 
         List<User> allUsers = Collections.singletonList(user);
@@ -62,8 +63,9 @@ public class UserControllerTest {
         // then
         mockMvc.perform(getRequest).andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].name", is(user.getName())))
                 .andExpect(jsonPath("$[0].username", is(user.getUsername())))
+                .andExpect(jsonPath("$[0].email", is(user.getEmail())))
+                .andExpect(jsonPath("$[0].password", is(user.getPassword())))
                 .andExpect(jsonPath("$[0].status", is(user.getStatus().toString())));
     }
 
@@ -72,14 +74,17 @@ public class UserControllerTest {
         // given
         User user = new User();
         user.setId(1L);
-        user.setName("Test User");
         user.setUsername("testUsername");
+        user.setEmail("test@uzh.ch");
+        user.setPassword("Test1234");
         user.setToken("1");
         user.setStatus(UserStatus.ONLINE);
 
         UserPostDTO userPostDTO = new UserPostDTO();
-        userPostDTO.setName("Test User");
         userPostDTO.setUsername("testUsername");
+        userPostDTO.setEmail("test@uzh.ch");
+        userPostDTO.setPassword("Test1234");
+        
 
         given(userService.createUser(Mockito.any())).willReturn(user);
 
@@ -92,8 +97,9 @@ public class UserControllerTest {
         mockMvc.perform(postRequest)
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(user.getId().intValue())))
-                .andExpect(jsonPath("$.name", is(user.getName())))
                 .andExpect(jsonPath("$.username", is(user.getUsername())))
+                .andExpect(jsonPath("$.email", is(user.getEmail())))
+                .andExpect(jsonPath("$.password", is(user.getPassword())))
                 .andExpect(jsonPath("$.status", is(user.getStatus().toString())));
     }
 
