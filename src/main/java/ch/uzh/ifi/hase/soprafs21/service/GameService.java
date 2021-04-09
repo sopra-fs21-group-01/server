@@ -37,6 +37,11 @@ public class GameService {
     public Game createGame(Game newGame){
 
         // newGame.setGamemode("standard");
+        ArrayList<String> placeholderCardStack = new ArrayList<String>();
+        placeholderCardStack.add("Here the cardStack will be implemented");
+
+        newGame.setCardStack(placeholderCardStack);
+
 
         newGame = gameRepository.save(newGame);
         gameRepository.flush();

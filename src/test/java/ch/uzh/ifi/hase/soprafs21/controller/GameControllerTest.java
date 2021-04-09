@@ -83,7 +83,7 @@ public class GameControllerTest {
         // then !! Just Check for the expected String output and for the status type
         mockMvc.perform(postRequest)
                 .andExpect(status().isCreated())
-                .andExpect(content().string("game/"+testGame.getId()+"/running"));
+                .andExpect(content().string("game/"+testGame.getId()+"/kickOff"));
     }
 
 

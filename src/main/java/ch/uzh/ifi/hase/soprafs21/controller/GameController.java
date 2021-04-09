@@ -31,7 +31,7 @@ public class GameController {
         Game createdGame = gameService.createGame(input);
 
         // return URL of where to find the User
-        String url = "game/"+createdGame.getId()+"/running";
+        String url = "game/"+createdGame.getId()+"/kickOff";
 
         return url;
     }
@@ -53,10 +53,10 @@ public class GameController {
     public void updateGame(@PathVariable(value = "id") Long id, @RequestBody GamePostDTO gamePostDTO) {
 
         Game gameOfId = gameService.getGameById(id);
-         /**
-        gameOfId.setPlayerList(updatedLobbyDetails.getName());
-        gameOfId.setPlayerList(updatedLobbyDetails.getPlayerList());
-        */
+
+
+        gameOfId.setPlayerList(gamePostDTO.getPlayerList());
+
 
         final Game updatedGame = gameService.updateGame(gameOfId);
     }
