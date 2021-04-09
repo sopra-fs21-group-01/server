@@ -31,7 +31,7 @@ public class GameController {
         Game createdGame = gameService.createGame(input);
 
         // return URL of where to find the User
-        String url = "game/start"+createdGame.getId();
+        String url = "game/"+createdGame.getId()+"/running";
 
         return url;
     }
