@@ -61,6 +61,7 @@ public class LobbyController {
         final Lobby updatedLobby = lobbyService.updateLobby(lobbyOfId);
     }
 
+    // get mapping
     @GetMapping("/lobby/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody

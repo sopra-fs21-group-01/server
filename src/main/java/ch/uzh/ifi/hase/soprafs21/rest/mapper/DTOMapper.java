@@ -2,11 +2,8 @@ package ch.uzh.ifi.hase.soprafs21.rest.mapper;
 
 import ch.uzh.ifi.hase.soprafs21.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs21.entity.User;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.LobbyGetDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.LobbyPostDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.UserGetDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPostDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.UserTokenDTO;
+import ch.uzh.ifi.hase.soprafs21.entity.Game;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.*;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -59,4 +56,18 @@ public interface DTOMapper {
     @Mapping(source = "token", target = "token")
     @Mapping(target  = "status", ignore = true)
     User convertUserTokenDTOtoEntity(UserTokenDTO userTokenDTO);
+
+    // Game mapping
+    @Mapping(source = "host", target = "host")
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "playerList", target = "playerList")
+    Game convertGamePostDTOtoEntity(GamePostDTO gamePostDTO);
+
+    @Mapping(source = "host", target = "host")
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "playerList", target = "playerList")
+    @Mapping(source = "cardStack", target = "cardStack")
+    GameGetDTO convertEntityToGameGetDTO(Game game);
+
+
 }
