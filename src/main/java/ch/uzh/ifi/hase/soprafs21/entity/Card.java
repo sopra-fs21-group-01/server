@@ -13,10 +13,12 @@ public class Card {
         this.color = color;
 
     }
+    // ist getColor überhaupt nötig?
     public Color getColor(){
         return this.color;
 
     }
+    // ist getValue überhaupt nötig?
     public Value getValue(Card card){
         return card.value;
     }
@@ -26,8 +28,7 @@ public class Card {
     }
 
     // methode wird von Class deck aufgerufen
-    public Card(Color color, Value value, Card card){
-        this.card = card;
+    public Card(Color color, Value value){
         this.card.setColor(color);
         this.card.setValue(value);
     }
