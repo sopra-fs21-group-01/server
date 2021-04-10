@@ -92,8 +92,12 @@ public class Deck {
         Collections.shuffle(this.playedcardsDeck);
 
     }
-    public ArrayList<Card> getCardDeck(){
-        return this.cardDeck;
+    public Card getlastCardDeck(){
+        boolean empty = this.playedcardsDeck.isEmpty();
+        if(!empty) {
+            return this.playedcardsDeck.get(this.playedcardsDeck.size()-1);
+        }
+        return null;
     }
 
     public void addPlayedCards(Card card){
