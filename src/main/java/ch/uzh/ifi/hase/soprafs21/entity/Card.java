@@ -13,8 +13,8 @@ public class Card {
         this.color = color;
 
     }
-    public Color getColor(Card card){
-        return card.color;
+    public Color getColor(){
+        return this.color;
 
     }
     public Value getValue(Card card){
