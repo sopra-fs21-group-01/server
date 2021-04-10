@@ -29,6 +29,7 @@ public class Deck {
 
     private List<Value> createValuelist(){
         List<Value> values = new ArrayList<>();
+        values.add(Value.Zero);
         values.add(Value.One);
         values.add(Value.Two);
         values.add(Value.Three);
@@ -50,19 +51,22 @@ public class Deck {
         List<Color> colors = this.createColorlist();
         List<Value> values = this.createValuelist();
         int i;
-        for(i=0;i<14;i++) {
+        for(i=0;i<15;i++) {
             int j;
             for (j = 0; j < 4; j++) {
-                if (i <= 8) {
+                if (i <= 9) {
                     this.cardDeck.add(new Card(colors.get(j), values.get(i)));
                     if (i != 0) {
                         this.cardDeck.add(new Card(colors.get(j), values.get(i)));
                     }
                 }
-                else if(i<=11){
+                else if(i<=12){
                     this.cardDeck.add(new Card(colors.get(j), values.get(i)));
                     this.cardDeck.add(new Card(colors.get(j), values.get(i)));
                 }else{
+                    this.cardDeck.add(new Card(colors.get(4), values.get(i)));
+                    this.cardDeck.add(new Card(colors.get(4), values.get(i)));
+                    this.cardDeck.add(new Card(colors.get(4), values.get(i)));
                     this.cardDeck.add(new Card(colors.get(4), values.get(i)));
 
                 }
@@ -74,17 +78,14 @@ public class Deck {
 
     }
 
-    public void drawCard(){
+    public Card drawCard(){
         boolean empty = this.cardDeck.isEmpty();
-        if(!empty) {
-            int index = this.cardDeck.size() - 1;
-            this.playedcardsDeck.add(this.cardDeck.get(index));
-            this.cardDeck.remove(index);
-        }else{
+        if(empty) {
             this.Shuffle();
             this.cardDeck.addAll(this.playedcardsDeck);
         }
 
+        return cardDeck.remove(cardDeck.size()-1);
     }
 
     private void Shuffle(){
@@ -95,4 +96,7 @@ public class Deck {
         return this.cardDeck;
     }
 
+    public void addPlayedCards(Card card){
+        this.playedcardsDeck.add(card);
+    }
 }
