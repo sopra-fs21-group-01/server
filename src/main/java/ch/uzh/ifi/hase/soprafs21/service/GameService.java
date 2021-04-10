@@ -1,6 +1,8 @@
 package ch.uzh.ifi.hase.soprafs21.service;
 
 
+import ch.uzh.ifi.hase.soprafs21.constant.Color;
+import ch.uzh.ifi.hase.soprafs21.entity.Card;
 import ch.uzh.ifi.hase.soprafs21.entity.Game;
 import ch.uzh.ifi.hase.soprafs21.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
@@ -42,6 +44,7 @@ public class GameService {
 
         newGame.setCardStack(placeholderCardStack);
 
+        newGame.initializeHands();
 
         newGame = gameRepository.save(newGame);
         gameRepository.flush();
@@ -81,5 +84,26 @@ public class GameService {
         gameRepository.deleteById(gameId);
 
         log.debug("Deleted the game with ID: {}", gameId);
+    }
+
+    public boolean checkIfMoveAllowed(Game game, int hand, Card card){
+        Card lastPlayedCard = game.getLastPlayedCard();
+
+        if (lastPlayedCard == null){
+            return true;
+        }
+        else if (lastPlayedCard.getColor() == card.getColor()){
+            return true;
+        }
+        else if (lastPlayedCard.getValue() == card.getValue()){
+            return true;
+        }
+        else if (lastPlayedCard.getColor() != Color.Wild && card.getColor()== Color.Wild){
+            return true;
+        }
+        else {
+            return false;
+        }
+
     }
 }

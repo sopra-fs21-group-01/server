@@ -19,8 +19,8 @@ public class Card {
 
     }
     // ist getValue überhaupt nötig?
-    public Value getValue(Card card){
-        return card.value;
+    public Value getValue(){
+        return this.value;
     }
 
     private void setValue(Value value){
