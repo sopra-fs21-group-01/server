@@ -132,10 +132,19 @@ public class GameService {
 
     public void checkIfExtraCard(Game game){
         if (game.getLastPlayedCard().getValue()== Value.DrawTwo){
-            game.getPlayerList().get(game.getCurrentPlayer()).getHand().addCard(game.getCardStack().drawCard());
-            game.getPlayerList().get(game.getCurrentPlayer()).getHand().addCard(game.getCardStack().drawCard());
+            drawCard(game);
+            drawCard(game);
 
+        } else if (game.getLastPlayedCard().getValue()== Value.WildFour){
+            drawCard(game);
+            drawCard(game);
+            drawCard(game);
+            drawCard(game);
         }
+    }
+
+    public void drawCard(Game game){
+        game.getPlayerList().get(game.getCurrentPlayer()).getHand().addCard(game.getCardStack().drawCard());
     }
 
     public boolean checkIfMoveAllowed(Game game, Card card){

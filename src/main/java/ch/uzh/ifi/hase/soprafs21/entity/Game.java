@@ -66,7 +66,7 @@ public class Game implements Serializable {
     }
 
     public void setPlayerList(User user) {
-        this.playerList.put(user.getPlayerId(),user)
+        this.playerList.put(user.getPlayerId(),user);
     }
 
     public Deck getCardStack() {
