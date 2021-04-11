@@ -11,7 +11,7 @@ import java.util.List;
 public class Deck {
 
     private final ArrayList<Card> cardDeck = new ArrayList<Card>();
-    private final ArrayList<Card> playedcardsDeck = new ArrayList<Card>();
+    private final ArrayList<Card> playedCardsDeck = new ArrayList<Card>();
 
     public Deck(){
         this.generateDeck();
@@ -82,25 +82,25 @@ public class Deck {
         boolean empty = this.cardDeck.isEmpty();
         if(empty) {
             this.Shuffle();
-            this.cardDeck.addAll(this.playedcardsDeck);
+            this.cardDeck.addAll(this.playedCardsDeck);
         }
 
         return cardDeck.remove(cardDeck.size()-1);
     }
     // comment
     private void Shuffle(){
-        Collections.shuffle(this.playedcardsDeck);
+        Collections.shuffle(this.playedCardsDeck);
 
     }
-    public Card getlastCardDeck(){
-        boolean empty = this.playedcardsDeck.isEmpty();
+    public Card getLastCardDeck(){
+        boolean empty = this.playedCardsDeck.isEmpty();
         if(!empty) {
-            return this.playedcardsDeck.get(this.playedcardsDeck.size()-1);
+            return this.playedCardsDeck.get(this.playedCardsDeck.size()-1);
         }
         return null;
     }
 
     public void addPlayedCards(Card card){
-        this.playedcardsDeck.add(card);
+        this.playedCardsDeck.add(card);
     }
 }

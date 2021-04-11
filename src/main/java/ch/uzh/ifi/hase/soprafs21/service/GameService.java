@@ -2,9 +2,8 @@ package ch.uzh.ifi.hase.soprafs21.service;
 
 
 import ch.uzh.ifi.hase.soprafs21.constant.Color;
-import ch.uzh.ifi.hase.soprafs21.entity.Card;
-import ch.uzh.ifi.hase.soprafs21.entity.Deck;
-import ch.uzh.ifi.hase.soprafs21.entity.Game;
+import ch.uzh.ifi.hase.soprafs21.constant.Value;
+import ch.uzh.ifi.hase.soprafs21.entity.*;
 import ch.uzh.ifi.hase.soprafs21.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
 import org.apache.catalina.Host;
@@ -41,10 +40,9 @@ public class GameService {
 
         // newGame.setGamemode("standard");
         Deck deck = new Deck();
-        newGame.setCardStack(deck.getCardDeck());
+        newGame.setCardStack(deck);
 
-
-        newGame.initializeHands();
+        initializeHands(newGame);
 
         newGame = gameRepository.save(newGame);
         gameRepository.flush();
@@ -52,6 +50,20 @@ public class GameService {
         log.debug("Created a new lobby for Host: {}", newGame.getHost());
 
         return newGame;
+    }
+
+    //initializes Hands for the start of the game,
+    public void initializeHands(Game game){
+        Deck deck = game.getCardStack();
+        for (int player : game.getPlayerList().keySet()){
+            Hand hand = new Hand(game.getPlayerList().get(player));
+            for(int i=0; i<7; i++){
+                Card drawnCard = deck.drawCard();
+                hand.getCards().put(drawnCard.getId(),drawnCard);
+            }
+            game.getPlayerList().get(player).setHand(hand);
+
+        }
     }
 
     public Game getGameById(Long gameID){
@@ -86,7 +98,47 @@ public class GameService {
         log.debug("Deleted the game with ID: {}", gameId);
     }
 
-    public boolean checkIfMoveAllowed(Game game, int hand, Card card){
+    public Game playCard(Long gameId, User user, int cardId){
+        Game game = getGameById(gameId);
+
+        Card playerCard = user.getHand().getCards().get(cardId);
+        if (checkIfMoveAllowed(game, playerCard)){
+            user.getHand().removeCard(game.getCardStack(),playerCard);
+
+            determineNextPlayer(game,user,playerCard);
+
+            checkIfExtraCard(game);
+        }
+        else{
+            System.out.println("Move not allowed, choose a different card!");
+        }
+        return game;
+
+    }
+
+    public void determineNextPlayer(Game game, User currentPlayer, Card card){
+        if (card.getValue() == Value.Skip) {
+            game.setCurrentPlayerPlusOne();
+            game.setCurrentPlayerPlusOne();
+
+        } else if (card.getValue()==Value.Reverse){
+            game.reverseGameDirection();
+            game.setCurrentPlayerPlusOne();
+        } else{
+            game.setCurrentPlayerPlusOne();
+        }
+
+    }
+
+    public void checkIfExtraCard(Game game){
+        if (game.getLastPlayedCard().getValue()== Value.DrawTwo){
+            game.getPlayerList().get(game.getCurrentPlayer()).getHand().addCard(game.getCardStack().drawCard());
+            game.getPlayerList().get(game.getCurrentPlayer()).getHand().addCard(game.getCardStack().drawCard());
+
+        }
+    }
+
+    public boolean checkIfMoveAllowed(Game game, Card card){
         Card lastPlayedCard = game.getLastPlayedCard();
 
         if (lastPlayedCard == null){

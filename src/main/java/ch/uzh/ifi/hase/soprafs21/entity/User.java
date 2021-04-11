@@ -37,6 +37,29 @@ public class User implements Serializable {
     @Column(nullable = false)
     private UserStatus status;
 
+    @Column()
+    private Hand hand;
+
+    @Column(nullable = false)
+    private int playerId; //used to determine which player is up
+
+    public int getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(int playerId) {
+        this.playerId = playerId;
+    }
+
+    public Hand getHand() {
+        return hand;
+    }
+
+    public void setHand(Hand hand) {
+        this.hand = hand;
+    }
+
+
     public Long getId() {
         return id;
     }

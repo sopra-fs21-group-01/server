@@ -27,13 +27,30 @@ public class GameController {
         // convert API Game to internal representation
         Game input = DTOMapper.INSTANCE.convertGamePostDTOtoEntity(gamePostDTO);
 
-        // create Lobby
+        // create Game
         Game createdGame = gameService.createGame(input);
 
         // return URL of where to find the User
         String url = "game/"+createdGame.getId()+"/kickOff";
 
         return url;
+    }
+
+    //how to covert frontend user, card etc. to backend??
+    @PostMapping("/game/{id}/play")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public void playCard(@PathVariable(value = "id") Long id, @RequestBody GamePostDTO gamePostDTO){
+        // convert API Game to internal representation
+        Game input = DTOMapper.INSTANCE.convertGamePostDTOtoEntity(gamePostDTO);
+
+        // create Lobby
+        Game createdGame = gameService.createGame(input);
+
+        // return URL of where to find the User
+        String url = "game/"+createdGame.getId()+"/kickOff";
+
+
     }
 
 
