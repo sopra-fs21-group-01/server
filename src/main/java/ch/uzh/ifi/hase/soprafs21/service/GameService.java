@@ -59,7 +59,7 @@ public class GameService {
             Hand hand = new Hand(game.getPlayerList().get(player));
             for(int i=0; i<7; i++){
                 Card drawnCard = deck.drawCard();
-                hand.getCards().put(drawnCard.getId(),drawnCard);
+                hand.getCards().put(drawnCard.getCardId(),drawnCard);
             }
             game.getPlayerList().get(player).setHand(hand);
 
@@ -111,7 +111,7 @@ public class GameService {
             checkWin(user);
 
             if (playerCard.getValue()== Value.WildFour || playerCard.getValue() == Value.Wild){
-                wishColor(game, user);
+                wishColor(game);
             }
 
             determineNextPlayer(game,user,playerCard);
@@ -186,8 +186,8 @@ public class GameService {
         }
     }
 
-    public void wishColor(Game game, Color wishedColor){
-        game.setCurrentColor(wishedColor);
+    public void wishColor(Game game){
+        game.setCurrentColor(Color.Blue);
     }
 
     public boolean checkIfMoveAllowed(Game game, Card card, User user){

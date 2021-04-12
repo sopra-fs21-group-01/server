@@ -72,7 +72,7 @@ public class GameController {
         Game gameOfId = gameService.getGameById(id);
 
 
-        gameOfId.setPlayerList(gamePostDTO.getPlayerList());
+        //gameOfId.setPlayerList(gamePostDTO.getPlayerList());
 
 
         final Game updatedGame = gameService.updateGame(gameOfId);

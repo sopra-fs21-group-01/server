@@ -19,11 +19,11 @@ public class Hand {
     }
 
     public void addCard(Card card){
-        this.cards.put(card.getId(), card);
+        this.cards.put(card.getCardId(), card);
     }
 
     public void removeCard(Deck deck, Card card){
-        deck.addPlayedCards(cards.remove(card.getId()));
+        deck.addPlayedCards(cards.remove(card.getCardId()));
     }
 
     public boolean getUnoStatus(){
