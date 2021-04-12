@@ -37,11 +37,11 @@ public class User implements Serializable {
     @Column(nullable = false)
     private UserStatus status;
 
-    @Column()
-    private Hand hand;
-
     @Column(nullable = false)
     private int playerId; //used to determine which player is up
+
+    @Transient
+    private Hand hand;
 
     public int getPlayerId() {
         return playerId;
@@ -108,4 +108,6 @@ public class User implements Serializable {
     public void setStatus(UserStatus status) {
         this.status = status;
     }
+
+
 }

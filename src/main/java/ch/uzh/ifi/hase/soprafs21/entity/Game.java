@@ -30,23 +30,22 @@ public class Game implements Serializable {
     @Column(nullable = false)
     private String host;
 
-    @Column(nullable = false)
-    private Map<Integer, User> playerList = new HashMap<Integer, User>();
-
-    @Column(nullable = false)
-    private Deck deck;
-
-
-    @Column(nullable = false)
+    @Transient
     private int currentPlayer = 0; //keeps track who is the current player
 
-    @Column(nullable = false)
+    @Transient
     private boolean gameDirection = true; //true = clockwise
 
-    @Column
+    @Transient
+    private Map<Integer, User> playerList;
+
+    @Transient
+    private Deck deck;
+
+    @Enumerated
     private Color currentColor;
 
-    @Column
+    @Enumerated
     private Value currentValue;
 
     public static long getSerialVersionUID() {
