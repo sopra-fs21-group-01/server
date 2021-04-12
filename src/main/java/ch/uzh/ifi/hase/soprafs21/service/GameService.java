@@ -102,12 +102,28 @@ public class GameService {
         Game game = getGameById(gameId);
 
         Card playerCard = user.getHand().getCards().get(cardId);
-        if (checkIfMoveAllowed(game, playerCard)){
+        if (checkIfMoveAllowed(game, playerCard, user)){
             user.getHand().removeCard(game.getCardStack(),playerCard);
+
+            game.setCurrentValue(playerCard.getValue());
+            game.setCurrentColor(playerCard.getColor());
+
+            checkWin(user);
+
+            if (playerCard.getValue()== Value.WildFour || playerCard.getValue() == Value.Wild){
+                wishColor(game, user);
+            }
 
             determineNextPlayer(game,user,playerCard);
 
             checkIfExtraCard(game);
+        }
+        //want to play last card but no uno = player has to draw a card and next player is on.
+        else if (user.getHand().getHandSize()==1 && !user.getHand().getUnoStatus()){
+            System.out.println("Can't play because no UNO Status, draw a card");
+            drawCard(game);
+            game.setCurrentPlayerPlusOne();
+
         }
         else{
             System.out.println("Move not allowed, choose a different card!");
@@ -144,22 +160,57 @@ public class GameService {
     }
 
     public void drawCard(Game game){
+        //draw a card and puts it into the hand and removed it from the deck
         game.getPlayerList().get(game.getCurrentPlayer()).getHand().addCard(game.getCardStack().drawCard());
+        //UNO Status back to false
+        game.getPlayerList().get(game.getCurrentPlayer()).getHand().setUnoStatus(false);
     }
 
-    public boolean checkIfMoveAllowed(Game game, Card card){
+    public void cantPlayDrawCard(Game game){
+        drawCard(game);
+        game.setCurrentPlayerPlusOne();
+    }
+
+    public void sayUno(Game game, int userId){
+        if(game.getHandByPlayerId(userId).getHandSize()== 1){
+            game.getHandByPlayerId(userId).setUnoStatus(true);
+        }else{
+            System.out.println("Liar!");
+        }
+
+    }
+
+    public void checkWin(User user){
+        if (user.getHand().getHandSize()==0){
+            System.out.format("Player: %s wins!", user.getUsername());
+        }
+    }
+
+    public void wishColor(Game game, Color wishedColor){
+        game.setCurrentColor(wishedColor);
+    }
+
+    public boolean checkIfMoveAllowed(Game game, Card card, User user){
         Card lastPlayedCard = game.getLastPlayedCard();
+
+        Color color = game.getCurrentColor();
+        Value value = game.getCurrentValue();
+
+        //check if user status is uno
+        if (user.getHand().getHandSize()==1 && !user.getHand().getUnoStatus()){
+            return false;
+        }
 
         if (lastPlayedCard == null){
             return true;
         }
-        else if (lastPlayedCard.getColor() == card.getColor()){
+        else if (color == card.getColor()){
             return true;
         }
-        else if (lastPlayedCard.getValue() == card.getValue()){
+        else if (value == card.getValue()){
             return true;
         }
-        else if (lastPlayedCard.getColor() != Color.Wild && card.getColor()== Color.Wild){
+        else if (color != Color.Wild && card.getColor()== Color.Wild){
             return true;
         }
         else {
