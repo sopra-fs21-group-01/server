@@ -30,6 +30,8 @@ public class Game implements Serializable {
     @Column(nullable = false)
     private String host;
 
+
+
     @Transient
     private int currentPlayer = 0; //keeps track who is the current player
 
@@ -112,7 +114,9 @@ public class Game implements Serializable {
         this.currentValue = currentValue;
     }
 
-
+    public void setCurrentPlayer(int currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
 
 
     public int getCurrentPlayer() {

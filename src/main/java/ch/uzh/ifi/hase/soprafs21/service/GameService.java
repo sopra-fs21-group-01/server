@@ -218,4 +218,21 @@ public class GameService {
         }
 
     }
+
+    //if after finished game, players want to play another round.
+    public Game resetGame(Game game){
+        Deck deck = new Deck();
+        game.setCardStack(deck);
+        game.setCurrentPlayer(0);
+        game.setCurrentColor(null);
+        game.setCurrentValue(null);
+
+        if (!game.getGameDirection()){
+            game.reverseGameDirection();
+        }
+
+        initializeHands(game);
+        return game;
+
+    }
 }
