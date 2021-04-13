@@ -38,7 +38,7 @@ public class Lobby implements Serializable {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Transient
     private String[] PlayerList;
 
     @Column(nullable = false)

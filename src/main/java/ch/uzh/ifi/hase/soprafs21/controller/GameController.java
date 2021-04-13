@@ -1,10 +1,14 @@
 package ch.uzh.ifi.hase.soprafs21.controller;
 
 import ch.uzh.ifi.hase.soprafs21.entity.Game;
+import ch.uzh.ifi.hase.soprafs21.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs21.entity.User;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.GameGetDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.GamePostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs21.service.GameService;
+import ch.uzh.ifi.hase.soprafs21.service.LobbyService;
+import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,9 +19,11 @@ import java.util.List;
 @RestController
 public class GameController {
 
-    private  final GameService gameService;
+    private final GameService gameService;
+    private final LobbyService lobbyService;
+    private final UserService userService;
 
-   GameController(GameService gameService){this.gameService = gameService; }
+   GameController(GameService gameService, LobbyService lobbyService, UserService userService){this.gameService = gameService; this.lobbyService = lobbyService; this.userService = userService;}
 
     // post a gme
     @PostMapping("/game/{id}/kickOff")
@@ -26,6 +32,15 @@ public class GameController {
     public String createGame(@PathVariable(value = "id") Long id, @RequestBody GamePostDTO gamePostDTO){
         // convert API Game to internal representation
         Game input = DTOMapper.INSTANCE.convertGamePostDTOtoEntity(gamePostDTO);
+
+        //get PlayerList from Lobby with same Id like game
+        String[] playerList = lobbyService.getLobbyById(gamePostDTO.getId()).getPlayerList();
+
+        //Set all players from Lobby into Map playerList of Game class.
+        for (String player : playerList){
+            User user = userService.getUser(player);
+            input.setPlayerList(user);
+        }
 
         // create Game
         Game createdGame = gameService.createGame(input);
