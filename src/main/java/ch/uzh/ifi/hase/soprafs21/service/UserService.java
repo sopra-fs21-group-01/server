@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs21.service;
 
 import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
+import ch.uzh.ifi.hase.soprafs21.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs21.entity.User;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import java.util.regex.Matcher;
@@ -81,6 +83,23 @@ public class UserService {
 
     public User getUser(String username) {
         return this.userRepository.findByUsername(username);
+    }
+
+    public User getUseryById(Long id){
+        User userFoundById = null;
+
+        // check if there is a user with this ID and return it. If no lobby found, throw exception
+        Optional<User> optionalUser = this.userRepository.findById(id);
+
+        if (optionalUser.isPresent()){
+            userFoundById = optionalUser.get();
+
+            log.debug("Found and returned User with ID: {}", id);
+            return userFoundById;
+        }
+        if (userFoundById == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with given ID was not found");}
+        return userFoundById;
     }
 
     public User logout(User user){

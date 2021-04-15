@@ -3,8 +3,10 @@ package ch.uzh.ifi.hase.soprafs21.controller;
 import ch.uzh.ifi.hase.soprafs21.entity.Game;
 import ch.uzh.ifi.hase.soprafs21.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs21.entity.User;
+import ch.uzh.ifi.hase.soprafs21.entity.Card;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.GameGetDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.GamePostDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.PlayerMoveDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs21.service.GameService;
 import ch.uzh.ifi.hase.soprafs21.service.LobbyService;
@@ -51,6 +53,8 @@ public class GameController {
         return url;
     }
 
+    // why is there a second Post here?
+    /**
     //how to covert frontend user, card etc. to backend??
     @PostMapping("/game/{id}/play")
     @ResponseStatus(HttpStatus.CREATED)
@@ -64,9 +68,8 @@ public class GameController {
 
         // return URL of where to find the User
         String url = "game/"+createdGame.getId()+"/kickOff";
-
-
     }
+    */
 
 
     // delete the lobby by its ID
@@ -92,6 +95,22 @@ public class GameController {
 
         final Game updatedGame = gameService.updateGame(gameOfId);
     }
+
+    // Put mapping when a player plays a card and this card is put on top of the cardstack
+    @PutMapping("/game/{id}/playerTurn")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void playCard(@PathVariable(value = "id") Long id, @RequestBody PlayerMoveDTO playerMoveDTO) {
+
+        Game gameOfId = gameService.getGameById(id);
+        User playerOfMove = userService.getUseryById(playerMoveDTO.getPlayerId());
+
+        Card cardToPlay = new Card(playerMoveDTO.getColor(), playerMoveDTO.getValue());
+
+        Game updatedGame = gameService.playCard(gameOfId, playerOfMove, cardToPlay);
+
+    }
+
 
 
     // do we really need to different put methods? (on for kicking a player and one for updateing something else?

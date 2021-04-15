@@ -98,23 +98,23 @@ public class GameService {
         log.debug("Deleted the game with ID: {}", gameId);
     }
 
-    public Game playCard(Long gameId, User user, int cardId){
-        Game game = getGameById(gameId);
+    public Game playCard(Game game, User user, Card cardToPlay){
 
-        Card playerCard = user.getHand().getCards().get(cardId);
-        if (checkIfMoveAllowed(game, playerCard, user)){
-            user.getHand().removeCard(game.getCardStack(),playerCard);
 
-            game.setCurrentValue(playerCard.getValue());
-            game.setCurrentColor(playerCard.getColor());
+        // will be replaced by hand overed card by controller
+        if (checkIfMoveAllowed(game, cardToPlay, user)){
+            user.getHand().removeCard(game.getCardStack(),cardToPlay);
+
+            game.setCurrentValue(cardToPlay.getValue());
+            game.setCurrentColor(cardToPlay.getColor());
 
             checkWin(user);
 
-            if (playerCard.getValue()== Value.WildFour || playerCard.getValue() == Value.Wild){
+            if (cardToPlay.getValue()== Value.WildFour || cardToPlay.getValue() == Value.Wild){
                 wishColor(game);
             }
 
-            determineNextPlayer(game,user,playerCard);
+            determineNextPlayer(game,user,cardToPlay);
 
             checkIfExtraCard(game);
         }

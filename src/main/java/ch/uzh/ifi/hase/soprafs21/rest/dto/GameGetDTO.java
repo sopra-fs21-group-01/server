@@ -8,7 +8,7 @@ public class GameGetDTO {
 
     private String host;
 
-    private String[] playerList;
+    private ArrayList playerList;
 
     private ArrayList cardStack;
 
@@ -25,7 +25,7 @@ public class GameGetDTO {
         return host;
     }
 
-    public String[] getPlayerList() {
+    public ArrayList getPlayerList() {
 
         return playerList;
     }
@@ -35,7 +35,7 @@ public class GameGetDTO {
         this.host = host;
     }
 
-    public void setPlayerList(String[] playerList) {
+    public void setPlayerList(ArrayList playerList) {
         this.playerList = playerList;
     }
 

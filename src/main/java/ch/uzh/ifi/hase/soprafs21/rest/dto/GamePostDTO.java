@@ -8,8 +8,6 @@ public class GamePostDTO {
 
     private String host;
 
-    private String[] playerList;
-
     public long getId() {
         return id;
     }
@@ -23,18 +21,9 @@ public class GamePostDTO {
         return host;
     }
 
-    public String[] getPlayerList() {
-
-        return playerList;
-    }
-
     public void setHost(String host) {
 
         this.host = host;
-    }
-
-    public void setPlayerList(String[] playerList) {
-        this.playerList = playerList;
     }
 
 
