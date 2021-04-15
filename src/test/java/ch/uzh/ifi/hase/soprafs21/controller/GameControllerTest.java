@@ -47,6 +47,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @WebMvcTest(GameController.class)
 public class GameControllerTest {
 
+    /**
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -155,7 +157,7 @@ public class GameControllerTest {
                 .andExpect(jsonPath("$.playerList", is(testGame.getPlayerList())))
                 .andExpect(jsonPath("$.cardStack", is(testGame.getCardStack())));
 
-                 */
+
     }
 
 
@@ -301,7 +303,7 @@ public class GameControllerTest {
      * Input will look like this: {"name": "Test User", "username": "testUsername"}
      * @param object
      * @return string
-     */
+
     private String asJsonString(final Object object) {
         try {
             return new ObjectMapper().writeValueAsString(object);
@@ -310,5 +312,6 @@ public class GameControllerTest {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("The request body could not be created.%s", e.toString()));
         }
     }
+    */
 }
 

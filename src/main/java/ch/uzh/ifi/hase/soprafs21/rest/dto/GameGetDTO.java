@@ -1,5 +1,7 @@
 package ch.uzh.ifi.hase.soprafs21.rest.dto;
 
+import ch.uzh.ifi.hase.soprafs21.entity.Deck;
+
 import java.util.ArrayList;
 
 public class GameGetDTO {
@@ -8,9 +10,9 @@ public class GameGetDTO {
 
     private String host;
 
-    private ArrayList playerList;
+    // private ArrayList playerList;
 
-    private ArrayList cardStack;
+    private Deck cardStack;
 
     public long getId() {
         return id;
@@ -25,25 +27,25 @@ public class GameGetDTO {
         return host;
     }
 
-    public ArrayList getPlayerList() {
+/**    public ArrayList getPlayerList() {
 
         return playerList;
-    }
+    } */
 
     public void setHost(String host) {
 
         this.host = host;
     }
 
-    public void setPlayerList(ArrayList playerList) {
+   /** public void setPlayerList(ArrayList playerList) {
         this.playerList = playerList;
-    }
+    } */
 
-    public ArrayList getCardStack() {
+    public Deck getCardStack() {
         return cardStack;
     }
 
-    public void setCardStack(ArrayList cardStack) {
+    public void setCardStack(Deck cardStack) {
         this.cardStack = cardStack;
     }
 
