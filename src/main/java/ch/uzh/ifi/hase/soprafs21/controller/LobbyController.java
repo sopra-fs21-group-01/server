@@ -20,7 +20,7 @@ public class LobbyController {
     LobbyController(LobbyService lobbyService){this.lobbyService = lobbyService; }
 
     // post a lobby
-    @PostMapping("/lobby")
+    @PostMapping("/lobbies")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public String createLobby(@RequestBody LobbyPostDTO lobbyPostDTO){
@@ -31,14 +31,14 @@ public class LobbyController {
         Lobby createdLobby = lobbyService.createLobby(userInput);
 
         // return URL of where to find the User
-        String url = "lobby/"+createdLobby.getId();
+        String url = "lobbies/"+createdLobby.getId();
 
         return url;
     }
 
 
     // delete the lobby by its ID
-    @DeleteMapping("/lobby/{id}")
+    @DeleteMapping("/lobbies/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void deleteLobby(@PathVariable(value = "id") Long id){
@@ -47,14 +47,14 @@ public class LobbyController {
     }
 
     // Put mapping to update all lobby attributes: name, players in playerlist, gamemode
-    @PutMapping("/lobby/{id}")
+    @PutMapping("/lobbies/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public void updateLobby(@PathVariable(value = "id") Long id, @RequestBody LobbyPostDTO updatedLobbyDetails) {
 
         Lobby lobbyOfId = lobbyService.getLobbyById(id);
 
-        lobbyOfId.setName(updatedLobbyDetails.getName());
+       // lobbyOfId.setName(updatedLobbyDetails.getName());
         lobbyOfId.setPlayerList(updatedLobbyDetails.getPlayerList());
         lobbyOfId.setGamemode(updatedLobbyDetails.getGamemode());
 
@@ -62,7 +62,7 @@ public class LobbyController {
     }
 
     // get mapping
-    @GetMapping("/lobby/{id}")
+    @GetMapping("/lobbies/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public LobbyGetDTO getSingleUser(@PathVariable(value = "id") Long id){

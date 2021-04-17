@@ -60,22 +60,22 @@ public class LobbyControllerTest {
         // given
         Lobby testLobby = new Lobby();
         testLobby.setId(1L);
-        testLobby.setName("testName");
-        testLobby.setPassword("testPassword");
+     //   testLobby.setName("testName");
+     //   testLobby.setPassword("testPassword");
         testLobby.setHost("testHost");
 
 
         given(lobbyService.createLobby(Mockito.any())).willReturn(testLobby);
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder postRequest = post("/lobby")
+        MockHttpServletRequestBuilder postRequest = post("/lobbies")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(testLobby));
 
         // then !! Just Check for the expected String output and for the status type
         mockMvc.perform(postRequest)
                 .andExpect(status().isCreated())
-                .andExpect(content().string("lobby/"+testLobby.getId()));
+                .andExpect(content().string("lobbies/"+testLobby.getId()));
     }
 
 
@@ -85,15 +85,15 @@ public class LobbyControllerTest {
         // given
         Lobby testLobby = new Lobby();
         testLobby.setId(1L);
-        testLobby.setName("testName");
-        testLobby.setPassword("testPassword");
+      //  testLobby.setName("testName");
+     //   testLobby.setPassword("testPassword");
         testLobby.setHost(null);
 
 
         given(lobbyService.createLobby(Mockito.any())).willThrow(new ResponseStatusException(HttpStatus.CONFLICT));
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder postRequest = post("/lobby")
+        MockHttpServletRequestBuilder postRequest = post("/lobbies")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(testLobby));
 
@@ -110,22 +110,22 @@ public class LobbyControllerTest {
         // given
         Lobby testLobby = new Lobby();
         testLobby.setId(1L);
-        testLobby.setName("testName");
-        testLobby.setPassword("testPassword");
+      //  testLobby.setName("testName");
+      //  testLobby.setPassword("testPassword");
         testLobby.setHost("testHost");
 
         // this mocks the UserService -> we define above what the userService should return when getUsers() is called
         given(lobbyService.getLobbyById(Mockito.any())).willReturn(testLobby);
 
         // when
-        MockHttpServletRequestBuilder getRequest = get("/lobby/{id}", 1L)
+        MockHttpServletRequestBuilder getRequest = get("/lobbies/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON);
 
         // then
         mockMvc.perform(getRequest).andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(testLobby.getId().intValue())))
-                .andExpect(jsonPath("$.name", is(testLobby.getName())))
-                .andExpect(jsonPath("$.password", is(testLobby.getPassword())))
+            //    .andExpect(jsonPath("$.name", is(testLobby.getName())))
+            //    .andExpect(jsonPath("$.password", is(testLobby.getPassword())))
                 .andExpect(jsonPath("$.host", is(testLobby.getHost())));
                 }
 
@@ -136,8 +136,8 @@ public class LobbyControllerTest {
         // given
         Lobby testLobby = new Lobby();
         testLobby.setId(1L);
-        testLobby.setName("testName");
-        testLobby.setPassword("testPassword");
+     //   testLobby.setName("testName");
+      //  testLobby.setPassword("testPassword");
         testLobby.setHost("testHost");
 
 
@@ -145,7 +145,7 @@ public class LobbyControllerTest {
         given(lobbyService.getLobbyById(Mockito.any())).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby with given ID was not found"));
 
         // when
-        MockHttpServletRequestBuilder getRequest = get("/lobby/{id}", 1L)
+        MockHttpServletRequestBuilder getRequest = get("/lobbies/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON);
         // then
         mockMvc.perform(getRequest).andExpect(status().isNotFound())
@@ -158,8 +158,8 @@ public class LobbyControllerTest {
 
         Lobby testLobby = new Lobby();
         testLobby.setId(1L);
-        testLobby.setName("testName");
-        testLobby.setPassword("testPassword");
+       // testLobby.setName("testName");
+       // testLobby.setPassword("testPassword");
         testLobby.setHost("testHost");
 
 
@@ -167,7 +167,7 @@ public class LobbyControllerTest {
         given(lobbyService.getLobbyById(Mockito.any())).willReturn(testLobby);
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder putRequest = put("/lobby/{id}", 1L)
+        MockHttpServletRequestBuilder putRequest = put("/lobbies/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(testLobby));
 
@@ -182,8 +182,8 @@ public class LobbyControllerTest {
 
         Lobby testLobby = new Lobby();
         testLobby.setId(1L);
-        testLobby.setName("testName");
-        testLobby.setPassword("testPassword");
+       // testLobby.setName("testName");
+      //  testLobby.setPassword("testPassword");
         testLobby.setHost("testHost");
 
 
@@ -191,7 +191,7 @@ public class LobbyControllerTest {
         given(lobbyService.getLobbyById(Mockito.any())).willReturn(testLobby);
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder putRequest = put("/lobby/{id}", 1L)
+        MockHttpServletRequestBuilder putRequest = put("/lobbies/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(testLobby));
 
@@ -205,13 +205,13 @@ public class LobbyControllerTest {
     public void deleteLobby_succesfully() throws Exception {
         Lobby testLobby = new Lobby();
         testLobby.setId(1L);
-        testLobby.setName("testName");
-        testLobby.setPassword("testPassword");
+      //  testLobby.setName("testName");
+      //  testLobby.setPassword("testPassword");
         testLobby.setHost("testHost");
 
         given(lobbyService.getLobbyById(Mockito.any())).willReturn(testLobby);
 
-        MockHttpServletRequestBuilder deleteRequest = delete("/lobby/{id}", 1L);
+        MockHttpServletRequestBuilder deleteRequest = delete("/lobbies/{id}", 1L);
 
         mockMvc.perform(deleteRequest)
                 .andExpect(status().isOk());}

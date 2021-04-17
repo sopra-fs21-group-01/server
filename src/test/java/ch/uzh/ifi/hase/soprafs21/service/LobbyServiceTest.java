@@ -30,8 +30,8 @@ public class LobbyServiceTest {
         // given
         testLobby = new Lobby();
         testLobby.setId(1L);
-        testLobby.setName("testName");
-        testLobby.setPassword("testPassword");
+       // testLobby.setName("testName");
+       // testLobby.setPassword("testPassword");
         testLobby.setHost("testHost");
 
 
@@ -51,9 +51,9 @@ public class LobbyServiceTest {
         Mockito.verify(lobbyRepository, Mockito.times(1)).save(Mockito.any());
 
         assertEquals(testLobby.getId(), createdLobby.getId());
-        assertEquals(testLobby.getName(), createdLobby.getName());
+      //  assertEquals(testLobby.getName(), createdLobby.getName());
         assertEquals(testLobby.getHost(), createdLobby.getHost());
-        assertEquals(testLobby.getPassword(), createdLobby.getPassword());
+       // assertEquals(testLobby.getPassword(), createdLobby.getPassword());
 
         // test the data that was automatically created and saved
         assertEquals("standard", createdLobby.getGamemode());

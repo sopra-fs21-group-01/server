@@ -32,11 +32,14 @@ public class Lobby implements Serializable {
     @Column(nullable = false)
     private String host;
 
+    /**
     @Column(nullable = false)
     private String name;
 
+
     @Column(nullable = false)
     private String password;
+     */
 
     @Transient
     private String[] PlayerList;
@@ -49,17 +52,18 @@ public class Lobby implements Serializable {
         this.id = id;
     }
 
-    public void setName(String name) {
+   /** public void setName(String name) {
         this.name = name;
     }
+    */
 
     public void setHost(String host) {
         this.host = host;
     }
 
-    public void setPassword(String password) {
+/** public void setPassword(String password) {
         this.password = password;
-    }
+    } */
 
     public void setPlayerList(String[] PlayerList) {
         this.PlayerList = PlayerList;
@@ -77,16 +81,16 @@ public class Lobby implements Serializable {
         return id;
     }
 
-    public String getName() {
+/**  public String getName() {
         return name;
-    }
+    } */
 
     public String getHost(){ return host;
     }
 
-    public String getPassword() {
+/** public String getPassword() {
         return password;
-    }
+    } */
 
     public String[] getPlayerList() {
         return PlayerList;
