@@ -1,8 +1,10 @@
 package ch.uzh.ifi.hase.soprafs21.controller;
 
 import ch.uzh.ifi.hase.soprafs21.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs21.entity.User;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.LobbyGetDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.LobbyPostDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs21.service.LobbyService;
 import org.springframework.http.HttpStatus;
@@ -61,11 +63,44 @@ public class LobbyController {
         final Lobby updatedLobby = lobbyService.updateLobby(lobbyOfId);
     }
 
-    // get mapping
+    // Put mapping to for joining a Lobby
+    @PutMapping("/lobbies/{id}/joinedLobbies")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void updateLobby(@PathVariable(value = "id") Long id, @RequestBody String userName) {
+
+        Lobby lobbyOfId = lobbyService.getLobbyById(id);
+
+        // lobbyOfId.setName(updatedLobbyDetails.getName());
+        List<String> playerList = lobbyOfId.getPlayerList();
+        playerList.add(userName);
+        lobbyOfId.setPlayerList(playerList);
+
+
+        final Lobby updatedLobby = lobbyService.updateLobby(lobbyOfId);
+    }
+
+    // get all the lobbies
+    @GetMapping("/lobbies")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<LobbyGetDTO> getAllLobbies() {
+        // fetch all users in the internal representation
+        List<Lobby> lobbies = lobbyService.getLobbies();
+        List<LobbyGetDTO> lobbyGetDTOs = new ArrayList<>();
+
+        // convert each user to the API representation
+        for (Lobby lobby : lobbies) {
+            lobbyGetDTOs.add(DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby));
+        }
+        return lobbyGetDTOs;
+    }
+
+    // get a single lobbie
     @GetMapping("/lobbies/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public LobbyGetDTO getSingleUser(@PathVariable(value = "id") Long id){
+    public LobbyGetDTO getSingleLobby(@PathVariable(value = "id") Long id){
 
         // get Lobby from repository
         Lobby lobbyOfId = lobbyService.getLobbyById(id);

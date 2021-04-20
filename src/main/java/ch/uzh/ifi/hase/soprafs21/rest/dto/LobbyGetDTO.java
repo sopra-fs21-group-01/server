@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs21.rest.dto;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class LobbyGetDTO {
     private String host;
@@ -11,7 +12,7 @@ public class LobbyGetDTO {
 
     private Long id;
 
-    private String[] playerList;
+    private List<String> playerList;
 
     private String gamemode;
 
@@ -31,7 +32,7 @@ public class LobbyGetDTO {
         return id;
     }
 
-    public String[] getPlayerList() {
+    public List<String> getPlayerList() {
         return playerList;
     }
 
@@ -60,7 +61,7 @@ public class LobbyGetDTO {
         this.id = id;
     }
 
-    public void setPlayerList(String[] playerList) {
+    public void setPlayerList(List<String> playerList) {
         this.playerList = playerList;
     }
 }

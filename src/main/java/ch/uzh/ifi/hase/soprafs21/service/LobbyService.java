@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs21.service;
 
 
 import ch.uzh.ifi.hase.soprafs21.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs21.entity.User;
 import ch.uzh.ifi.hase.soprafs21.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
 import org.apache.catalina.Host;
@@ -33,11 +34,16 @@ public class LobbyService {
         this.lobbyRepository = lobbyRepository;
     }
 
+    public List<Lobby> getLobbies() {
+        return this.lobbyRepository.findAll();
+    }
+
     // the host is added to the list of players, the gamemode is set to standard
     public Lobby createLobby(Lobby newLobby){
 
         // add host to the list of players
-        String[] playerList = {newLobby.getHost()};
+        List<String> playerList = new ArrayList<String>();
+        playerList.add(newLobby.getHost());
 
         newLobby.setPlayerList(playerList);
         newLobby.setGamemode("standard");

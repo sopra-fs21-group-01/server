@@ -36,7 +36,7 @@ public class GameController {
         Game input = DTOMapper.INSTANCE.convertGamePostDTOtoEntity(gamePostDTO);
 
         //get PlayerList from Lobby with same Id like game
-        String[] playerList = lobbyService.getLobbyById(gamePostDTO.getId()).getPlayerList();
+        List<String> playerList = lobbyService.getLobbyById(gamePostDTO.getId()).getPlayerList();
 
         //Set all players from Lobby into Map playerList of Game class.
         for (String player : playerList){

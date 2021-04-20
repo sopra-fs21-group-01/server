@@ -11,6 +11,9 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LobbyServiceTest {
@@ -45,7 +48,8 @@ public class LobbyServiceTest {
     public void createLobby_validInputs_success(){
         // save the dummy lobby to database and return it
         Lobby createdLobby = lobbyService.createLobby(testLobby);
-        String[] testPlayerList = {"testHost"};
+        List<String> testPlayerList = new ArrayList<String>();
+        testPlayerList.add("testHost");
 
         // then test if the data was correctly saved
         Mockito.verify(lobbyRepository, Mockito.times(1)).save(Mockito.any());
@@ -57,7 +61,7 @@ public class LobbyServiceTest {
 
         // test the data that was automatically created and saved
         assertEquals("standard", createdLobby.getGamemode());
-        assertArrayEquals(testPlayerList, createdLobby.getPlayerList());
+        assertEquals(testPlayerList, createdLobby.getPlayerList());
     }
 
 }

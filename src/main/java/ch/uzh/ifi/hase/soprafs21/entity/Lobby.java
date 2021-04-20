@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Internal Lobby Representation
@@ -42,7 +43,7 @@ public class Lobby implements Serializable {
      */
 
     @Transient
-    private String[] PlayerList;
+    private List<String> PlayerList;
 
     @Column(nullable = false)
     private String gamemode;
@@ -65,7 +66,7 @@ public class Lobby implements Serializable {
         this.password = password;
     } */
 
-    public void setPlayerList(String[] PlayerList) {
+    public void setPlayerList(List<String> PlayerList) {
         this.PlayerList = PlayerList;
     }
 
@@ -92,7 +93,7 @@ public class Lobby implements Serializable {
         return password;
     } */
 
-    public String[] getPlayerList() {
+    public List<String> getPlayerList() {
         return PlayerList;
     }
 
