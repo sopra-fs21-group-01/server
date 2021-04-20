@@ -42,7 +42,7 @@ public class Lobby implements Serializable {
     private String password;
      */
 
-    @Transient
+    @ElementCollection
     private List<String> PlayerList;
 
     @Column(nullable = false)
