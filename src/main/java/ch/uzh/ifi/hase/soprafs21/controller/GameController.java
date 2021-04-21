@@ -25,7 +25,8 @@ public class GameController {
     private final LobbyService lobbyService;
     private final UserService userService;
 
-   GameController(GameService gameService, LobbyService lobbyService, UserService userService){this.gameService = gameService; this.lobbyService = lobbyService; this.userService = userService;}
+   GameController(GameService gameService, LobbyService lobbyService, UserService userService)
+   {this.gameService = gameService; this.lobbyService = lobbyService; this.userService = userService;}
 
     // post a gme
     @PostMapping("/game/{id}/kickOff")
@@ -44,7 +45,8 @@ public class GameController {
             input.setPlayerList(user);
         }
 
-        // create Game
+        // set the lobby to "isInGame" and create a Game
+        lobbyService.getLobbyById(input.getId()).setInGame(true);
         Game createdGame = gameService.createGame(input);
 
         // return URL of where to find the User
@@ -72,16 +74,17 @@ public class GameController {
     */
 
 
-    // delete the lobby by its ID
+    // delete the game by its ID
     @DeleteMapping("/game/{id}/deletion")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void deleteGame(@PathVariable(value = "id") Long id){
-
+        //delete the game and say the lobby is not in a game anymore
         gameService.deleteGame(id);
+        lobbyService.getLobbyById(id).setInGame(false);
     }
 
-    // Put mapping to update all lobby attributes: name, players in playerlist, gamemode
+    // Put mapping
     @PutMapping("/game/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody

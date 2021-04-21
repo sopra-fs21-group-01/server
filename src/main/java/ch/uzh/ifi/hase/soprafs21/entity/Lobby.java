@@ -33,6 +33,9 @@ public class Lobby implements Serializable {
     @Column(nullable = false)
     private String host;
 
+    @Column(nullable = false)
+    private boolean isInGame;
+
     /**
     @Column(nullable = false)
     private String name;
@@ -76,6 +79,14 @@ public class Lobby implements Serializable {
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
+    }
+
+    public boolean isInGame() {
+        return isInGame;
+    }
+
+    public void setInGame(boolean inGame) {
+        isInGame = inGame;
     }
 
     public Long getId() {

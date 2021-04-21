@@ -15,6 +15,8 @@ public class ChatController {
 
     ChatController(ChatService chatService){this.chatService = chatService;}
 
+    /**
+
     // post a chat
     @PostMapping("/chat")
     @ResponseStatus(HttpStatus.CREATED)
@@ -68,7 +70,7 @@ public class ChatController {
         return DTOMapper.INSTANCE.convertEntityToChatGetDTO(chatOfId);
     }
 
-
+*/
 
 
 

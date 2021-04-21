@@ -34,9 +34,11 @@ public class LobbyService {
         this.lobbyRepository = lobbyRepository;
     }
 
+
     public List<Lobby> getLobbies() {
         return this.lobbyRepository.findAll();
     }
+
 
     // the host is added to the list of players, the gamemode is set to standard
     public Lobby createLobby(Lobby newLobby){
@@ -47,6 +49,7 @@ public class LobbyService {
 
         newLobby.setPlayerList(playerList);
         newLobby.setGamemode("standard");
+        newLobby.setInGame(false);
 
         newLobby = lobbyRepository.save(newLobby);
         lobbyRepository.flush();
@@ -54,6 +57,24 @@ public class LobbyService {
         log.debug("Created a new lobby for Host: {}", newLobby.getHost());
 
         return newLobby;
+    }
+
+    public void playerJoinsLobby(Lobby lobby, String userName){
+
+        if (lobby.getPlayerList().size() >= 9){
+            throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED,
+                    "This Lobby is already full!");
+        }
+
+        if (lobby.isInGame()){
+            throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED,
+                    "This Lobby is already in a game!");
+        }
+
+        List<String> playerList = lobby.getPlayerList();
+        playerList.add(userName);
+        lobby.setPlayerList(playerList);
+
     }
 
     public Lobby getLobbyById(Long lobbyID){
@@ -69,9 +90,11 @@ public class LobbyService {
             return lobbyFoundById;
         }
         if (lobbyFoundById == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby with given ID was not found");}
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby with ID " + lobbyID + " was not found");}
         return lobbyFoundById;
     }
+
+
 
     public Lobby updateLobby(Lobby updatedLobby){
         this.lobbyRepository.save(updatedLobby);
@@ -79,6 +102,8 @@ public class LobbyService {
         log.debug("Updated Lobby with ID {}", updatedLobby.getId());
         return updatedLobby;
     }
+
+
 
     public void deleteLobby(Long lobbyId){
 
