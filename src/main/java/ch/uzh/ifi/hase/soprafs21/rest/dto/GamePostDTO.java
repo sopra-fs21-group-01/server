@@ -8,6 +8,7 @@ public class GamePostDTO {
 
     private String host;
 
+
     public long getId() {
         return id;
     }
@@ -17,12 +18,10 @@ public class GamePostDTO {
     }
 
     public String getHost() {
-
         return host;
     }
 
     public void setHost(String host) {
-
         this.host = host;
     }
 

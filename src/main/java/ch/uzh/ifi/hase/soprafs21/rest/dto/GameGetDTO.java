@@ -14,6 +14,16 @@ public class GameGetDTO {
 
     private Deck cardStack;
 
+    private String chat;
+
+    public String getChat(){
+        return chat;
+    }
+
+    public void setChat(String chat){
+        this.chat = chat;
+    }
+
     public long getId() {
         return id;
     }

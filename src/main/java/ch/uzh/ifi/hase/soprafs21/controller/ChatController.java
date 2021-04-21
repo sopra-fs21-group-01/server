@@ -1,36 +1,38 @@
 package ch.uzh.ifi.hase.soprafs21.controller;
 import ch.uzh.ifi.hase.soprafs21.entity.Chat;
-import ch.uzh.ifi.hase.soprafs21.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs21.entity.Game;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.ChatGetDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.ChatPostDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.GamePostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.LobbyGetDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.LobbyPostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs21.service.ChatService;
+import ch.uzh.ifi.hase.soprafs21.service.GameService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class ChatController {
 
     private final ChatService chatService;
 
-    ChatController(ChatService chatService){this.chatService = chatService;}
+    ChatController(ChatService chatService){this.chatService = chatService;
+
+    }
 
     // post a chat
     @PostMapping("/chat")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public String createChat(@RequestBody ChatPostDTO chatPostDTO){
+    public void createChat(@RequestBody ChatPostDTO chatPostDTO){
 
         // convert API Lobby to internal representation
         Chat userInput = DTOMapper.INSTANCE.convertChatPostDTOtoEntity(chatPostDTO);
-
         // create Chat instance
-        Chat createdChat = chatService.createChat(userInput);
-
-        // return URL
-        String url = "chat/" + createdChat.getId();
-        return url;
-
+        chatService.createChat(userInput);
 
     }
 
@@ -40,32 +42,25 @@ public class ChatController {
     @ResponseBody
     public void deleteChat(@PathVariable(value = "id") Long id){
 
-        chatService.deleteLobby(id);
-    }
-
-    // put mapping to update the chat
-    @PutMapping("/chat/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @ResponseBody
-    public void updateLobby(@PathVariable(value = "id") Long id, @RequestBody ChatPostDTO updatedChatDetails) {
-        // convert API Lobby to internal representation
-        Chat userInput = DTOMapper.INSTANCE.convertChatPostDTOtoEntity(updatedChatDetails);
-        // update the chat
-        chatService.updateChat(id,userInput);
-
+        chatService.deleteChat(id);
     }
 
     // get mapping
     @GetMapping("/chat/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public LobbyGetDTO getChatcontent(@PathVariable(value = "id") Long id){
+    public List<ChatGetDTO> getChatContent(@PathVariable(value = "id") Long id){
+        // fetch all chats in the internal representation
+        List<Chat> chats = chatService.getChats(id);
+        List<ChatGetDTO> chatGetDTOs = new ArrayList<>();
 
-        // get Lobby from repository
-        Chat chatOfId = chatService.getLobbyById(id);
+        // convert each Chat to the Api representation
+        for(Chat chat : chats){
+            chatGetDTOs.add(DTOMapper.INSTANCE.convertEntityToChatGetDTO(chat));
+        }
 
-        // convert internal representation of chat back to API
-        return DTOMapper.INSTANCE.convertEntityToChatGetDTO(chatOfId);
+
+        return chatGetDTOs;
     }
 
 

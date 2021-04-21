@@ -3,23 +3,23 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "Chat")
+@Table(name = "CHAT")
 public class Chat implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue
     private Long id;
 
-    @Transient
-    private Chat chat;
+    @Column(nullable = false)
+    private String message;
 
-    public Chat getChat(){
-        return this.chat;
+
+    public String getMessage(){
+        return this.message;
     }
 
-    public void setChat(Chat chat){
-        this.chat = chat;
+    public void setMessage(String message){
+        this.message = message;
     }
 
     public Long getId() {

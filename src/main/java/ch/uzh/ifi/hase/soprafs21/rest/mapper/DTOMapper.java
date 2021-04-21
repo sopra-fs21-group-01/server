@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs21.rest.mapper;
 
+import ch.uzh.ifi.hase.soprafs21.entity.Chat;
 import ch.uzh.ifi.hase.soprafs21.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs21.entity.User;
 import ch.uzh.ifi.hase.soprafs21.entity.Game;
@@ -66,6 +67,14 @@ public interface DTOMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "cardStack", target = "cardStack")
     GameGetDTO convertEntityToGameGetDTO(Game game);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "message", target = "message")
+    Chat convertChatPostDTOtoEntity(ChatPostDTO chatPostDTO);
+
+    @Mapping(source = "message", target = "message")
+    @Mapping(source = "id", target = "id")
+    ChatGetDTO convertEntityToChatGetDTO(Chat chat);
 
 
 }

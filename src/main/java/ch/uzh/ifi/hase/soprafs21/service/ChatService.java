@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collections;
+import java.util.List;
+
 @Service
 @Transactional
 public class ChatService {
@@ -34,17 +37,17 @@ public class ChatService {
 
     }
 
-
-    public void deleteLobby(Long id) {
+    public List<Chat> getChats(Long id){
+        if(this.chatRepository.findAllById(id)!= null){
+        return (List<Chat>) this.chatRepository.findAllById(id);
+        }else{
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "The chad with this id doesn't exist");
+        }
     }
 
-    public void updateChat(Long id, Chat updatedChatDetails) {
+
+    public void deleteChat(Long id) {
+        chatRepository.deleteById(id);
     }
 
-    public Chat getLobbyById(Long id) {
-        Chat chatFoundById = null;
-
-
-        return chatFoundById;
-    }
 }
