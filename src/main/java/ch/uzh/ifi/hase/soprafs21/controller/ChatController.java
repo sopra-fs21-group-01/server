@@ -23,6 +23,8 @@ public class ChatController {
 
     }
 
+    /**
+
     // post a chat
     @PostMapping("/chat")
     @ResponseStatus(HttpStatus.CREATED)
@@ -63,7 +65,7 @@ public class ChatController {
         return chatGetDTOs;
     }
 
-
+*/
 
 
 

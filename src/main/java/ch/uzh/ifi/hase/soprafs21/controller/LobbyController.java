@@ -71,13 +71,8 @@ public class LobbyController {
 
         Lobby lobbyOfId = lobbyService.getLobbyById(id);
 
-        // lobbyOfId.setName(updatedLobbyDetails.getName());
-        List<String> playerList = lobbyOfId.getPlayerList();
-        playerList.add(userName);
-        lobbyOfId.setPlayerList(playerList);
+        lobbyService.playerJoinsLobby(lobbyOfId, userName);
 
-
-        final Lobby updatedLobby = lobbyService.updateLobby(lobbyOfId);
     }
 
     // get all the lobbies
