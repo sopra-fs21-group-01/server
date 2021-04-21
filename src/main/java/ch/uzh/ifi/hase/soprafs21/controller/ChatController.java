@@ -23,7 +23,7 @@ public class ChatController {
 
     }
 
-    /**
+    
 
     // post a chat
     @PostMapping("/chat")
@@ -65,7 +65,7 @@ public class ChatController {
         return chatGetDTOs;
     }
 
-*/
+
 
 
 
