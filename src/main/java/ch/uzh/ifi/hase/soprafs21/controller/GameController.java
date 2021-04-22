@@ -104,7 +104,7 @@ public class GameController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public void playCard(@PathVariable(value = "id") Long id, @RequestBody PlayerMoveDTO playerMoveDTO) {
-
+        // TODO api to internal representation fehlt noch auch im DTO Mapper
         Game gameOfId = gameService.getGameById(id);
         User playerOfMove = userService.getUseryById(playerMoveDTO.getPlayerId());
 
