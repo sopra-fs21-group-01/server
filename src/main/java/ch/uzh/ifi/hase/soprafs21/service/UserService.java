@@ -106,7 +106,39 @@ public class UserService {
         User foundbyToken = userRepository.findByToken(user.getToken());
         foundbyToken.setStatus(UserStatus.OFFLINE);
         return foundbyToken;
-    }    
+    }
+    
+    public User editUser(User user) {
+        User usertoEdit = getUserbyId(user.getId());
+        if (usertoEdit != null) {
+
+            // handles the case if a user wants to change their username to an existing username
+            if (this.userRepository.findByUsername(user.getUsername()) != null) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Username is already taken!");
+            }
+            if (user.getUsername() != null) {
+                usertoEdit.setUsername(user.getUsername());
+            }
+            if (user.getPassword() != null) {
+                usertoEdit.setPassword(user.getPassword());
+            }
+            userRepository.save(usertoEdit);
+            return usertoEdit;
+        }
+        // status code 404 if user does not exist
+        else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User does not exist");
+        }   
+    }
+
+    public User getUserbyId(Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        User user = null;
+        if(optionalUser.isPresent()){
+            user = optionalUser.get();
+        }
+        return user;
+    }
 
     /**
      * This is a helper method that will check the uniqueness criteria of the username and the name

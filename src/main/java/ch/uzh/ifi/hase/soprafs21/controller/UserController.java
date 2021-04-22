@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs21.entity.User;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.UserTokenDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.UserEditDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -85,6 +86,15 @@ public class UserController {
         User userInput = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(userTokenDTO);
         User loggedOutUser = userService.logout(userInput);
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(loggedOutUser);
+    }
+
+    // profile edit
+    @PutMapping("/users/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public UserGetDTO editUser(@RequestBody UserEditDTO editDto) {
+        User userEdit = DTOMapper.INSTANCE.convertUserToEditDTOtoEntity(editDto);
+        User updatedUser = userService.editUser(userEdit);
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(updatedUser);
     }
 
 }

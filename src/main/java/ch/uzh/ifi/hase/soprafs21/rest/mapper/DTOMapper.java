@@ -36,6 +36,15 @@ public interface DTOMapper {
     @Mapping(source = "status", target = "status")
     UserGetDTO convertEntityToUserGetDTO(User user);
 
+    @Mapping(source = "id", target = "id")
+    @Mapping(source  = "username", target = "username")
+    @Mapping(target  = "email", ignore = true)
+    @Mapping(source  = "password", target = "password")   
+    @Mapping(target = "token", ignore = true)
+    @Mapping(target  = "status", ignore = true)
+    User convertUserToEditDTOtoEntity(UserEditDTO userEditDTO);
+
+
         // Mapper for when Lobby gets posted
     @Mapping(source = "host", target = "host")
     // @Mapping(source = "name", target = "name")
