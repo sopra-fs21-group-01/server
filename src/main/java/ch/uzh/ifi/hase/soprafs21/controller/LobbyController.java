@@ -4,13 +4,13 @@ import ch.uzh.ifi.hase.soprafs21.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs21.entity.User;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.LobbyGetDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.LobbyPostDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.UserGetDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.PlayByNamePutDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs21.service.LobbyService;
+import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.Lob;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +18,9 @@ import java.util.List;
 public class LobbyController {
 
     private  final LobbyService lobbyService;
+    private  final UserService userService;
 
-    LobbyController(LobbyService lobbyService){this.lobbyService = lobbyService; }
+    LobbyController(LobbyService lobbyService, UserService userService){this.lobbyService = lobbyService; this.userService = userService; }
 
     // post a lobby
     @PostMapping("/lobbies")
@@ -67,11 +68,12 @@ public class LobbyController {
     @PutMapping("/lobbies/{id}/joinedLobbies")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void updateLobby(@PathVariable(value = "id") Long id, @RequestBody String userName) {
+    public void updateLobby(@PathVariable(value = "id") Long id, @RequestBody PlayByNamePutDTO playerByNamePutDTO) {
 
         Lobby lobbyOfId = lobbyService.getLobbyById(id);
+        User userToJoin = userService.getUser(playerByNamePutDTO.getPlayerName());
 
-        lobbyService.playerJoinsLobby(lobbyOfId, userName);
+        lobbyService.playerJoinsLobby(lobbyOfId, userToJoin.getUsername());
 
     }
 

@@ -34,20 +34,22 @@ public class GameController {
     @ResponseBody
     public String createGame(@PathVariable(value = "id") Long id, @RequestBody GamePostDTO gamePostDTO){
         // convert API Game to internal representation
-        Game input = DTOMapper.INSTANCE.convertGamePostDTOtoEntity(gamePostDTO);
+        Game newGame = DTOMapper.INSTANCE.convertGamePostDTOtoEntity(gamePostDTO);
 
         //get PlayerList from Lobby with same Id like game
-        List<String> playerList = lobbyService.getLobbyById(gamePostDTO.getId()).getPlayerList();
+        List<String> playerListOfLobby = lobbyService.getLobbyById(gamePostDTO.getId()).getPlayerList();
 
         //Set all players from Lobby into Map playerList of Game class.
-        for (String player : playerList){
-            User user = userService.getUser(player);
-            input.setPlayerList(user);
-        }
+        List<Long> playerListForGame = new ArrayList<>();
+        for (String playerName : playerListOfLobby){
+            User user = userService.getUser(playerName);
+            playerListForGame.add(user.getId());
+            }
+        newGame.setPlayerList(playerListForGame);
 
         // set the lobby to "isInGame" and create a Game
-        lobbyService.getLobbyById(input.getId()).setInGame(true);
-        Game createdGame = gameService.createGame(input);
+        lobbyService.getLobbyById(id).setInGame(true);
+        Game createdGame = gameService.createGame(newGame);
 
         // return URL of where to find the User
         String url = "game/"+createdGame.getId()+"/kickOff";

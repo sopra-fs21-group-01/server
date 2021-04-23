@@ -42,7 +42,7 @@ public class GameService {
         Deck deck = new Deck();
         newGame.setCardStack(deck);
 
-        initializeHands(newGame);
+     //   initializeHands(newGame);
 
         newGame = gameRepository.save(newGame);
         gameRepository.flush();
@@ -98,7 +98,11 @@ public class GameService {
         log.debug("Deleted the game with ID: {}", gameId);
     }
 
-    public Game playCard(Game game, User user, Card cardToPlay){
+    public void setPlayerList(List<String > playerListFromLobby){
+
+    }
+
+     public Game playCard(Game game, User user, Card cardToPlay){
 
 
         // will be replaced by hand overed card by controller
@@ -231,7 +235,7 @@ public class GameService {
             game.reverseGameDirection();
         }
 
-        initializeHands(game);
+         initializeHands(game);
         return game;
 
     }
