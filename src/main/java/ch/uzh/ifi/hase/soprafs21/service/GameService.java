@@ -44,12 +44,14 @@ public class GameService {
         Deck deck = new Deck();
         newGame.setCardStack(deck);
 
-     //   initializeHands(newGame);
+         initializeHands(newGame);
 
         newGame = gameRepository.save(newGame);
         gameRepository.flush();
 
         log.debug("Created a new lobby for Host: {}", newGame.getHost());
+
+        System.out.println("initilaized deck and hands succesfully");
 
         return newGame;
     }

@@ -44,7 +44,7 @@ public class GameController {
         for (String playerName : playerListOfLobby){
             User user = userService.getUser(playerName);
             playerListForGame.add(user.getId());
-            }
+        }
         newGame.setPlayerList(playerListForGame);
 
         // set the lobby to "isInGame" and create a Game

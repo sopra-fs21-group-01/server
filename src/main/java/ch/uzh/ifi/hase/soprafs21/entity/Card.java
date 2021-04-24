@@ -42,7 +42,7 @@ public class Card {
 
     // methode wird von Class deck aufgerufen
     public Card(Color color, Value value){
-        this.card.setColor(color);
-        this.card.setValue(value);
+        this.setColor(color);
+        this.setValue(value);
     }
 }
