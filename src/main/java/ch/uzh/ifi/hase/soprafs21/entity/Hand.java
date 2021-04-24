@@ -7,23 +7,24 @@ public class Hand {
 
     public final User user;
     public boolean unoStatus = false;
-    private Map<Integer, Card> cards = new HashMap<Integer, Card>();
+    private ArrayList<Card> cards = new ArrayList<Card>();
     public final int initialCards = 7;
 
     public Hand(User user) {
         this.user = user;
     }
 
-    public Map<Integer, Card> getCards() {
+    public ArrayList<Card> getCards() {
         return cards;
     }
 
     public void addCard(Card card){
-        this.cards.put(card.getCardId(), card);
+        this.cards.add(card);
     }
 
     public void removeCard(Deck deck, Card card){
-        deck.addPlayedCards(cards.remove(card.getCardId()));
+        deck.addPlayedCards(card);
+        cards.remove(card);
     }
 
     public boolean getUnoStatus(){

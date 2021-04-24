@@ -29,10 +29,12 @@ public class GameService {
     private final Logger log = LoggerFactory.getLogger(GameService.class);
 
     private final GameRepository gameRepository;
+    private final UserService userService;
 
     @Autowired
-    public GameService(@Qualifier("gameRepository") GameRepository gameRepository) {
+    public GameService(@Qualifier("gameRepository") GameRepository gameRepository, UserService userService) {
         this.gameRepository = gameRepository;
+        this.userService = userService;
     }
 
     // the host is added to the list of players, the gamemode is set to standard
@@ -55,13 +57,13 @@ public class GameService {
     //initializes Hands for the start of the game,
     public void initializeHands(Game game){
         Deck deck = game.getCardStack();
-        for (int player : game.getPlayerList().keySet()){
-            Hand hand = new Hand(game.getPlayerList().get(player));
+        for (long player : game.getPlayerList()){
+            Hand hand = new Hand(userService.getUseryById(player));
             for(int i=0; i<7; i++){
                 Card drawnCard = deck.drawCard();
-                hand.getCards().put(drawnCard.getCardId(),drawnCard);
+                hand.getCards().add(drawnCard);
             }
-            game.getPlayerList().get(player).setHand(hand);
+            userService.getUseryById(player).setHand(hand);
 
         }
     }
@@ -98,9 +100,7 @@ public class GameService {
         log.debug("Deleted the game with ID: {}", gameId);
     }
 
-    public void setPlayerList(List<String > playerListFromLobby){
 
-    }
 
      public Game playCard(Game game, User user, Card cardToPlay){
 
@@ -165,9 +165,9 @@ public class GameService {
 
     public void drawCard(Game game){
         //draw a card and puts it into the hand and removed it from the deck
-        game.getPlayerList().get(game.getCurrentPlayer()).getHand().addCard(game.getCardStack().drawCard());
+        //game.getPlayerList().get(game.getCurrentPlayer()).getHand().addCard(game.getCardStack().drawCard());
         //UNO Status back to false
-        game.getPlayerList().get(game.getCurrentPlayer()).getHand().setUnoStatus(false);
+        //game.getPlayerList().get(game.getCurrentPlayer()).getHand().setUnoStatus(false);
     }
 
     public void cantPlayDrawCard(Game game){
@@ -175,6 +175,7 @@ public class GameService {
         game.setCurrentPlayerPlusOne();
     }
 
+    /*
     public void sayUno(Game game, int userId){
         if(game.getHandByPlayerId(userId).getHandSize()== 1){
             game.getHandByPlayerId(userId).setUnoStatus(true);
@@ -182,7 +183,7 @@ public class GameService {
             System.out.println("Liar!");
         }
 
-    }
+    }*/
 
     public void checkWin(User user){
         if (user.getHand().getHandSize()==0){

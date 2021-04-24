@@ -34,10 +34,10 @@ public class Game implements Serializable {
 
 
 
-    @Transient
+    @Column
     private int currentPlayer = 0; //keeps track who is the current player
 
-    @Transient
+    @Column
     private boolean gameDirection = true; //true = clockwise
 
     @ElementCollection
