@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs21.controller;
 
+import ch.uzh.ifi.hase.soprafs21.entity.Hand;
 import ch.uzh.ifi.hase.soprafs21.entity.User;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPostDTO;
@@ -9,7 +10,7 @@ import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
+import ch.uzh.ifi.hase.soprafs21.entity.Card;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +42,30 @@ public class UserController {
         }
         return userGetDTOs;
     }
+
+
+    // get the hand of a single user
+    @GetMapping("/users/{id}/hands")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<List> getUserHand(@PathVariable(value = "id") Long id) {
+        // get User from repository
+        User userOfID = userService.getUseryById(id);
+        Hand handOfUser = userOfID.getHand();
+
+        List<List> cardList = new ArrayList<>();
+        List cardValues = new ArrayList<>();
+
+        for (Card card : handOfUser.getCards()){
+            cardValues.add(card.getValue());
+            cardValues.add(card.getColor());
+            cardList.add(cardValues);
+            cardValues.clear();
+        }
+
+        return cardList;
+    }
+
 
     // get one User
     @GetMapping("/users/{id}")
