@@ -96,22 +96,22 @@ public class GameService {
 
      public Game playCard(Game game, User user, String cardToPlay){
 
-         Hand playerHand = getHandById(user.getHandId());
+         Hand playerHand = getHandById(game.getCurrentPlayerId());
 
         // will be replaced by hand overed card by controller
-        if (checkIfMoveAllowed(game, cardToPlay, user)){
+        if (checkIfMoveAllowed(game, cardToPlay)){
             playerHand.removeCard(game.getCardStack(),cardToPlay);
 
             game.setCurrentValue(getValueOfCard(cardToPlay));
             game.setCurrentColor(getColorOfCard(cardToPlay));
 
-            checkWin(user);
+            checkWin(game);
 
             if (getValueOfCard(cardToPlay).equals("WildFour") || getColorOfCard(cardToPlay).equals("Wild")){
                 wishColor(game);
             }
 
-            determineNextPlayer(game,user,cardToPlay);
+            determineNextPlayer(game, cardToPlay);
 
             checkIfExtraCard(game);
         }
@@ -150,7 +150,7 @@ public class GameService {
 
 
 
-    public void determineNextPlayer(Game game, User currentPlayer, String card){
+    public void determineNextPlayer(Game game, String card){
         if (getValueOfCard(card).equals("Skip")) {
             game.setCurrentPlayerPlusOne();
             game.setCurrentPlayerPlusOne();
@@ -179,7 +179,7 @@ public class GameService {
 
     public void drawCard(Game game){
         //get hand from current player
-        Hand hand = getHandById(game.getCurrentPlayer());
+        Hand hand = getHandById(game.getCurrentPlayerId());
 
         //draw a card and puts it into the hand and removed it from the deck
         hand.addCard(game.getCardStack().drawCard());
@@ -194,8 +194,8 @@ public class GameService {
     }
 
 
-    public void sayUno(Game game, long userId){
-        Hand hand = getHandById(userId);
+    public void sayUno(Game game){
+        Hand hand = getHandById(game.getCurrentPlayerId());
 
         if(hand.getHandSize()== 1){
             hand.setUnoStatus(true);
@@ -205,12 +205,12 @@ public class GameService {
 
     }
 
-    public void checkWin(User user){
+    public void checkWin(Game game){
 
-        Hand playerHand = getHandById(user.getHandId());
+        Hand playerHand = getHandById(game.getCurrentPlayerId());
 
         if (playerHand.getHandSize()==0){
-            System.out.format("Player: %s wins!", user.getUsername());
+            System.out.format("Player: %s wins!", userService.getUseryById(game.getCurrentPlayerId()).getUsername());
         }
     }
 
@@ -218,8 +218,8 @@ public class GameService {
         game.setCurrentColor("Blue");
     }
 
-    public boolean checkIfMoveAllowed(Game game, String card, User user){
-        Hand playerHand = getHandById(user.getHandId());
+    public boolean checkIfMoveAllowed(Game game, String card){
+        Hand playerHand = getHandById(game.getCurrentPlayerId());
 
         String lastPlayedCard = game.getLastPlayedCard();
 
