@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Deck {
 
-    private final ArrayList<String> cardDeck = new ArrayList<String>();
+    public final ArrayList<String> cardDeck = new ArrayList<String>();
     private final ArrayList<String> playedCardsDeck = new ArrayList<String>();
 
     public Deck(){
@@ -51,7 +51,7 @@ public class Deck {
         List<String> colors = this.createColorlist();
         List<String> values = this.createValuelist();
         int i;
-        for(i=0;i<15;i++) {
+        for(i=0;i<13;i++) {
             int j;
             for (j = 0; j < 4; j++) {
                 if (i <= 9) {
@@ -60,20 +60,20 @@ public class Deck {
                         this.cardDeck.add((new Card(colors.get(j), values.get(i)).getCardName()));
                     }
                 }
-                else if(i<=12){
+                else{
                     this.cardDeck.add((new Card(colors.get(j), values.get(i)).getCardName()));
                     this.cardDeck.add((new Card(colors.get(j), values.get(i)).getCardName()));
-                }else{
-                    this.cardDeck.add((new Card(colors.get(4), values.get(i)).getCardName()));
-                    this.cardDeck.add((new Card(colors.get(4), values.get(i)).getCardName()));
-                    this.cardDeck.add((new Card(colors.get(4), values.get(i)).getCardName()));
-                    this.cardDeck.add((new Card(colors.get(4), values.get(i)).getCardName()));
-
                 }
             }
 
         }
-
+        for(i=13;i<15;i++) {
+            this.cardDeck.add((new Card(colors.get(4), values.get(i)).getCardName()));
+            this.cardDeck.add((new Card(colors.get(4), values.get(i)).getCardName()));
+            this.cardDeck.add((new Card(colors.get(4), values.get(i)).getCardName()));
+            this.cardDeck.add((new Card(colors.get(4), values.get(i)).getCardName()));
+        }
+        Collections.shuffle(this.cardDeck);
         return this.cardDeck;
 
     }

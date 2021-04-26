@@ -283,6 +283,7 @@ public class GameService {
     //initializes Hands for the start of the game,
     public void initializeHands(Game game) {
         Deck deck = game.getCardStack();
+        System.out.println(deck.cardDeck);
 
         // gets every player and creates a hand with same Id as the player
         for (long player : game.getPlayerList()) {
