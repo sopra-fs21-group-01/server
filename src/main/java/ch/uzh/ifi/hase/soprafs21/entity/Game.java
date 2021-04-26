@@ -32,8 +32,6 @@ public class Game implements Serializable {
     @Column(nullable = false)
     private String host;
 
-
-
     @Column
     private int currentPlayer = 0; //keeps track who is the current player
 
