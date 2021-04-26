@@ -35,7 +35,7 @@ public class Game implements Serializable {
 
 
     @Column
-    private int currentPlayer = 0; //keeps track who is the current player
+    private long currentPlayer = 0; //keeps track who is the current player
 
     @Column
     private boolean gameDirection = true; //true = clockwise
@@ -112,12 +112,12 @@ public class Game implements Serializable {
         this.currentValue = currentValue;
     }
 
-    public void setCurrentPlayer(int currentPlayer) {
+    public void setCurrentPlayer(long currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
 
 
-    public int getCurrentPlayer() {
+    public long getCurrentPlayer() {
         return currentPlayer;
     }
 

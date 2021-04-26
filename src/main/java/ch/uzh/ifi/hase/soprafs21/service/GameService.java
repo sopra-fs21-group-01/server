@@ -178,10 +178,14 @@ public class GameService {
     }
 
     public void drawCard(Game game){
+        //get hand from current player
+        Hand hand = getHandById(game.getCurrentPlayer());
+
         //draw a card and puts it into the hand and removed it from the deck
-        //game.getPlayerList().get(game.getCurrentPlayer()).getHand().addCard(game.getCardStack().drawCard());
-        //UNO Status back to false
-        //game.getPlayerList().get(game.getCurrentPlayer()).getHand().setUnoStatus(false);
+        hand.addCard(game.getCardStack().drawCard());
+
+        //UNO Status to false
+        hand.setUnoStatus(false);
     }
 
     public void cantPlayDrawCard(Game game){
@@ -189,15 +193,17 @@ public class GameService {
         game.setCurrentPlayerPlusOne();
     }
 
-    /*
-    public void sayUno(Game game, int userId){
-        if(game.getHandByPlayerId(userId).getHandSize()== 1){
-            game.getHandByPlayerId(userId).setUnoStatus(true);
+
+    public void sayUno(Game game, long userId){
+        Hand hand = getHandById(userId);
+
+        if(hand.getHandSize()== 1){
+            hand.setUnoStatus(true);
         }else{
             System.out.println("Liar!");
         }
 
-    }*/
+    }
 
     public void checkWin(User user){
 
