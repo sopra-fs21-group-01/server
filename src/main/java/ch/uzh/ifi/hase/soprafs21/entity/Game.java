@@ -32,6 +32,8 @@ public class Game implements Serializable {
     @Column(nullable = false)
     private String host;
 
+
+
     @Column
     private int currentPlayer = 0; //keeps track who is the current player
 
@@ -40,9 +42,6 @@ public class Game implements Serializable {
 
     @ElementCollection
     private List<Long> playerList;
-
-    @Transient
-    private Deck deck;
 
     @Column
     private String currentColor;
@@ -80,15 +79,12 @@ public class Game implements Serializable {
 
   /** public Hand getHandByPlayerId(int playerId){
         return userService.getUserById(playerID).getHand();
-    } */
+    }
 
     public Deck getCardStack() {
         return deck;
     }
-
-    public void setCardStack(Deck deck) {
-        this.deck = deck;
-    }
+   */
 
 
 
@@ -126,9 +122,8 @@ public class Game implements Serializable {
     }
 
 
-    public boolean reverseGameDirection(){
+    public void reverseGameDirection(){
         this.gameDirection = !gameDirection;
-        return gameDirection;
     }
 
     public boolean getGameDirection(){
@@ -136,11 +131,6 @@ public class Game implements Serializable {
     }
 
 
-
-
-    public String getLastPlayedCard(){
-        return deck.getLastCardDeck();
-    }
 
 
 

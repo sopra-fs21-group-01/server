@@ -47,9 +47,7 @@ public class GameService {
     // the host is added to the list of players, the gamemode is set to standard
     public Game createGame(Game newGame){
 
-        // newGame.setGamemode("standard");
-        Deck deck = new Deck();
-        newGame.setCardStack(deck);
+        initializeDeck(newGame);
 
          initializeHands(newGame);
 
@@ -103,7 +101,7 @@ public class GameService {
 
         // will be replaced by hand overed card by controller
         if (checkIfMoveAllowed(game, cardToPlay)){
-            playerHand.removeCard(game.getCardStack(),cardToPlay);
+            playerHand.removeCard(getDeckById(game.getId()),cardToPlay);
 
             game.setCurrentValue(getValueOfCard(cardToPlay));
             game.setCurrentColor(getColorOfCard(cardToPlay));
@@ -168,11 +166,13 @@ public class GameService {
     }
 
     public void checkIfExtraCard(Game game){
-        if (getValueOfCard(game.getLastPlayedCard()).equals("DrawTwo")){
+        String lastPlayedCard = getValueOfCard(getDeckById(game.getId()).getLastCardDeck());
+
+        if (lastPlayedCard.equals("DrawTwo")){
             drawCard(game);
             drawCard(game);
 
-        } else if (getValueOfCard(game.getLastPlayedCard()).equals("WildFour")){
+        } else if (lastPlayedCard.equals("WildFour")){
             drawCard(game);
             drawCard(game);
             drawCard(game);
@@ -185,7 +185,7 @@ public class GameService {
         Hand hand = getHandById(game.getCurrentPlayerId());
 
         //draw a card and puts it into the hand and removed it from the deck
-        hand.addCard(game.getCardStack().drawCard());
+        hand.addCard(getDeckById(game.getId()).drawCard());
 
         //UNO Status to false
         hand.setUnoStatus(false);
@@ -224,7 +224,7 @@ public class GameService {
     public boolean checkIfMoveAllowed(Game game, String card){
         Hand playerHand = getHandById(game.getCurrentPlayerId());
 
-        String lastPlayedCard = game.getLastPlayedCard();
+        String lastPlayedCard = getDeckById(game.getId()).getLastCardDeck();
 
         String color = game.getCurrentColor();
         String value = game.getCurrentValue();
@@ -254,8 +254,8 @@ public class GameService {
 
     //if after finished game, players want to play another round.
     public Game resetGame(Game game){
-        Deck deck = new Deck();
-        game.setCardStack(deck);
+        initializeDeck(game);
+
         game.setCurrentPlayer(0);
         game.setCurrentColor(null);
         game.setCurrentValue(null);
@@ -292,11 +292,7 @@ public class GameService {
     //initializes Hands for the start of the game,
     public void initializeHands(Game game) {
 
-        // initialize deck with same ID as game
-        Deck deck = game.getCardStack();
-        deck.setId(game.getId());
-
-        System.out.println(deck.getCardDeck());
+        Deck deck = getDeckById(game.getId());
 
 
         // gets every player and creates a hand with same Id as the player
@@ -319,7 +315,7 @@ public class GameService {
             }
             newHand.setCards(handCards);
 
-            // save the hand and deck
+            // save the hand
             handRepository.save(newHand);
             handRepository.flush();
 
@@ -327,7 +323,38 @@ public class GameService {
             userService.getUseryById(player).setHandId(newHand.getId());
         }
 
+
+    }
+
+
+    ///////////////////// DECK SPECIFIC TASKS ////////////////////////////
+
+    public Deck getDeckById(Long deckId){
+        Deck deckFoundById = null;
+
+        // check if there is a lobby with this ID and return it. If no lobby found, throw exception
+        Optional<Deck> optionalDeck = this.deckRepository.findById(deckId);
+
+        if (optionalDeck.isPresent()){
+            deckFoundById = optionalDeck.get();
+
+            log.debug("Found and returned Deck with ID: {}", deckId);
+            return deckFoundById;
+        }
+        if (deckFoundById == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Deck with given ID " + deckId + " was not found");}
+        return deckFoundById;
+    }
+
+    public void initializeDeck (Game game){
+
+        Deck deck = new Deck();
+        deck.setId(game.getId());
+
+        // save deck
         deckRepository.save(deck);
         deckRepository.flush();
+
+
     }
 }
