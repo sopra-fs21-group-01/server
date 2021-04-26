@@ -53,7 +53,7 @@ public class UserController {
         User userOfID = userService.getUseryById(id);
         Hand handOfUser = gameService.getHandById(userOfID.getHandId());
 
-        return DTOMapper.INSTANCE.convertEntitiyTOHandGetDTO(handOfUser);
+        return DTOMapper.INSTANCE.convertEntityTOHandGetDTO(handOfUser);
 
     }
 

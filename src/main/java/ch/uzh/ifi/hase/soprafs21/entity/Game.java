@@ -103,7 +103,6 @@ public class Game implements Serializable {
     }
 
 
-
     public String getCurrentValue() {
         return currentValue;
     }
@@ -115,7 +114,6 @@ public class Game implements Serializable {
     public void setCurrentPlayer(int currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
-
 
     public long getCurrentPlayerId() {
         return this.playerList.get(this.currentPlayer);

@@ -4,6 +4,7 @@ package ch.uzh.ifi.hase.soprafs21.service;
 import ch.uzh.ifi.hase.soprafs21.constant.Color;
 import ch.uzh.ifi.hase.soprafs21.constant.Value;
 import ch.uzh.ifi.hase.soprafs21.entity.*;
+import ch.uzh.ifi.hase.soprafs21.repository.DeckRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.HandRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
@@ -32,12 +33,14 @@ public class GameService {
     private final GameRepository gameRepository;
     private final UserService userService;
     private final HandRepository handRepository;
+    private final DeckRepository deckRepository;
 
     @Autowired
-    public GameService(@Qualifier("gameRepository") GameRepository gameRepository, UserService userService, @Qualifier("handRepository") HandRepository handRepository) {
+    public GameService(@Qualifier("gameRepository") GameRepository gameRepository, @Qualifier("deckRepository") DeckRepository deckRepository, UserService userService, @Qualifier("handRepository") HandRepository handRepository) {
         this.gameRepository = gameRepository;
         this.userService = userService;
         this.handRepository = handRepository;
+        this.deckRepository = deckRepository;
 
     }
 
@@ -288,8 +291,13 @@ public class GameService {
 
     //initializes Hands for the start of the game,
     public void initializeHands(Game game) {
+
+        // initialize deck with same ID as game
         Deck deck = game.getCardStack();
-        System.out.println(deck.cardDeck);
+        deck.setId(game.getId());
+
+        System.out.println(deck.getCardDeck());
+
 
         // gets every player and creates a hand with same Id as the player
         for (long player : game.getPlayerList()) {
@@ -310,20 +318,16 @@ public class GameService {
 
             }
             newHand.setCards(handCards);
-            System.out.println("hand with ID:"+ newHand.getId() +" has " +newHand.getCards());
 
-
-
-
-            newHand = handRepository.save(newHand);
+            // save the hand and deck
+            handRepository.save(newHand);
             handRepository.flush();
 
             handCards.clear();
-
-            System.out.println("hand with ID:"+ newHand.getId() +" has " +getHandById(newHand.getId()).getCards());
             userService.getUseryById(player).setHandId(newHand.getId());
-
-
         }
+
+        deckRepository.save(deck);
+        deckRepository.flush();
     }
 }

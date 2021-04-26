@@ -1,21 +1,57 @@
 package ch.uzh.ifi.hase.soprafs21.entity;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.io.Serial;
+import java.util.*;
+
+import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
+
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity
+@Table(name = "DECK")
+public class Deck implements Serializable {
 
 
-import ch.uzh.ifi.hase.soprafs21.constant.Color;
-import ch.uzh.ifi.hase.soprafs21.constant.Value;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+    @Serial
+    private static final long serialVersionUID = 5L;
 
-public class Deck {
+    // Same ID as Lobby and Game
+    @Id
+    private Long id;
 
-    public final ArrayList<String> cardDeck = new ArrayList<String>();
-    private final ArrayList<String> playedCardsDeck = new ArrayList<String>();
+    @ElementCollection
+    private final List<String> cardDeck = new ArrayList<String>();
+
+    @ElementCollection
+    private final List<String> playedCardsDeck = new ArrayList<String>();
+
+    /////////////////////////////////////
+
 
     public Deck(){
         this.generateDeck();
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<String> getCardDeck() {
+        return cardDeck;
+    }
+
+    public List<String> getPlayedCardsDeck() {
+        return playedCardsDeck;
+    }
+
+
 
     private List<String> createColorlist(){
         List<String> colors = new ArrayList<>();
@@ -47,7 +83,7 @@ public class Deck {
         return values;
     }
 
-    private ArrayList<String> generateDeck(){
+    private List<String> generateDeck(){
         List<String> colors = this.createColorlist();
         List<String> values = this.createValuelist();
         int i;

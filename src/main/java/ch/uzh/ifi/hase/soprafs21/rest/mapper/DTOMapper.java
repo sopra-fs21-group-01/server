@@ -87,6 +87,11 @@ public interface DTOMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "initialCards", target = "initialCards")
     @Mapping(source = "cards", target = "cards")
-    HandGetDto convertEntitiyTOHandGetDTO(Hand hand);
+    HandGetDto convertEntityTOHandGetDTO(Hand hand);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "cardDeck", target = "cardDeck")
+    @Mapping(source = "playedCardsDeck", target = "playedCardsDeck")
+    DeckGetDTO convertEntityTODeckGetDTO(Deck deck);
 
 }
