@@ -84,4 +84,9 @@ public interface DTOMapper {
     @Mapping(source = "id", target = "id")
     ChatGetDTO convertEntityToChatGetDTO(Chat chat);
 
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "initialCards", target = "initialCards")
+    @Mapping(source = "cards", target = "cards")
+    HandGetDto convertEntitiyTOHandGetDTO(Hand hand);
+
 }

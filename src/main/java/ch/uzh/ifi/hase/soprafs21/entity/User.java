@@ -40,8 +40,8 @@ public class User implements Serializable {
     @Column(nullable = false)
     private int playerId; //used to determine which player is up
 
-    @Transient
-    private Hand hand;
+    @Column
+    private long handId;
 
     public int getPlayerId() {
         return playerId;
@@ -51,12 +51,12 @@ public class User implements Serializable {
         this.playerId = playerId;
     }
 
-    public Hand getHand() {
-        return hand;
+    public long getHandId() {
+        return handId;
     }
 
-    public void setHand(Hand hand) {
-        this.hand = hand;
+    public void setHandId(long handId) {
+        this.handId = handId;
     }
 
 

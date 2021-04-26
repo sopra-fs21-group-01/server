@@ -92,8 +92,9 @@ public class GameController {
         User playerOfMove = userService.getUseryById(playerMoveDTO.getPlayerId());
 
         Card cardToPlay = new Card(playerMoveDTO.getColor(), playerMoveDTO.getValue());
+        String cardName = cardToPlay.getCardName();
 
-        Game updatedGame = gameService.playCard(gameOfId, playerOfMove, cardToPlay);
+        Game updatedGame = gameService.playCard(gameOfId, playerOfMove, cardName);
 
     }
 

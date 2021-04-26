@@ -5,9 +5,9 @@ import ch.uzh.ifi.hase.soprafs21.constant.Value;
 public class PlayerMoveDTO {
     private long playerId;
 
-    private Color color;
+    private String color;
 
-    private Value value;
+    private String value;
 
     public long getPlayerId() {
         return playerId;
@@ -17,19 +17,19 @@ public class PlayerMoveDTO {
         this.playerId = playerId;
     }
 
-    public Color getColor() {
+    public String getColor() {
         return color;
     }
 
-    public void setColor(Color color) {
+    public void setColor(String color) {
         this.color = color;
     }
 
-    public Value getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(Value value) {
+    public void setValue(String value) {
         this.value = value;
     }
 }

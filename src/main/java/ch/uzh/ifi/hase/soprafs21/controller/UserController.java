@@ -2,15 +2,13 @@ package ch.uzh.ifi.hase.soprafs21.controller;
 
 import ch.uzh.ifi.hase.soprafs21.entity.Hand;
 import ch.uzh.ifi.hase.soprafs21.entity.User;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.UserGetDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPostDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.UserTokenDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.UserEditDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapper;
+import ch.uzh.ifi.hase.soprafs21.service.GameService;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ch.uzh.ifi.hase.soprafs21.entity.Card;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,9 +21,11 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final GameService gameService;
 
-    UserController(UserService userService) {
+    UserController(UserService userService, GameService gameService) {
         this.userService = userService;
+        this.gameService = gameService;
     }
 
     @GetMapping("/users")
@@ -44,26 +44,17 @@ public class UserController {
     }
 
 
-    // get the hand of a single user
+    // get the handcards of a single user
     @GetMapping("/users/{id}/hands")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<List> getUserHand(@PathVariable(value = "id") Long id) {
+    public HandGetDto getUserHand(@PathVariable(value = "id") Long id) {
         // get User from repository
         User userOfID = userService.getUseryById(id);
-        Hand handOfUser = userOfID.getHand();
+        Hand handOfUser = gameService.getHandById(userOfID.getHandId());
 
-        List<List> cardList = new ArrayList<>();
-        List cardValues = new ArrayList<>();
+        return DTOMapper.INSTANCE.convertEntitiyTOHandGetDTO(handOfUser);
 
-        for (Card card : handOfUser.getCards()){
-            cardValues.add(card.getValue());
-            cardValues.add(card.getColor());
-            cardList.add(cardValues);
-            cardValues.clear();
-        }
-
-        return cardList;
     }
 
 

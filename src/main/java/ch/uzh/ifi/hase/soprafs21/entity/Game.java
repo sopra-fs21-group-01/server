@@ -46,11 +46,11 @@ public class Game implements Serializable {
     @Transient
     private Deck deck;
 
-    @Enumerated
-    private Color currentColor;
+    @Column
+    private String currentColor;
 
-    @Enumerated
-    private Value currentValue;
+    @Column
+    private String currentValue;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -94,21 +94,21 @@ public class Game implements Serializable {
 
 
 
-    public Color getCurrentColor() {
+    public String getCurrentColor() {
         return currentColor;
     }
 
-    public void setCurrentColor(Color wishedColor) {
+    public void setCurrentColor(String wishedColor) {
         this.currentColor = wishedColor;
     }
 
 
 
-    public Value getCurrentValue() {
+    public String getCurrentValue() {
         return currentValue;
     }
 
-    public void setCurrentValue(Value currentValue) {
+    public void setCurrentValue(String currentValue) {
         this.currentValue = currentValue;
     }
 
@@ -142,7 +142,7 @@ public class Game implements Serializable {
 
 
 
-    public Card getLastPlayedCard(){
+    public String getLastPlayedCard(){
         return deck.getLastCardDeck();
     }
 

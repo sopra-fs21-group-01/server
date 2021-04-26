@@ -10,64 +10,64 @@ import java.util.List;
 
 public class Deck {
 
-    private final ArrayList<Card> cardDeck = new ArrayList<Card>();
-    private final ArrayList<Card> playedCardsDeck = new ArrayList<Card>();
+    private final ArrayList<String> cardDeck = new ArrayList<String>();
+    private final ArrayList<String> playedCardsDeck = new ArrayList<String>();
 
     public Deck(){
         this.generateDeck();
     }
 
-    private List<Color> createColorlist(){
-        List<Color> colors = new ArrayList<>();
-        colors.add(Color.Red);
-        colors.add(Color.Blue);
-        colors.add(Color.Green);
-        colors.add(Color.Yellow);
-        colors.add(Color.Wild);
+    private List<String> createColorlist(){
+        List<String> colors = new ArrayList<>();
+        colors.add("Red");
+        colors.add("Blue");
+        colors.add("Green");
+        colors.add("Yellow");
+        colors.add("Wild");
         return colors;
     }
 
-    private List<Value> createValuelist(){
-        List<Value> values = new ArrayList<>();
-        values.add(Value.Zero);
-        values.add(Value.One);
-        values.add(Value.Two);
-        values.add(Value.Three);
-        values.add(Value.Four);
-        values.add(Value.Five);
-        values.add(Value.Six);
-        values.add(Value.Seven);
-        values.add(Value.Eight);
-        values.add(Value.Nine);
-        values.add(Value.DrawTwo);
-        values.add(Value.Skip);
-        values.add(Value.Reverse);
-        values.add(Value.Wild);
-        values.add(Value.WildFour);
+    private List<String> createValuelist(){
+        List<String> values = new ArrayList<>();
+        values.add("0");
+        values.add("1");
+        values.add("2");
+        values.add("3");
+        values.add("4");
+        values.add("5");
+        values.add("6");
+        values.add("7");
+        values.add("8");
+        values.add("9");
+        values.add("DrawTwo");
+        values.add("Skip");
+        values.add("Reverse");
+        values.add("Wild");
+        values.add("WildFour");
         return values;
     }
 
-    private ArrayList<Card> generateDeck(){
-        List<Color> colors = this.createColorlist();
-        List<Value> values = this.createValuelist();
+    private ArrayList<String> generateDeck(){
+        List<String> colors = this.createColorlist();
+        List<String> values = this.createValuelist();
         int i;
         for(i=0;i<15;i++) {
             int j;
             for (j = 0; j < 4; j++) {
                 if (i <= 9) {
-                    this.cardDeck.add(new Card(colors.get(j), values.get(i)));
+                    this.cardDeck.add((new Card(colors.get(j), values.get(i)).getCardName()));
                     if (i != 0) {
-                        this.cardDeck.add(new Card(colors.get(j), values.get(i)));
+                        this.cardDeck.add((new Card(colors.get(j), values.get(i)).getCardName()));
                     }
                 }
                 else if(i<=12){
-                    this.cardDeck.add(new Card(colors.get(j), values.get(i)));
-                    this.cardDeck.add(new Card(colors.get(j), values.get(i)));
+                    this.cardDeck.add((new Card(colors.get(j), values.get(i)).getCardName()));
+                    this.cardDeck.add((new Card(colors.get(j), values.get(i)).getCardName()));
                 }else{
-                    this.cardDeck.add(new Card(colors.get(4), values.get(i)));
-                    this.cardDeck.add(new Card(colors.get(4), values.get(i)));
-                    this.cardDeck.add(new Card(colors.get(4), values.get(i)));
-                    this.cardDeck.add(new Card(colors.get(4), values.get(i)));
+                    this.cardDeck.add((new Card(colors.get(4), values.get(i)).getCardName()));
+                    this.cardDeck.add((new Card(colors.get(4), values.get(i)).getCardName()));
+                    this.cardDeck.add((new Card(colors.get(4), values.get(i)).getCardName()));
+                    this.cardDeck.add((new Card(colors.get(4), values.get(i)).getCardName()));
 
                 }
             }
@@ -78,7 +78,7 @@ public class Deck {
 
     }
 
-    public Card drawCard(){
+    public String drawCard(){
         boolean empty = this.cardDeck.isEmpty();
         if(empty) {
             this.Shuffle();
@@ -92,7 +92,7 @@ public class Deck {
         Collections.shuffle(this.playedCardsDeck);
 
     }
-    public Card getLastCardDeck(){
+    public String getLastCardDeck(){
         boolean empty = this.playedCardsDeck.isEmpty();
         if(!empty) {
             return this.playedCardsDeck.get(this.playedCardsDeck.size()-1);
@@ -100,7 +100,7 @@ public class Deck {
         return null;
     }
 
-    public void addPlayedCards(Card card){
+    public void addPlayedCards(String card){
         this.playedCardsDeck.add(card);
     }
 }

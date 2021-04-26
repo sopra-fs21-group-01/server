@@ -1,28 +1,71 @@
 package ch.uzh.ifi.hase.soprafs21.entity;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class Hand {
+import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
 
-    public final User user;
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity
+@Table(name = "HAND")
+public class Hand implements Serializable {
+
+
+    @Serial
+    private static final long serialVersionUID = 4L;
+
+    @Id
+    private Long id;
+
+    // public final User user;
+
+    @Column
     public boolean unoStatus = false;
-    private ArrayList<Card> cards = new ArrayList<Card>();
+
+    @ElementCollection
+    private List<String> cards;
+
+    @Column
     public final int initialCards = 7;
 
-    public Hand(User user) {
-        this.user = user;
+   //  public Hand(User user) {this.user = user; }
+
+
+    public Long getId() {
+        return id;
     }
 
-    public ArrayList<Card> getCards() {
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public boolean isUnoStatus() {
+        return unoStatus;
+    }
+
+    public void setCards(List<String> cards) {
+        this.cards = cards;
+    }
+
+    public int getInitialCards() {
+        return initialCards;
+    }
+
+    public List<String> getCards() {
         return cards;
     }
 
-    public void addCard(Card card){
+    public void addCard(String card){
         this.cards.add(card);
     }
 
-    public void removeCard(Deck deck, Card card){
+    public void removeCard(Deck deck, String card){
         deck.addPlayedCards(card);
         cards.remove(card);
     }
