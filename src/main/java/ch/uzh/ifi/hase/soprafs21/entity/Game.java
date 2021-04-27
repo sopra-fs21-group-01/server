@@ -110,7 +110,7 @@ public class Game implements Serializable {
     }
 
     public long getCurrentPlayerId() {
-        return this.playerList.get(this.currentPlayer);
+        return playerList.get(currentPlayer);
     }
 
     public void setCurrentPlayerPlusOne() {
