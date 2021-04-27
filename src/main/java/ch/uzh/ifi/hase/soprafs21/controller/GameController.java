@@ -48,7 +48,8 @@ public class GameController {
         newGame.setPlayerList(playerListForGame);
 
         // set the lobby to "isInGame" and create a Game
-        lobbyService.getLobbyById(id).setInGame(true);
+        lobbyService.changeIsInGameStat(id);
+
         Game createdGame = gameService.createGame(newGame);
 
         // return URL of where to find the User

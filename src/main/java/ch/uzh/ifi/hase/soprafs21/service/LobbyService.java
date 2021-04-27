@@ -94,7 +94,15 @@ public class LobbyService {
         return lobbyFoundById;
     }
 
+    // changes the boolean of IsIngame
+    public void changeIsInGameStat(long lobbyId){
 
+        Lobby lobby = getLobbyById(lobbyId);
+        lobby.setInGame(!lobby.isInGame());
+
+        lobbyRepository.save(lobby);
+        lobbyRepository.flush();
+    }
 
     public Lobby updateLobby(Lobby updatedLobby){
         this.lobbyRepository.save(updatedLobby);
