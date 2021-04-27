@@ -54,6 +54,7 @@ public interface DTOMapper {
    // @Mapping(source = "password", target = "password")
     @Mapping(source = "playerList", target = "playerList")
     @Mapping(source = "id", target = "id")
+    @Mapping(source = "inGame", target = "inGame")
     LobbyGetDTO convertEntityToLobbyGetDTO(Lobby lobby);
 
     @Mapping(target  = "id", ignore = true)

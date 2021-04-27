@@ -16,6 +16,16 @@ public class LobbyGetDTO {
 
     private String gamemode;
 
+    private boolean isInGame;
+
+    public boolean isInGame() {
+        return isInGame;
+    }
+
+    public void setInGame(boolean ingame) {
+        isInGame = ingame;
+    }
+
     public String getHost() {
         return host;
     }

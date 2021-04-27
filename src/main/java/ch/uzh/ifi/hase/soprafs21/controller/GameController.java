@@ -115,4 +115,13 @@ public class GameController {
        return lobbyOfId.getPlayerList();
    }
 
+    // GetMapping for getting the current player of a running game, returns single Id
+    @GetMapping("/game/{id}/kickOff/currentPlayerIds")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public long getCurrentPlayer(@PathVariable(value = "id") Long id){
+
+        return gameService.getGameById(id).getCurrentPlayerId();
+    }
+
 }

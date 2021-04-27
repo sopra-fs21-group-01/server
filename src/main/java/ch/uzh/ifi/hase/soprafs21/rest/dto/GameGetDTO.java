@@ -8,13 +8,13 @@ import java.util.Map;
 
 public class GameGetDTO {
 
+
+
     private long id;
 
     private String host;
 
-    //private Map<Integer, User> playerList;
-
-    private Deck cardStack;
+   // private Deck cardStack;
 
     private String chat;
 
@@ -38,22 +38,12 @@ public class GameGetDTO {
 
         return host;
     }
-/*
-  public Map<Integer, User> getPlayerList() {
-
-        return playerList;
-    }
-*/
     public void setHost(String host) {
 
         this.host = host;
     }
-/*
-   public void setPlayerList(Map<Integer, User> playerList) {
-        this.playerList = playerList;
-    }
-*/
-    public Deck getCardStack() {
+
+ /**   public Deck getCardStack() {
         return cardStack;
     }
 
@@ -61,7 +51,7 @@ public class GameGetDTO {
         this.cardStack = cardStack;
     }
 
-    /** private String gamemode;
+     private String gamemode;
 
      public String getGamemode() {
      return gamemode;
