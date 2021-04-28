@@ -54,6 +54,9 @@ public class GameService {
 
         initializeHands(newGame);
 
+        newGame.setCurrentColor("Blue");
+        newGame.setCurrentValue("0");
+
         newGame = gameRepository.save(newGame);
         gameRepository.flush();
 
