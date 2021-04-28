@@ -131,13 +131,15 @@ public class GameService {
             game.setCurrentValue(getValueOfCard(cardToPlay));
             game.setCurrentColor(getColorOfCard(cardToPlay));
 
+            System.out.println(game.getCurrentColor() + "/" + game.getCurrentValue());
+
             gameRepository.save(game);
             gameRepository.flush();
 
             checkWin(game);
 
             if (getValueOfCard(cardToPlay).equals("WildFour") || getColorOfCard(cardToPlay).equals("Wild")){
-                wishColor(game);
+              //  wishColor(game);
             }
 
             determineNextPlayer(game, cardToPlay);
@@ -337,7 +339,7 @@ public class GameService {
                 // The decks seems to consisit of only WildFour/Wild cards
 
                 String drawnCard = deck.drawCard();
-                System.out.println("drew card" + drawnCard);
+
                 handCards.add(drawnCard);
 
                 if (handCards.size() == 0){
