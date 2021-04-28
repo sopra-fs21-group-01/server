@@ -95,4 +95,8 @@ public interface DTOMapper {
     @Mapping(source = "playedCardsDeck", target = "playedCardsDeck")
     DeckGetDTO convertEntityTODeckGetDTO(Deck deck);
 
+    @Mapping(source = "playerId", target = "playerId")
+    @Mapping(source = "color", target = "color")
+    @Mapping(source = "value", target = "value")
+    PlayerMove convertPlayerMoveDTOToEntity(PlayerMoveDTO playerMoveDTO);
 }

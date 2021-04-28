@@ -1,9 +1,6 @@
 package ch.uzh.ifi.hase.soprafs21.controller;
 
-import ch.uzh.ifi.hase.soprafs21.entity.Game;
-import ch.uzh.ifi.hase.soprafs21.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs21.entity.User;
-import ch.uzh.ifi.hase.soprafs21.entity.Card;
+import ch.uzh.ifi.hase.soprafs21.entity.*;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.GameGetDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.GamePostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.PlayerMoveDTO;
@@ -84,11 +81,11 @@ public class GameController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public void playCard(@PathVariable(value = "id") Long id, @RequestBody PlayerMoveDTO playerMoveDTO) {
-        // TODO api to internal representation fehlt noch auch im DTO Mapper
+        PlayerMove playerMove = DTOMapper.INSTANCE.convertPlayerMoveDTOToEntity(playerMoveDTO);
         Game gameOfId = gameService.getGameById(id);
-        User playerOfMove = userService.getUseryById(playerMoveDTO.getPlayerId());
+        User playerOfMove = userService.getUserbyId(playerMove.getPlayerId());
 
-        Card cardToPlay = new Card(playerMoveDTO.getColor(), playerMoveDTO.getValue());
+        Card cardToPlay = new Card(playerMove.getColor(), playerMove.getValue());
         String cardName = cardToPlay.getCardName();
 
         Game updatedGame = gameService.playCard(gameOfId, playerOfMove, cardName);
