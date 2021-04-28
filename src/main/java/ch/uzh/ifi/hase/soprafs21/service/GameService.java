@@ -128,6 +128,9 @@ public class GameService {
             game.setCurrentValue(getValueOfCard(cardToPlay));
             game.setCurrentColor(getColorOfCard(cardToPlay));
 
+            gameRepository.save(game);
+            gameRepository.flush();
+
             checkWin(game);
 
             if (getValueOfCard(cardToPlay).equals("WildFour") || getColorOfCard(cardToPlay).equals("Wild")){
@@ -241,6 +244,8 @@ public class GameService {
 
     public void wishColor(Game game){
         game.setCurrentColor("Blue");
+        gameRepository.save(game);
+        gameRepository.flush();
     }
 
     public boolean checkIfMoveAllowed(Game game, String card){
@@ -250,6 +255,7 @@ public class GameService {
 
         String color = game.getCurrentColor();
         String value = game.getCurrentValue();
+
 
         //check if user status is uno
         if (playerHand.getHandSize()==1 && !playerHand.getUnoStatus()){

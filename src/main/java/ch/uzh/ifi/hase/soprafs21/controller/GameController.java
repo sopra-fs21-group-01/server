@@ -59,22 +59,7 @@ public class GameController {
         lobbyService.getLobbyById(id).setInGame(false);
     }
 
-    /**
-    // Put mapping
-    @PutMapping("/game/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @ResponseBody
-    public void updateGame(@PathVariable(value = "id") Long id, @RequestBody GamePostDTO gamePostDTO) {
 
-        Game gameOfId = gameService.getGameById(id);
-
-
-        //gameOfId.setPlayerList(gamePostDTO.getPlayerList());
-
-
-        final Game updatedGame = gameService.updateGame(gameOfId);
-    }
-    */
 
     // Put mapping when a player plays a card and this card is put on top of the cardstack
     @PutMapping("/game/{id}/playerTurn")

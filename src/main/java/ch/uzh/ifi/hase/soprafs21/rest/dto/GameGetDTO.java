@@ -14,7 +14,9 @@ public class GameGetDTO {
 
     private String host;
 
-   // private Deck cardStack;
+    private String currentColor;
+
+    private String currentValue;
 
     private String chat;
 
@@ -24,6 +26,22 @@ public class GameGetDTO {
 
     public void setCurrentPlayer(int currentPlayer) {
         this.currentPlayer = currentPlayer;
+    }
+
+    public String getCurrentColor() {
+        return currentColor;
+    }
+
+    public void setCurrentColor(String currentColor) {
+        this.currentColor = currentColor;
+    }
+
+    public String getCurrentValue() {
+        return currentValue;
+    }
+
+    public void setCurrentValue(String currentValue) {
+        this.currentValue = currentValue;
     }
 
     public String getChat(){
