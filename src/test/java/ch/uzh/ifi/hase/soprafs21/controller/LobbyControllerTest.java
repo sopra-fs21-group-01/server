@@ -57,7 +57,7 @@ public class LobbyControllerTest {
 
  // Test valid post, returns Lobby location as string
  @Test
- public void createLobby_validInput_userCreated() throws Exception {
+ public void createLobby_validInput_lobbyCreated() throws Exception {
  // given
  Lobby testLobby = new Lobby();
  testLobby.setId(1L);
@@ -107,7 +107,7 @@ public class LobbyControllerTest {
 
  // tests the GET for single Lobby with valid id. Test for Status and Output content
  @Test
- public void singleUser_whenGetSingleUsers_thenReturnJsonArray() throws Exception {
+ public void singleUser_whenGetSingleLobby_thenReturnJsonArray() throws Exception {
  // given
  Lobby testLobby = new Lobby();
  testLobby.setId(1L);
@@ -152,6 +152,11 @@ public class LobbyControllerTest {
  mockMvc.perform(getRequest).andExpect(status().isNotFound())
  ; }
 
+ // test to get all lobbies
+ @Test
+ public void getAllLobbies_validReguest_getListOfLobbies() throws Exception{
+
+ }
 
  // tests valid PUT method for lobby update. test Status
  @Test

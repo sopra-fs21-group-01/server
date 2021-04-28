@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class GameGetDTO {
 
-
+    private int currentPlayer;
 
     private long id;
 
@@ -17,6 +17,14 @@ public class GameGetDTO {
    // private Deck cardStack;
 
     private String chat;
+
+    public int getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(int currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
 
     public String getChat(){
         return chat;

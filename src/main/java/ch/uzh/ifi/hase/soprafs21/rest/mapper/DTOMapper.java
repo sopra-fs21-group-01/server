@@ -72,7 +72,7 @@ public interface DTOMapper {
 
     @Mapping(source = "host", target = "host")
     @Mapping(source = "id", target = "id")
-    //@Mapping(source = "cardStack", target = "cardStack")
+    @Mapping(source = "currentPlayerId", target = "currentPlayer")//@Mapping(source = "cardStack", target = "cardStack")
    // @Mapping(source = "playerList", target = "playerList")
    //  @Mapping(source = "gamemode", target = "gamemode")
     GameGetDTO convertEntityToGameGetDTO(Game game);

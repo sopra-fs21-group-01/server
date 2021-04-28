@@ -96,16 +96,17 @@ public class GameController {
 
     // do we really need to different put methods? (on for kicking a player and one for updateing something else?
 
-    // GetMapping for when game is initiated and a player receives the players
+    // GetMapping for receiving the players
     @GetMapping("/game/{id}/kickOff")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<String> getGamePlayers(@PathVariable(value = "id") Long id){
+    public GameGetDTO getGamePlayers(@PathVariable(value = "id") Long id){
 
 
-       Lobby lobbyOfId = lobbyService.getLobbyById(id);
+       Game gameOfId = gameService.getGameById(id);
+       GameGetDTO gameGetDTO = DTOMapper.INSTANCE.convertEntityToGameGetDTO(gameOfId);
 
-       return lobbyOfId.getPlayerList();
+       return gameGetDTO;
    }
 
     // GetMapping for getting the current player of a running game, returns single Id
