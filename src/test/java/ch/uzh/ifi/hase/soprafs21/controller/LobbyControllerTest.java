@@ -46,8 +46,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 @WebMvcTest(LobbyController.class)
+
 public class LobbyControllerTest {
-/**
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -222,8 +223,8 @@ public class LobbyControllerTest {
  public void deleteLobby_unsuccesfully_invalidID() throws Exception {
  Lobby testLobby = new Lobby();
  testLobby.setId(1L);
- testLobby.setName("testName");
- testLobby.setPassword("testPassword");
+ // testLobby.setName("testName");
+ // testLobby.setPassword("testPassword");
  testLobby.setHost("testHost");
 
  given(lobbyService.getLobbyById(Mockito.any())).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby with given ID was not found"));
@@ -233,14 +234,8 @@ public class LobbyControllerTest {
  }
 
 
- */
-    /**
-     * Helper Method to convert userPostDTO into a JSON string such that the input can be processed
-     * Input will look like this: {"name": "Test User", "username": "testUsername"}
-     * @param object
-     * @return string
-     */
-   /* private String asJsonString(final Object object) {
+
+    private String asJsonString(final Object object) {
         try {
             return new ObjectMapper().writeValueAsString(object);
         }
@@ -248,5 +243,5 @@ public class LobbyControllerTest {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("The request body could not be created.%s", e.toString()));
         }
     }
-     */
+
 }

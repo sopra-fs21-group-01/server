@@ -1,6 +1,6 @@
 package ch.uzh.ifi.hase.soprafs21.service;
 
-
+import ch.uzh.ifi.hase.soprafs21.rest.dto.GamePostDTO;
 import ch.uzh.ifi.hase.soprafs21.constant.Color;
 import ch.uzh.ifi.hase.soprafs21.constant.Value;
 import ch.uzh.ifi.hase.soprafs21.entity.*;
@@ -17,7 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
+import ch.uzh.ifi.hase.soprafs21.rest.dto.GamePostDTO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -26,6 +26,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@Qualifier("gameService")
 public class GameService {
 
     private final Logger log = LoggerFactory.getLogger(GameService.class);
@@ -34,13 +35,15 @@ public class GameService {
     private final UserService userService;
     private final HandRepository handRepository;
     private final DeckRepository deckRepository;
+    private final LobbyService lobbyService;
 
     @Autowired
-    public GameService(@Qualifier("gameRepository") GameRepository gameRepository, @Qualifier("deckRepository") DeckRepository deckRepository, UserService userService, @Qualifier("handRepository") HandRepository handRepository) {
+    public GameService(@Qualifier("gameRepository") GameRepository gameRepository, @Qualifier("deckRepository") DeckRepository deckRepository, UserService userService, LobbyService lobbyService, @Qualifier("handRepository") HandRepository handRepository) {
         this.gameRepository = gameRepository;
         this.userService = userService;
         this.handRepository = handRepository;
         this.deckRepository = deckRepository;
+        this.lobbyService = lobbyService;
 
     }
 
@@ -49,7 +52,7 @@ public class GameService {
 
         initializeDeck(newGame);
 
-         initializeHands(newGame);
+        initializeHands(newGame);
 
         newGame = gameRepository.save(newGame);
         gameRepository.flush();
@@ -59,6 +62,21 @@ public class GameService {
         System.out.println("initilaized deck and hands succesfully");
 
         return newGame;
+    }
+
+    // converts the list of usernames to the list of ID's
+    public List<Long> convertUserNamesToIds(long id){
+
+        //get PlayerList from Lobby with same Id like game
+        List<String> playerListOfLobby = lobbyService.getLobbyById(id).getPlayerList();
+
+        //Set all players from Lobby into Map playerList of Game class.
+        List<Long> playerListForGame = new ArrayList<>();
+        for (String playerName : playerListOfLobby){
+            User user = userService.getUser(playerName);
+            playerListForGame.add(user.getId());
+        }
+        return playerListForGame;
     }
 
     public Game getGameById(Long gameID){
@@ -101,6 +119,10 @@ public class GameService {
 
         // will be replaced by hand overed card by controller
         if (checkIfMoveAllowed(game, cardToPlay)){
+            if(! playerHand.getCards().contains(cardToPlay))
+            {throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED,
+                    "This card is not in the players hand!");}
+            else {
             playerHand.removeCard(getDeckById(game.getId()),cardToPlay);
 
             game.setCurrentValue(getValueOfCard(cardToPlay));
@@ -114,7 +136,7 @@ public class GameService {
 
             determineNextPlayer(game, cardToPlay);
 
-            checkIfExtraCard(game);
+            checkIfExtraCard(game);}
         }
         //want to play last card but no uno = player has to draw a card and next player is on.
         else if (playerHand.getHandSize()==1 && !playerHand.getUnoStatus()){
@@ -357,4 +379,5 @@ public class GameService {
 
 
     }
+
 }

@@ -11,6 +11,7 @@ import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs21.service.GameService;
 import ch.uzh.ifi.hase.soprafs21.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@Qualifier("gameController")
 public class GameController {
 
     private final GameService gameService;
@@ -36,16 +38,8 @@ public class GameController {
         // convert API Game to internal representation
         Game newGame = DTOMapper.INSTANCE.convertGamePostDTOtoEntity(gamePostDTO);
 
-        //get PlayerList from Lobby with same Id like game
-        List<String> playerListOfLobby = lobbyService.getLobbyById(gamePostDTO.getId()).getPlayerList();
-
-        //Set all players from Lobby into Map playerList of Game class.
-        List<Long> playerListForGame = new ArrayList<>();
-        for (String playerName : playerListOfLobby){
-            User user = userService.getUser(playerName);
-            playerListForGame.add(user.getId());
-        }
-        newGame.setPlayerList(playerListForGame);
+        // creates and sets the list of userIDs
+        newGame.setPlayerList(gameService.convertUserNamesToIds(id));
 
         // set the lobby to "isInGame" and create a Game
         lobbyService.changeIsInGameStat(id);
@@ -68,6 +62,7 @@ public class GameController {
         lobbyService.getLobbyById(id).setInGame(false);
     }
 
+    /**
     // Put mapping
     @PutMapping("/game/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -82,6 +77,7 @@ public class GameController {
 
         final Game updatedGame = gameService.updateGame(gameOfId);
     }
+    */
 
     // Put mapping when a player plays a card and this card is put on top of the cardstack
     @PutMapping("/game/{id}/playerTurn")

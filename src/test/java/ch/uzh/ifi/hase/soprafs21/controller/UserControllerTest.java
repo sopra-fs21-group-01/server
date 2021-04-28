@@ -42,7 +42,7 @@ public class UserControllerTest {
 
     @MockBean
     private UserService userService;
-/**
+
     @Test
     public void givenUsers_whenGetUsers_thenReturnJsonArray() throws Exception {
         // given
@@ -112,6 +112,6 @@ public class UserControllerTest {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("The request body could not be created.%s", e.toString()));
         }
     }
-    */
+
 }
 

@@ -23,6 +23,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@Qualifier("lobbyService")
 public class LobbyService {
 
     private final Logger log = LoggerFactory.getLogger(LobbyService.class);

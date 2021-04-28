@@ -1,16 +1,23 @@
 package ch.uzh.ifi.hase.soprafs21.controller;
 
 import ch.uzh.ifi.hase.soprafs21.entity.Game;
+import ch.uzh.ifi.hase.soprafs21.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs21.entity.User;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.GamePostDTO;
 import ch.uzh.ifi.hase.soprafs21.service.GameService;
+import ch.uzh.ifi.hase.soprafs21.service.LobbyService;
+import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatcher;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+
+import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -23,6 +30,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
@@ -47,7 +55,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @WebMvcTest(GameController.class)
 public class GameControllerTest {
 
-    /**
+
 
     @Autowired
     private MockMvc mockMvc;
@@ -55,26 +63,62 @@ public class GameControllerTest {
     @MockBean
     private GameService gameService;
 
+    @MockBean
+    private LobbyService lobbyService;
+
+    @MockBean
+    private UserService userService;
+
+    @MockBean
+    private Lobby lobby;
+
+
+
+
     // Test valid post, returns Lobby location as string
     @Test
     public void createGame_validInput_gameCreated() throws Exception {
-        // given
+        List<String> testPlayerListForLobby = new ArrayList<String>(){
+          {
+             add("Hans");
+         //       add("Jörg");
+          //      add("Peter");
+            }};
+
+        User testUser = new User();
+        testUser.setId(2L);
+        testUser.setUsername("Hans");
+
+        Lobby testLobby = new Lobby();
+        testLobby.setId(1L);
+        //   testLobby.setName("testName");
+        //  testLobby.setPassword("testPassword");
+        testLobby.setHost("testHost");
+        testLobby.setPlayerList(testPlayerListForLobby);
+
         Game testGame = new Game();
 
-        ArrayList<String> testCardStack = new ArrayList<String>();
-        testCardStack.add("ACE");
-        testCardStack.add("KING");
-        testCardStack.add("QUEEN");
+        List<String> testCardStack = new ArrayList<String >(){
+            {
+                add("ACE");
+                add("KING");
+                add("QUEEN");
+            }};
 
-        String[] testPlayerList = {"Just", "Some", "Names"};
+        // List of player ID's
+        List<Long> testPlayerList = new ArrayList<Long>(){
+            {
+                add(2L);
+          //      add(4L);
+          //      add(6L);
+            }};
 
         testGame.setId(1L);
         testGame.setHost("testHost");
         testGame.setPlayerList(testPlayerList);
-        testGame.setCardStack(testCardStack);
 
-
-
+        given(gameService.convertUserNamesToIds(1L)).willReturn(testPlayerList);
+        given(lobbyService.getLobbyById(Mockito.any())).willReturn(testLobby);
         given(gameService.createGame(Mockito.any())).willReturn(testGame);
 
         // when/then -> do the request + validate the result
@@ -95,17 +139,24 @@ public class GameControllerTest {
         // given
         Game testGame = new Game();
 
-        ArrayList<String> testCardStack = new ArrayList<String>();
-        testCardStack.add("ACE");
-        testCardStack.add("KING");
-        testCardStack.add("QUEEN");
+        List<String> testCardStack = new ArrayList<String >(){
+            {
+                add("ACE");
+                add("KING");
+                add("QUEEN");
+            }};
 
-        String[] testPlayerList = {"Just", "Some", "Names"};
+        // List of player ID's
+        List<Long> testPlayerList = new ArrayList<Long>(){
+            {
+                add(2L);
+                add(4L);
+                add(6L);
+            }};
 
         testGame.setId(1L);
         testGame.setHost("testHost");
         testGame.setPlayerList(testPlayerList);
-        testGame.setCardStack(testCardStack);
 
 
         given(gameService.createGame(Mockito.any())).willThrow(new ResponseStatusException(HttpStatus.CONFLICT));
@@ -122,99 +173,253 @@ public class GameControllerTest {
     }
 
 
-    // tests the GET for single Lobby with valid id. Test for Status and Output content
+    // tests the GET for retreiving the playerList of a game
+    // -> How to control one return that is not a json File?
     @Test
-    public void getGame_whenGetGame_thenReturnJsonArray() throws Exception {
-        // given
-        Game testGame = new Game();
+    public void getGame_whenGetPlayerlist_thenReturnArrayWithNames() throws Exception {
+        List<String> testPlayerListForLobby = new ArrayList<String>(){
+            {
+                add("Hans");
+                add("Jörg");
+                add("Peter");
+            }};
 
-        ArrayList<String> testCardStack = new ArrayList<String>();
-        testCardStack.add("ACE");
-        testCardStack.add("KING");
-        testCardStack.add("QUEEN");
+        Lobby testLobby = new Lobby();
+        testLobby.setId(1L);
+        //   testLobby.setName("testName");
+        //  testLobby.setPassword("testPassword");
+        testLobby.setHost("testHost");
+        testLobby.setPlayerList(testPlayerListForLobby);
 
-        String[] testPlayerList = {"Just", "Some", "Names"};
+        // List of player ID's
+        List<Long> testPlayerList = new ArrayList<Long>(){
+            {
+                add(2L);
+                add(4L);
+                add(6L);
+            }};
 
-        testGame.setId(1L);
-        testGame.setHost("testHost");
-        testGame.setPlayerList(testPlayerList);
-        testGame.setCardStack(testCardStack);
-
-        // this mocks the UserService -> we define above what the userService should return when getUsers() is called
-        given(gameService.getGameById(Mockito.any())).willReturn(testGame);
+        given(lobbyService.getLobbyById(Mockito.any())).willReturn(testLobby);
+        given(lobby.getPlayerList()).willReturn(testPlayerListForLobby);
 
         // when
-        MockHttpServletRequestBuilder getRequest = get("/game/{id}", 1L)
+        MockHttpServletRequestBuilder getRequest = get("/game/{id}/kickOff", 1L)
                 .contentType(MediaType.APPLICATION_JSON);
 
         // then
         mockMvc.perform(getRequest).andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(testGame.getId().intValue())))
-                .andExpect(jsonPath("$.host", is(testGame.getHost())));
-
-                /** HOW TO YOU TEST FOR ARRAYLISTS????
-                 *
-                .andExpect(jsonPath("$.playerList", is(testGame.getPlayerList())))
-                .andExpect(jsonPath("$.cardStack", is(testGame.getCardStack())));
-
+                ;
 
     }
 
 
     // tests the  GET for single lobby with invalid input. Test if if status is right
     @Test
-    public void getGame_invalidID_throwsException() throws Exception {
-        // given
-        Game testGame = new Game();
+    public void getPlayerListoffGame_invalidID_throwsException() throws Exception {
+        List<String> testPlayerListForLobby = new ArrayList<String>(){
+            {
+                add("Hans");
+                add("Jörg");
+                add("Peter");
+            }};
 
-        ArrayList<String> testCardStack = new ArrayList<String>();
-        testCardStack.add("ACE");
-        testCardStack.add("KING");
-        testCardStack.add("QUEEN");
+        Lobby testLobby = new Lobby();
+        testLobby.setId(1L);
+        //   testLobby.setName("testName");
+        //  testLobby.setPassword("testPassword");
+        testLobby.setHost("testHost");
+        testLobby.setPlayerList(testPlayerListForLobby);
 
-        String[] testPlayerList = {"Just", "Some", "Names"};
+        // List of player ID's
+        List<Long> testPlayerList = new ArrayList<Long>(){
+            {
+                add(2L);
+                add(4L);
+                add(6L);
+            }};
 
-        testGame.setId(1L);
-        testGame.setHost("testHost");
-        testGame.setPlayerList(testPlayerList);
-        testGame.setCardStack(testCardStack);
-
-
-        // this mocks the GameService -> we define above what the gameService should return when getUsers() is called
-        given(gameService.getGameById(Mockito.any())).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with given ID was not found"));
+        given(lobbyService.getLobbyById(Mockito.any())).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with given ID was not found"));
 
         // when
-        MockHttpServletRequestBuilder getRequest = get("/game/{id}", 1L)
+        MockHttpServletRequestBuilder getRequest = get("/game/{id}/kickOff", 1L)
                 .contentType(MediaType.APPLICATION_JSON);
         // then
         mockMvc.perform(getRequest).andExpect(status().isNotFound())
         ; }
 
 
-    // tests valid PUT method for Game update. test Status
+    // tests the GET for the ID of the current player
+    // -> How to control one return that is not a json File?
     @Test
-    public void updateGame_validInput_returnsNothing() throws Exception {
-        // given
+    public void getGame_whenGetHandOfPlayer_thenReturnArrayWithCardNames() throws Exception {
+        List<String> testPlayerListForLobby = new ArrayList<String>(){
+            {
+                add("Hans");
+                //       add("Jörg");
+                //      add("Peter");
+            }};
+
+        User testUser = new User();
+        testUser.setId(2L);
+        testUser.setUsername("Hans");
+
+        Lobby testLobby = new Lobby();
+        testLobby.setId(1L);
+        //   testLobby.setName("testName");
+        //  testLobby.setPassword("testPassword");
+        testLobby.setHost("testHost");
+        testLobby.setPlayerList(testPlayerListForLobby);
+
         Game testGame = new Game();
 
-        ArrayList<String> testCardStack = new ArrayList<String>();
-        testCardStack.add("ACE");
-        testCardStack.add("KING");
-        testCardStack.add("QUEEN");
+        List<String> testCardStack = new ArrayList<String >(){
+            {
+                add("ACE");
+                add("KING");
+                add("QUEEN");
+            }};
 
-        String[] testPlayerList = {"Just", "Some", "Names"};
+        // List of player ID's
+        List<Long> testPlayerList = new ArrayList<Long>(){
+            {
+                add(2L);
+                //      add(4L);
+                //      add(6L);
+            }};
 
         testGame.setId(1L);
         testGame.setHost("testHost");
         testGame.setPlayerList(testPlayerList);
-        testGame.setCardStack(testCardStack);
+        testGame.setCurrentPlayer(0);
+
+        given(gameService.convertUserNamesToIds(1L)).willReturn(testPlayerList);
+        given(lobbyService.getLobbyById(Mockito.any())).willReturn(testLobby);
+        given(gameService.createGame(Mockito.any())).willReturn(testGame);
+        given(lobbyService.getLobbyById(Mockito.any())).willReturn(testLobby);
+        given(lobby.getPlayerList()).willReturn(testPlayerListForLobby);
+        given(gameService.createGame(Mockito.any())).willReturn(testGame);
+
+        given(gameService.updateGame(Mockito.any())).willReturn(testGame);
+        given(gameService.getGameById(Mockito.any())).willReturn(testGame);
+
+        // when
+        MockHttpServletRequestBuilder getRequest = get("/game/{id}/kickOff/currentPlayerIds", 1L)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        // then
+        mockMvc.perform(getRequest).andExpect(status().isOk())
+
+        ;
+
+    }
+    // tests the GET for the ID of the current player
+    // -> How to control one return that is not a json File?
+    @Test
+    public void getGame_whenGetHandOfPlayer_InvalidIdWillReturnError() throws Exception {
+        List<String> testPlayerListForLobby = new ArrayList<String>(){
+            {
+                add("Hans");
+                //       add("Jörg");
+                //      add("Peter");
+            }};
+
+        User testUser = new User();
+        testUser.setId(2L);
+        testUser.setUsername("Hans");
+
+        Lobby testLobby = new Lobby();
+        testLobby.setId(1L);
+        //   testLobby.setName("testName");
+        //  testLobby.setPassword("testPassword");
+        testLobby.setHost("testHost");
+        testLobby.setPlayerList(testPlayerListForLobby);
+
+        Game testGame = new Game();
+
+        List<String> testCardStack = new ArrayList<String >(){
+            {
+                add("ACE");
+                add("KING");
+                add("QUEEN");
+            }};
+
+        // List of player ID's
+        List<Long> testPlayerList = new ArrayList<Long>(){
+            {
+                add(2L);
+                //      add(4L);
+                //      add(6L);
+            }};
+
+        testGame.setId(1L);
+        testGame.setHost("testHost");
+        testGame.setPlayerList(testPlayerList);
+        testGame.setCurrentPlayer(0);
+
+        given(gameService.getGameById(Mockito.any())).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with given ID was not found"));
+        // when
+        MockHttpServletRequestBuilder getRequest = get("/game/{id}/kickOff/currentPlayerIds", 1L)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        // then
+        mockMvc.perform(getRequest).andExpect(status().isNotFound())
+
+        ;
+
+    }
+
+    // tests valid PUT method for Playerturn, returns a game
+    @Test
+    public void updateGame_validInput_returnsNothing() throws Exception {
+        List<String> testPlayerListForLobby = new ArrayList<String>(){
+            {
+                add("Hans");
+                //       add("Jörg");
+                //      add("Peter");
+            }};
+
+        User testUser = new User();
+        testUser.setId(2L);
+        testUser.setUsername("Hans");
+
+        Lobby testLobby = new Lobby();
+        testLobby.setId(1L);
+        //   testLobby.setName("testName");
+        //  testLobby.setPassword("testPassword");
+        testLobby.setHost("testHost");
+        testLobby.setPlayerList(testPlayerListForLobby);
+
+        Game testGame = new Game();
+
+        List<String> testCardStack = new ArrayList<String >(){
+            {
+                add("ACE");
+                add("KING");
+                add("QUEEN");
+            }};
+
+        // List of player ID's
+        List<Long> testPlayerList = new ArrayList<Long>(){
+            {
+                add(2L);
+                //      add(4L);
+                //      add(6L);
+            }};
+
+        testGame.setId(1L);
+        testGame.setHost("testHost");
+        testGame.setPlayerList(testPlayerList);
+
+        given(gameService.convertUserNamesToIds(1L)).willReturn(testPlayerList);
+        given(lobbyService.getLobbyById(Mockito.any())).willReturn(testLobby);
+        given(gameService.createGame(Mockito.any())).willReturn(testGame);
 
 
         given(gameService.updateGame(Mockito.any())).willReturn(testGame);
         given(gameService.getGameById(Mockito.any())).willReturn(testGame);
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder putRequest = put("/game/{id}", 1L)
+        MockHttpServletRequestBuilder putRequest = put("/game/{id}/playerTurn", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(testGame));
 
@@ -229,24 +434,29 @@ public class GameControllerTest {
         // given
         Game testGame = new Game();
 
-        ArrayList<String> testCardStack = new ArrayList<String>();
-        testCardStack.add("ACE");
-        testCardStack.add("KING");
-        testCardStack.add("QUEEN");
+        List<String> testCardStack = new ArrayList<String >(){
+            {
+                add("ACE");
+                add("KING");
+                add("QUEEN");
+            }};
 
-        String[] testPlayerList = {"Just", "Some", "Names"};
+        // List of player ID's
+        List<Long> testPlayerList = new ArrayList<Long>(){
+            {
+                add(2L);
+                add(4L);
+                add(6L);
+            }};
 
         testGame.setId(1L);
         testGame.setHost("testHost");
         testGame.setPlayerList(testPlayerList);
-        testGame.setCardStack(testCardStack);
 
-
-        given(gameService.updateGame(Mockito.any())).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby with given ID was not found"));
-        given(gameService.getGameById(Mockito.any())).willReturn(testGame);
+        given(gameService.playCard(Mockito.any(), Mockito.any(), Mockito.any())).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with given ID was not found"));
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder putRequest = put("/game/{id}", 1L)
+        MockHttpServletRequestBuilder putRequest = put("/game/{id}/playerTurn", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(testGame));
 
@@ -259,20 +469,49 @@ public class GameControllerTest {
     @Test
     public void deleteGame_succesfully() throws Exception {
         // given
+
+        List<String> testPlayerListForLobby = new ArrayList<String>(){
+            {
+                add("Hans");
+                //       add("Jörg");
+                //      add("Peter");
+            }};
+
+        User testUser = new User();
+        testUser.setId(2L);
+        testUser.setUsername("Hans");
+
+        Lobby testLobby = new Lobby();
+        testLobby.setId(1L);
+        //   testLobby.setName("testName");
+        //  testLobby.setPassword("testPassword");
+        testLobby.setHost("testHost");
+        testLobby.setPlayerList(testPlayerListForLobby);
+
         Game testGame = new Game();
 
-        ArrayList<String> testCardStack = new ArrayList<String>();
-        testCardStack.add("ACE");
-        testCardStack.add("KING");
-        testCardStack.add("QUEEN");
+        List<String> testCardStack = new ArrayList<String >(){
+            {
+                add("ACE");
+                add("KING");
+                add("QUEEN");
+            }};
 
-        String[] testPlayerList = {"Just", "Some", "Names"};
+        // List of player ID's
+        List<Long> testPlayerList = new ArrayList<Long>(){
+            {
+                add(2L);
+                add(4L);
+                add(6L);
+            }};
 
         testGame.setId(1L);
         testGame.setHost("testHost");
         testGame.setPlayerList(testPlayerList);
-        testGame.setCardStack(testCardStack);
 
+        given(gameService.convertUserNamesToIds(1L)).willReturn(testPlayerList);
+        given(lobbyService.getLobbyById(Mockito.any())).willReturn(testLobby);
+        given(gameService.createGame(Mockito.any())).willReturn(testGame);
         given(gameService.getGameById(Mockito.any())).willReturn(testGame);
 
         MockHttpServletRequestBuilder deleteRequest = delete("/game/{id}/deletion", 1L);
@@ -280,22 +519,8 @@ public class GameControllerTest {
         mockMvc.perform(deleteRequest)
                 .andExpect(status().isOk());}
 
-    /**
-     // test for unsuccesfully deleting a Lobby beacuse of invalid id
-     @Test
-     public void deleteLobby_unsuccesfully_invalidID() throws Exception {
-     Lobby testLobby = new Lobby();
-     testLobby.setId(1L);
-     testLobby.setName("testName");
-     testLobby.setPassword("testPassword");
-     testLobby.setHost("testHost");
 
-     given(lobbyService.getLobbyById(Mockito.any())).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby with given ID was not found"));
 
-     mockMvc.perform(MockMvcRequestBuilders.delete("/lobby/{id}", 1))
-     .andExpect(status().isNotFound());
-     }
-     */
 
 
     /**
@@ -303,7 +528,7 @@ public class GameControllerTest {
      * Input will look like this: {"name": "Test User", "username": "testUsername"}
      * @param object
      * @return string
-
+     */
     private String asJsonString(final Object object) {
         try {
             return new ObjectMapper().writeValueAsString(object);
@@ -312,6 +537,6 @@ public class GameControllerTest {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("The request body could not be created.%s", e.toString()));
         }
     }
-    */
+
 }
 
