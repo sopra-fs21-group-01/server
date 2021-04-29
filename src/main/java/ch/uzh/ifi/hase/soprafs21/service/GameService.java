@@ -187,8 +187,10 @@ public class GameService {
             game.setCurrentPlayerPlusOne();
 
         } else if (getValueOfCard(card).equals("Reverse")){
+
             game.reverseGameDirection();
             game.setCurrentPlayerPlusOne();
+
         } else{
             game.setCurrentPlayerPlusOne();
         }
@@ -227,13 +229,14 @@ public class GameService {
     }
 
 
-    public void sayUno(Game game){
-        Hand hand = getHandById(game.getCurrentPlayerId());
+    public void sayUno(Game game, Long playerId){
+        Hand hand = getHandById(playerId);
 
         if(hand.getHandSize()== 1){
             hand.setUnoStatus(true);
         }else{
-            System.out.println("Liar!");
+            String username = userService.getUseryById(playerId).getUsername();
+            System.out.format("User: %s is a Liar!",username);
         }
 
     }

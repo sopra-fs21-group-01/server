@@ -78,6 +78,29 @@ public class GameController {
     }
 
 
+    @PutMapping("/game/{id}/drawCard")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void drawCard(@PathVariable(value = "id") Long id) {
+        Game gameOfId = gameService.getGameById(id);
+
+        gameService.cantPlayDrawCard(gameOfId);
+
+    }
+
+    @PutMapping("/game/{id}/sayUno")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void sayUno(@PathVariable(value = "id") Long id, @RequestBody PlayerMoveDTO playerMoveDTO) {
+
+        PlayerMove playerMove = DTOMapper.INSTANCE.convertPlayerMoveDTOToEntity(playerMoveDTO);
+        Game gameOfId = gameService.getGameById(id);
+        Long playerId = playerMove.getPlayerId();
+
+        gameService.sayUno(gameOfId, playerId);
+
+    }
+
 
     // do we really need to different put methods? (on for kicking a player and one for updateing something else?
 

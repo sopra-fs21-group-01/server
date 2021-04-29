@@ -115,21 +115,29 @@ public class Game implements Serializable {
         if (gameDirection) {
             this.currentPlayer = (this.currentPlayer + 1) % playerList.size();
         } else{
-            this.currentPlayer = (this.currentPlayer - 1) % playerList.size();
+            this.currentPlayer = (this.currentPlayer - 1);
+            if(currentPlayer == -1){
+                this.currentPlayer = playerList.size()-1;
+            }
+            System.out.println(currentPlayer);
+            System.out.println(gameDirection);
         }
     }
 
 
     public void reverseGameDirection(){
         this.gameDirection = !gameDirection;
+        System.out.println(gameDirection);
     }
 
     public boolean getGameDirection(){
-        return this.gameDirection;
+        return gameDirection;
     }
 
 
-
+public int getCurrentPlayer() {
+        return currentPlayer;
+}
 
 
 
