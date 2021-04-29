@@ -34,7 +34,6 @@ public class UserServiceIntegrationTest {
         userRepository.deleteAll();
     }
 
-    /**
 
     @Test
     public void createUser_validInputs_success() {
@@ -80,5 +79,5 @@ public class UserServiceIntegrationTest {
         assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser2));
     }
 
-    */
+
 }
