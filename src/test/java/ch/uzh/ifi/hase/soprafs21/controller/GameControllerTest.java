@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs21.entity.Game;
 import ch.uzh.ifi.hase.soprafs21.entity.Hand;
 import ch.uzh.ifi.hase.soprafs21.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs21.entity.User;
+import ch.uzh.ifi.hase.soprafs21.repository.HandRepository;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.GamePostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.LobbyPostDTO;
 import ch.uzh.ifi.hase.soprafs21.service.GameService;
@@ -82,6 +83,9 @@ public class GameControllerTest {
 
     @MockBean
     private User user;
+
+    @MockBean
+    private HandRepository handRepository;
 
 
 
@@ -192,21 +196,22 @@ public class GameControllerTest {
     }
 
 
-    // GET tests the GET for retreiving the playerList of a game
+ /**   // HOW TO MOCK A HAND??? ALWAYS NULLL
     // -> How to control one return that is not a json File?
- /**    @Test
+    @Test
     public void getGame_whenGetPlayerlist_thenReturnArrayWithNames() throws Exception {
+        Hand testHand = new Hand();
+
         User testUser = new User();
         testUser.setUsername("Hans");
         testUser.setId(2L);
-
-
         List<String> testPlayerListForLobby = new ArrayList<String>(){
             {
                 add("Hans");
                 add("Jörg");
                 add("Peter");
             }};
+        testUser.setHandId(testHand.getId());
 
         Lobby testLobby = new Lobby();
         testLobby.setId(1L);
@@ -219,12 +224,14 @@ public class GameControllerTest {
         List<Long> testPlayerList = new ArrayList<Long>(){
             {
                 add(2L);
-                add(4L);
-                add(6L);
             }};
 
+        game.setPlayerList(testPlayerList);
+        game.setId(1L);
+
+        Mockito.when(handRepository.save(Mockito.any())).thenReturn(testHand);
         given(userService.getUserbyId(Mockito.any())).willReturn(testUser);
-        given(gameService.getHandById(Mockito.any())).willReturn(hand);
+        given(gameService.getHandById(Mockito.any())).willReturn(testHand);
         given(gameService.getGameById(Mockito.any())).willReturn(game);
         given(game.getPlayerList()).willReturn(testPlayerList);
         given(lobbyService.getLobbyById(Mockito.any())).willReturn(testLobby);
@@ -236,11 +243,51 @@ public class GameControllerTest {
                 .contentType(MediaType.APPLICATION_JSON);
 
         // then
-        mockMvc.perform(getRequest).andExpect(status().isOk())
+        mockMvc.perform(getRequest).andExpect(status().isOk()).andExpect(jsonPath("id", is(1L)))
                 ;
 
-    }
- */
+    } */
+ @Test
+ public void getGame_whenGetPlayerlist_thenReturnArrayWithNames_wrongGameID() throws Exception {
+
+
+     User testUser = new User();
+     testUser.setUsername("Hans");
+     testUser.setId(2L);
+     List<String> testPlayerListForLobby = new ArrayList<String>(){
+         {
+             add("Hans");
+             add("Jörg");
+             add("Peter");
+         }};
+
+
+     Lobby testLobby = new Lobby();
+     testLobby.setId(1L);
+     //   testLobby.setName("testName");
+     //  testLobby.setPassword("testPassword");
+     testLobby.setHost("testHost");
+     testLobby.setPlayerList(testPlayerListForLobby);
+
+     // List of player ID's
+     List<Long> testPlayerList = new ArrayList<Long>(){
+         {
+             add(2L);
+         }};
+
+     game.setPlayerList(testPlayerList);
+     game.setId(1L);
+
+     given(gameService.getGameById(1L)).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with given ID was not found"));
+
+
+     // when
+     MockHttpServletRequestBuilder getRequest = get("/game/{id}/kickOff", 1L)
+             .contentType(MediaType.APPLICATION_JSON);
+
+     // then
+     mockMvc.perform(getRequest).andExpect(status().isNotFound())
+     ;}
 
 
     // GET tests the  GET for single game playerList with invalid input. Test if if status is right
@@ -398,6 +445,67 @@ public class GameControllerTest {
         ;
 
     }
+
+    @Test
+    public void drawCard_validInput_returnsNothing() throws Exception {
+
+        GamePostDTO gamePostDTO = new GamePostDTO();
+        gamePostDTO.setHost("Hans");
+        gamePostDTO.setId(1L);
+
+        List<String> testPlayerListForLobby = new ArrayList<String>(){
+            {
+                add("Hans");
+                //       add("Jörg");
+                //      add("Peter");
+            }};
+
+        User testUser = new User();
+        testUser.setId(2L);
+        testUser.setUsername("Hans");
+
+        Lobby testLobby = new Lobby();
+        testLobby.setId(1L);
+        //   testLobby.setName("testName");
+        //  testLobby.setPassword("testPassword");
+        testLobby.setHost("testHost");
+        testLobby.setPlayerList(testPlayerListForLobby);
+
+        Game testGame = new Game();
+
+        List<String> testCardStack = new ArrayList<String >(){
+            {
+                add("ACE");
+                add("KING");
+                add("QUEEN");
+            }};
+
+        // List of player ID's
+        List<Long> testPlayerList = new ArrayList<Long>(){
+            {
+                add(2L);
+                //      add(4L);
+                //      add(6L);
+            }};
+
+        testGame.setId(1L);
+        testGame.setHost("testHost");
+        testGame.setPlayerList(testPlayerList);
+
+        given(gameService.convertUserNamesToIds(1L)).willReturn(testPlayerList);
+        given(lobbyService.getLobbyById(Mockito.any())).willReturn(testLobby);
+        given(gameService.createGame(Mockito.any())).willReturn(testGame);
+        given(gameService.updateGame(Mockito.any())).willReturn(testGame);
+        given(gameService.getGameById(Mockito.any())).willReturn(testGame);
+
+        MockHttpServletRequestBuilder putRequest = put("/game/{id}/drawCard", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(gamePostDTO));
+
+        // then !!! Just check for NULL output and status code
+        mockMvc.perform(putRequest)
+                .andExpect(status().isNoContent());}
+
 
     // PUT tests valid PUT method for Playerturn, returns a game
     @Test

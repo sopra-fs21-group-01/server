@@ -103,9 +103,7 @@ public class GameService {
     }
 
     public void deleteGame(Long gameId){
-
-        Game dummyLobby = getGameById(gameId);
-        gameRepository.deleteById(gameId);
+         gameRepository.deleteById(gameId);
 
         log.debug("Deleted the game with ID: {}", gameId);
     }
