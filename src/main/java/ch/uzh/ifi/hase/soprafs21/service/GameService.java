@@ -38,7 +38,6 @@ public class GameService {
         this.handRepository = handRepository;
         this.deckRepository = deckRepository;
         this.lobbyService = lobbyService;
-
     }
 
     // the host is added to the list of players, the gamemode is set to standard
@@ -66,6 +65,9 @@ public class GameService {
 
         //get PlayerList from Lobby with same Id like game
         List<String> playerListOfLobby = lobbyService.getLobbyById(id).getPlayerList();
+        if (playerListOfLobby == null || playerListOfLobby.size()==0){
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "The Lobby dosent contain any or enough players to start the game");
+        }
 
         //Set all players from Lobby into Map playerList of Game class.
         List<Long> playerListForGame = new ArrayList<>();
@@ -107,8 +109,6 @@ public class GameService {
 
         log.debug("Deleted the game with ID: {}", gameId);
     }
-
-
 
      public Game playCard(Game game, User user, String cardToPlay){
 
@@ -154,9 +154,6 @@ public class GameService {
 
     }
 
-
-
-
     String[] getCardValuies(String cardName){
         String[] values = cardName.split("/");
         return values;
@@ -171,9 +168,6 @@ public class GameService {
         String[] values = getCardValuies(cardName);
         return values[1];
     }
-
-
-
 
     public void determineNextPlayer(Game game, String card){
         if (getValueOfCard(card).equals("Skip")) {
@@ -247,11 +241,8 @@ public class GameService {
         Hand playerHand = getHandById(game.getCurrentPlayerId());
 
         String lastPlayedCard = getDeckById(game.getId()).getLastCardDeck();
-
         String color = game.getCurrentColor();
         String value = game.getCurrentValue();
-
-
         //check if user status is uno
         if (playerHand.getHandSize()==1 && !playerHand.getUnoStatus()){
             return false;
@@ -291,13 +282,10 @@ public class GameService {
         return handFoundById;
     }
 
-
     //initializes Hands for the start of the game,
     public void initializeHands(Game game) {
 
         Deck deck = getDeckById(game.getId());
-
-
         // gets every player and creates a hand with same Id as the player
         for (long player : game.getPlayerList()) {
 
@@ -307,11 +295,8 @@ public class GameService {
             for (int i = 0; i < 7; i++) {
 
                 // The decks seems to consisit of only WildFour/Wild cards
-
                 String drawnCard = deck.drawCard();
-
                 handCards.add(drawnCard);
-
                 if (handCards.size() == 0){
                     throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error when filling a hand with cards");}
             }

@@ -3,8 +3,10 @@ package ch.uzh.ifi.hase.soprafs21.service;
 import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs21.entity.*;
 
+import ch.uzh.ifi.hase.soprafs21.repository.DeckRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.HandRepository;
+import ch.uzh.ifi.hase.soprafs21.repository.LobbyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -33,7 +35,16 @@ public class GameServiceTest {
     private GameRepository gameRepository;
 
     @Mock
+    private LobbyRepository lobbyRepository;
+
+    @Mock
     private HandRepository handRepository;
+
+    @Mock
+    private DeckRepository deckRepository;
+
+    @Mock
+    private LobbyService lobbyService;
 
     @Mock
     private User testUser;
@@ -45,6 +56,9 @@ public class GameServiceTest {
     private GameService gameService;
 
     @Mock
+    private Lobby testLobby;
+
+    @Mock
     private Game testGame;
 
     @Mock
@@ -54,10 +68,13 @@ public class GameServiceTest {
     public void setup() {
         MockitoAnnotations.openMocks(this);
 
+        // given
+        testLobby = new Lobby();
+        testLobby.setId(1L);
+        testLobby.setHost("testHost");
+
         testGame = new Game();
-
         List<Long> testPlayerList = Collections.singletonList(2L);
-
         testGame.setId(1L);
         testGame.setHost("testHost");
         testGame.setPlayerList(testPlayerList);
@@ -68,7 +85,53 @@ public class GameServiceTest {
 
 
         // when -> any object is being save in the lobbyRepository -> return the dummy Hand
-        Mockito.when(gameRepository.save(Mockito.any())).thenReturn(userHand);
+        Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
+       // given(gameService.getGameById(Mockito.any())).willReturn(testGame);
+
+        Mockito.when(lobbyRepository.save(Mockito.any())).thenReturn(testLobby);
+        given(lobbyService.getLobbyById(Mockito.any())).willReturn(testLobby);
+
+
+
+
+    }
+
+    // test that it breaks the convertion when recognizing list is null
+    @Test
+    public void convertUserNamesToIdTest_PlayListWasNotSet() {
+
+        testGame.setPlayerList(null);
+        assertThrows(ResponseStatusException.class, () -> gameService.convertUserNamesToIds(testGame.getId()));
+    }
+
+    // Test that proofs convertion breaks when there are no players
+    @Test
+    public void convertUserNamesToIdTest_PlayListHasNoPlayers() {
+        List<Long> myEmptyList = new ArrayList<>();
+        testGame.setPlayerList(myEmptyList);
+        assertThrows(ResponseStatusException.class, () -> gameService.convertUserNamesToIds(testGame.getId()));
+    }
+
+    // test for invalid game IDs of Game
+    @Test
+    public void getGameByIdTest_Invalid_ID_(){
+        given(gameRepository.save(Mockito.any())).willReturn(testGame);
+        assertThrows(ResponseStatusException.class, () -> gameService.getGameById(23331L));
+
+    }
+    // test for invalid game IDs of Deck
+    @Test
+    public void getDeckByIdTest_Invalid_ID_(){
+        given(gameRepository.save(Mockito.any())).willReturn(testDeck);
+        assertThrows(ResponseStatusException.class, () -> gameService.getDeckById(23331L));
+
+    }
+    // test for invalid game IDs of Hand
+    @Test
+    public void getHandByIdTest_Invalid_ID_(){
+        given(gameRepository.save(Mockito.any())).willReturn(userHand);
+        assertThrows(ResponseStatusException.class, () -> gameService.getHandById(23331L));
+
     }
 
 

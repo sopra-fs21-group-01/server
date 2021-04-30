@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnit;
 import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,6 +41,7 @@ public class UserServiceTest {
 
         // when -> any object is being save in the userRepository -> return the dummy testUser
         Mockito.when(userRepository.save(Mockito.any())).thenReturn(testUser);
+
     }
 
     @Test
@@ -85,7 +87,7 @@ public class UserServiceTest {
     }
 
 
- /**   @Test
+  /**  @Test
     public void login_Test_valid(){
        userService.createUser(testUser);
        userService.login(testUser);
@@ -95,8 +97,7 @@ public class UserServiceTest {
         Mockito.when(userRepository.findByUsername(Mockito.any())).thenReturn(testUser);
 
 
-        assertSame(testUser.getStatus(), UserStatus.ONLINE);
-    } */
+        assertSame(testUser.getStatus(), UserStatus.ONLINE);*/
 
 
     @Test
