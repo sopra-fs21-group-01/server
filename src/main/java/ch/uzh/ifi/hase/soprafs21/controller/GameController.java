@@ -24,27 +24,30 @@ public class GameController {
     private final LobbyService lobbyService;
     private final UserService userService;
 
-   GameController(GameService gameService, LobbyService lobbyService, UserService userService)
-   {this.gameService = gameService; this.lobbyService = lobbyService; this.userService = userService;}
+    GameController(GameService gameService, LobbyService lobbyService, UserService userService) {
+        this.gameService = gameService;
+        this.lobbyService = lobbyService;
+        this.userService = userService;
+    }
 
     // post a gme
     @PostMapping("/game/{id}/kickOff")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public String createGame(@PathVariable(value = "id") Long id, @RequestBody GamePostDTO gamePostDTO){
+    public String createGame(@PathVariable(value = "id") Long id, @RequestBody GamePostDTO gamePostDTO) {
         // convert API Game to internal representation
         Game newGame = DTOMapper.INSTANCE.convertGamePostDTOtoEntity(gamePostDTO);
 
         // creates and sets the list of userIDs
         newGame.setPlayerList(gameService.convertUserNamesToIds(id));
 
+        Game createdGame = gameService.createGame(newGame);
+
         // set the lobby to "isInGame" and create a Game
         lobbyService.changeIsInGameStat(id);
 
-        Game createdGame = gameService.createGame(newGame);
-
         // return URL of where to find the User
-        String url = "game/"+createdGame.getId()+"/kickOff";
+        String url = "game/" + createdGame.getId() + "/kickOff";
 
         return url;
     }
@@ -53,12 +56,11 @@ public class GameController {
     @DeleteMapping("/game/{id}/deletion")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void deleteGame(@PathVariable(value = "id") Long id){
+    public void deleteGame(@PathVariable(value = "id") Long id) {
         //delete the game and say the lobby is not in a game anymore
         gameService.deleteGame(id);
         lobbyService.getLobbyById(id).setInGame(false);
     }
-
 
 
     // Put mapping when a player plays a card and this card is put on top of the cardstack
@@ -108,22 +110,40 @@ public class GameController {
     @GetMapping("/game/{id}/kickOff")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public GameGetDTO getGamePlayers(@PathVariable(value = "id") Long id){
+    public GameGetDTO getGamePlayers(@PathVariable(value = "id") Long id) {
 
 
-       Game gameOfId = gameService.getGameById(id);
-       GameGetDTO gameGetDTO = DTOMapper.INSTANCE.convertEntityToGameGetDTO(gameOfId);
+        Game gameOfId = gameService.getGameById(id);
 
-       return gameGetDTO;
-   }
+        List<Long> opponentList = gameOfId.getPlayerList();
+        List<Integer> opponentHandSize = new ArrayList<>();
+
+        for (int i = 0; i < opponentList.size(); i++) {
+            int handSize = gameService.getHandById(opponentList.get(i)).getHandSize();
+            opponentHandSize.add(i, handSize);
+        }
+
+        List<String> userNameHandSize = new ArrayList<>();
+        for (int i = 0; i < opponentList.size(); i++) {
+            String usernameHand = opponentList.get(i).toString() + "," + userService.getUseryById(opponentList.get(i)).getUsername() + "," + opponentHandSize.get(i).toString();
+            userNameHandSize.add(usernameHand);
+        }
+
+
+        GameGetDTO gameGetDTO = DTOMapper.INSTANCE.convertEntityToGameGetDTO(gameOfId);
+        gameGetDTO.setOpponentListHands(userNameHandSize);
+
+        return gameGetDTO;
+    }
 
     // GetMapping for getting the current player of a running game, returns single Id
     @GetMapping("/game/{id}/kickOff/currentPlayerIds")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public long getCurrentPlayer(@PathVariable(value = "id") Long id){
+    public long getCurrentPlayer(@PathVariable(value = "id") Long id) {
 
         return gameService.getGameById(id).getCurrentPlayerId();
     }
+
 
 }

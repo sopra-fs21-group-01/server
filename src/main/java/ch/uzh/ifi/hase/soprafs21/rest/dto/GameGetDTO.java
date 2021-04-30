@@ -3,7 +3,9 @@ package ch.uzh.ifi.hase.soprafs21.rest.dto;
 import ch.uzh.ifi.hase.soprafs21.entity.Deck;
 import ch.uzh.ifi.hase.soprafs21.entity.User;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class GameGetDTO {
@@ -19,6 +21,16 @@ public class GameGetDTO {
     private String currentValue;
 
     private String chat;
+
+    public List<String> getOpponentListHands() {
+        return opponentListHands;
+    }
+
+    public void setOpponentListHands(List<String> opponentListHands) {
+        this.opponentListHands = opponentListHands;
+    }
+
+    private List<String> opponentListHands;
 
     public int getCurrentPlayer() {
         return currentPlayer;
