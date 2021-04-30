@@ -110,14 +110,14 @@ public class UserServiceTest {
     public void isValidTest_Invalid_noAT(){
         String email = "IdonthaveAnAt.ch";
 
-        assertThrows(ResponseStatusException.class, () -> UserService.isValid(email));
+        assertFalse(UserService.isValid(email));
     }
 
     @Test
     public void isValidTest_Invalid_notValidEnding(){
         String email = "Ihavenotgoot@Ending.c";
 
-        assertThrows(ResponseStatusException.class, () -> UserService.isValid(email));
+        assertFalse(UserService.isValid(email));
     }
 
 
