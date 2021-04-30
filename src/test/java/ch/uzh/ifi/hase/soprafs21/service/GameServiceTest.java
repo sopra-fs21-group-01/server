@@ -117,4 +117,20 @@ public class GameServiceTest {
 
     } */
 
+    @Test
+    public void getColorTest(){
+        assertEquals("Blue", gameService.getColorOfCard("0/Blue"));
+    }
+
+    @Test
+    public void getValueTest(){
+        assertEquals("0", gameService.getValueOfCard("0/Blue"));
+    }
+
+    @Test
+    public void getCardValuesTest(){
+        assertEquals(gameService.getCardValuies("0/Blue").length, 2);
+        assertEquals("0", gameService.getCardValuies("0/Blue")[0]);
+    }
+
 }

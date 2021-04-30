@@ -179,17 +179,13 @@ public class GameService {
         if (getValueOfCard(card).equals("Skip")) {
             game.setCurrentPlayerPlusOne();
             game.setCurrentPlayerPlusOne();
-
         } else if (getValueOfCard(card).equals("Reverse")){
-
             game.reverseGameDirection();
             game.setCurrentPlayerPlusOne();
 
         } else{
             game.setCurrentPlayerPlusOne();
-        }
-
-    }
+        }}
 
     public void checkIfExtraCard(Game game){
         String lastPlayedCard = getValueOfCard(getDeckById(game.getId()).getLastCardDeck());
@@ -209,10 +205,8 @@ public class GameService {
     public void drawCard(Game game){
         //get hand from current player
         Hand hand = getHandById(game.getCurrentPlayerId());
-
         //draw a card and puts it into the hand and removed it from the deck
         hand.addCard(getDeckById(game.getId()).drawCard());
-
         //UNO Status to false
         hand.setUnoStatus(false);
     }
@@ -232,7 +226,6 @@ public class GameService {
             String username = userService.getUseryById(playerId).getUsername();
             System.out.format("User: %s is a Liar!",username);
         }
-
     }
 
     public void checkWin(Game game){
@@ -263,7 +256,6 @@ public class GameService {
         if (playerHand.getHandSize()==1 && !playerHand.getUnoStatus()){
             return false;
         }
-
         if (lastPlayedCard == null){
             return true;
         }
@@ -278,9 +270,7 @@ public class GameService {
         }
         else {
             return false;
-        }
-
-    }
+        } }
 
     ///////////////////// HAND SPECIFIC TASKS ////////////////////////////
 
@@ -324,7 +314,6 @@ public class GameService {
 
                 if (handCards.size() == 0){
                     throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error when filling a hand with cards");}
-
             }
             newHand.setCards(handCards);
 
@@ -334,11 +323,7 @@ public class GameService {
 
             handCards.clear();
             userService.getUseryById(player).setHandId(newHand.getId());
-        }
-
-
-    }
-
+        }  }
 
     ///////////////////// DECK SPECIFIC TASKS ////////////////////////////
 
@@ -367,8 +352,5 @@ public class GameService {
         // save deck
         deckRepository.save(deck);
         deckRepository.flush();
-
-
     }
-
 }

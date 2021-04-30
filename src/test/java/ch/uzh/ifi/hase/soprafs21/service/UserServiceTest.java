@@ -29,12 +29,14 @@ public class UserServiceTest {
     public void setup() {
         MockitoAnnotations.openMocks(this);
 
+
         // given
         testUser = new User();
         testUser.setId(1L);
         testUser.setUsername("testUsername");
         testUser.setEmail("test@uzh.ch");
         testUser.setPassword("Test1234");
+        testUser.setStatus(UserStatus.OFFLINE);
 
         // when -> any object is being save in the userRepository -> return the dummy testUser
         Mockito.when(userRepository.save(Mockito.any())).thenReturn(testUser);
@@ -80,6 +82,42 @@ public class UserServiceTest {
 
         // then -> attempt to create second user with same user -> check that an error is thrown
         assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser));
+    }
+
+
+ /**   @Test
+    public void login_Test_valid(){
+       userService.createUser(testUser);
+       userService.login(testUser);
+
+        Mockito.when(userService.getUser(Mockito.any())).thenReturn(testUser);
+        Mockito.when(userRepository.findByEmail(Mockito.any())).thenReturn(testUser);
+        Mockito.when(userRepository.findByUsername(Mockito.any())).thenReturn(testUser);
+
+
+        assertSame(testUser.getStatus(), UserStatus.ONLINE);
+    } */
+
+
+    @Test
+    public void isValidTest_valid(){
+        String email = "I.am@perfectlyfi.ne";
+
+        assertTrue(UserService.isValid(email));
+    }
+
+    @Test
+    public void isValidTest_Invalid_noAT(){
+        String email = "IdonthaveAnAt.ch";
+
+        assertThrows(ResponseStatusException.class, () -> UserService.isValid(email));
+    }
+
+    @Test
+    public void isValidTest_Invalid_notValidEnding(){
+        String email = "Ihavenotgoot@Ending.c";
+
+        assertThrows(ResponseStatusException.class, () -> UserService.isValid(email));
     }
 
 

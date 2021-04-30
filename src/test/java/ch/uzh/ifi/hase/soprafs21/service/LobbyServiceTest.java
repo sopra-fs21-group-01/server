@@ -25,6 +25,7 @@ public class LobbyServiceTest {
     @InjectMocks
     private LobbyService lobbyService;
 
+    @Mock
     private Lobby testLobby;
 
     @BeforeEach
