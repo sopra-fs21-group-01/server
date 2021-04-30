@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs21.entity.Game;
 import ch.uzh.ifi.hase.soprafs21.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs21.entity.User;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.GamePostDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.LobbyPostDTO;
 import ch.uzh.ifi.hase.soprafs21.service.GameService;
 import ch.uzh.ifi.hase.soprafs21.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
@@ -75,7 +76,7 @@ public class GameControllerTest {
 
 
 
-    // Test valid post, returns Lobby location as string
+    // POST Test valid post, returns Lobby location as string
     @Test
     public void createGame_validInput_gameCreated() throws Exception {
         List<String> testPlayerListForLobby = new ArrayList<String>(){
@@ -95,6 +96,10 @@ public class GameControllerTest {
         //  testLobby.setPassword("testPassword");
         testLobby.setHost("testHost");
         testLobby.setPlayerList(testPlayerListForLobby);
+
+        GamePostDTO gamePostDTO = new GamePostDTO();
+        gamePostDTO.setHost("Hans");
+        gamePostDTO.setId(1L);
 
         Game testGame = new Game();
 
@@ -124,7 +129,7 @@ public class GameControllerTest {
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder postRequest = post("/game/{id}/kickOff", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(testGame));
+                .content(asJsonString(gamePostDTO));
 
         // then !! Just Check for the expected String output and for the status type
         mockMvc.perform(postRequest)
@@ -133,11 +138,15 @@ public class GameControllerTest {
     }
 
 
-    // Test invalid post, no hostname given, Conflict is thrown
+    // POST Test invalid post, no hostname given, Conflict is thrown
     @Test
     public void createGame_invalidInput_gameCreationUnsuccessful() throws Exception {
         // given
         Game testGame = new Game();
+
+        GamePostDTO gamePostDTO = new GamePostDTO();
+        gamePostDTO.setHost("Hans");
+        gamePostDTO.setId(1L);
 
         List<String> testCardStack = new ArrayList<String >(){
             {
@@ -164,7 +173,7 @@ public class GameControllerTest {
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder postRequest = post("/game/{id}/kickOff", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(testGame));
+                .content(asJsonString(gamePostDTO));
 
         // then !! Just Check for the expected String output and for the status type
         mockMvc.perform(postRequest)
@@ -173,7 +182,7 @@ public class GameControllerTest {
     }
 
 
-    // tests the GET for retreiving the playerList of a game
+    // GET tests the GET for retreiving the playerList of a game
     // -> How to control one return that is not a json File?
     @Test
     public void getGame_whenGetPlayerlist_thenReturnArrayWithNames() throws Exception {
@@ -213,7 +222,7 @@ public class GameControllerTest {
     }
 
 
-    // tests the  GET for single lobby with invalid input. Test if if status is right
+    // GET tests the  GET for single game playerList with invalid input. Test if if status is right
     @Test
     public void getPlayerListoffGame_invalidID_throwsException() throws Exception {
         List<String> testPlayerListForLobby = new ArrayList<String>(){
@@ -238,7 +247,7 @@ public class GameControllerTest {
                 add(6L);
             }};
 
-        given(lobbyService.getLobbyById(Mockito.any())).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with given ID was not found"));
+        given(gameService.getGameById(1L)).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with given ID was not found"));
 
         // when
         MockHttpServletRequestBuilder getRequest = get("/game/{id}/kickOff", 1L)
@@ -248,7 +257,7 @@ public class GameControllerTest {
         ; }
 
 
-    // tests the GET for the ID of the current player
+    // GET tests the GET for the ID of the current player
     // -> How to control one return that is not a json File?
     @Test
     public void getGame_whenGetHandOfPlayer_thenReturnArrayWithCardNames() throws Exception {
@@ -312,7 +321,8 @@ public class GameControllerTest {
         ;
 
     }
-    // tests the GET for the ID of the current player
+
+    // GET tests the GET for the ID of the current player
     // -> How to control one return that is not a json File?
     @Test
     public void getGame_whenGetHandOfPlayer_InvalidIdWillReturnError() throws Exception {
@@ -368,9 +378,14 @@ public class GameControllerTest {
 
     }
 
-    // tests valid PUT method for Playerturn, returns a game
+    // PUT tests valid PUT method for Playerturn, returns a game
     @Test
     public void updateGame_validInput_returnsNothing() throws Exception {
+
+        GamePostDTO gamePostDTO = new GamePostDTO();
+        gamePostDTO.setHost("Hans");
+        gamePostDTO.setId(1L);
+
         List<String> testPlayerListForLobby = new ArrayList<String>(){
             {
                 add("Hans");
@@ -413,26 +428,28 @@ public class GameControllerTest {
         given(gameService.convertUserNamesToIds(1L)).willReturn(testPlayerList);
         given(lobbyService.getLobbyById(Mockito.any())).willReturn(testLobby);
         given(gameService.createGame(Mockito.any())).willReturn(testGame);
-
-
         given(gameService.updateGame(Mockito.any())).willReturn(testGame);
         given(gameService.getGameById(Mockito.any())).willReturn(testGame);
 
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder putRequest = put("/game/{id}/playerTurn", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(testGame));
+                .content(asJsonString(gamePostDTO));
 
         // then !!! Just check for NULL output and status code
         mockMvc.perform(putRequest)
                 .andExpect(status().isNoContent());}
 
 
-    // tests invalid PUT method for Game update with not existing lobby
+    // PUT tests invalid PUT method for Game update with not existing lobby
     @Test
     public void updateGame_invalidID() throws Exception {
         // given
         Game testGame = new Game();
+
+        GamePostDTO gamePostDTO = new GamePostDTO();
+        gamePostDTO.setHost("Hans");
+        gamePostDTO.setId(1L);
 
         List<String> testCardStack = new ArrayList<String >(){
             {
@@ -458,14 +475,14 @@ public class GameControllerTest {
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder putRequest = put("/game/{id}/playerTurn", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(testGame));
+                .content(asJsonString(gamePostDTO));
 
         // then !!! Just check for NULL output and status code
         mockMvc.perform(putRequest)
                 .andExpect(status().isNotFound());}
 
 
-    // test for successfully deleting a Game
+    // DELETE test for successfully deleting a Game
     @Test
     public void deleteGame_succesfully() throws Exception {
         // given

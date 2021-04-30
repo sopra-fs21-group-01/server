@@ -28,6 +28,7 @@ public class UserController {
         this.gameService = gameService;
     }
 
+    // GET for all Users
     @GetMapping("/users")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -70,6 +71,7 @@ public class UserController {
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(userOfID);
     }
 
+    // POST a new User
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -95,6 +97,7 @@ public class UserController {
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(loginUser); // convert user to DTO
     }
 
+    // PUT to logout User
     @PutMapping("/logout")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -104,7 +107,7 @@ public class UserController {
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(loggedOutUser);
     }
 
-    // profile edit
+    // PUT profile edit
     @PutMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public UserGetDTO editUser(@RequestBody UserEditDTO editDto) {
