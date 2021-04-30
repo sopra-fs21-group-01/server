@@ -46,6 +46,10 @@ public class LobbyService {
 
         // add host to the list of players
         List<String> playerList = new ArrayList<String>();
+
+        if (newLobby.getHost() == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error creating Lobby with this Host!");
+        }
         playerList.add(newLobby.getHost());
 
         newLobby.setPlayerList(playerList);
@@ -106,6 +110,10 @@ public class LobbyService {
     }
 
     public Lobby updateLobby(Lobby updatedLobby){
+
+        if (updatedLobby.getHost() == null || updatedLobby.getId() == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error creating Lobby with this data!");}
+
         this.lobbyRepository.save(updatedLobby);
 
         log.debug("Updated Lobby with ID {}", updatedLobby.getId());
