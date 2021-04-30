@@ -79,13 +79,14 @@ public interface DTOMapper {
    //  @Mapping(source = "gamemode", target = "gamemode")
     GameGetDTO convertEntityToGameGetDTO(Game game);
 
-    @Mapping(source = "id", target = "id")
+ /**   @Mapping(source = "id", target = "id")
     @Mapping(source = "message", target = "message")
     Chat convertChatPostDTOtoEntity(ChatPostDTO chatPostDTO);
 
     @Mapping(source = "message", target = "message")
     @Mapping(source = "id", target = "id")
     ChatGetDTO convertEntityToChatGetDTO(Chat chat);
+  */
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "initialCards", target = "initialCards")
