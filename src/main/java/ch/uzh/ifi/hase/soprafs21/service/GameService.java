@@ -1,14 +1,9 @@
 package ch.uzh.ifi.hase.soprafs21.service;
 
-import ch.uzh.ifi.hase.soprafs21.rest.dto.GamePostDTO;
-import ch.uzh.ifi.hase.soprafs21.constant.Color;
-import ch.uzh.ifi.hase.soprafs21.constant.Value;
 import ch.uzh.ifi.hase.soprafs21.entity.*;
 import ch.uzh.ifi.hase.soprafs21.repository.DeckRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.HandRepository;
-import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
-import org.apache.catalina.Host;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.GamePostDTO;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.Optional;
 
 
@@ -285,23 +279,6 @@ public class GameService {
         else {
             return false;
         }
-
-    }
-
-    //if after finished game, players want to play another round.
-    public Game resetGame(Game game){
-        initializeDeck(game);
-
-        game.setCurrentPlayer(0);
-        game.setCurrentColor(null);
-        game.setCurrentValue(null);
-
-        if (!game.getGameDirection()){
-            game.reverseGameDirection();
-        }
-
-         initializeHands(game);
-        return game;
 
     }
 

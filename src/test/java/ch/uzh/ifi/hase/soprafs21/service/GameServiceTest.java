@@ -1,14 +1,21 @@
 package ch.uzh.ifi.hase.soprafs21.service;
 
+import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
+import ch.uzh.ifi.hase.soprafs21.entity.Card;
 import ch.uzh.ifi.hase.soprafs21.entity.Game;
 
+import ch.uzh.ifi.hase.soprafs21.entity.Hand;
+import ch.uzh.ifi.hase.soprafs21.entity.User;
 import ch.uzh.ifi.hase.soprafs21.repository.GameRepository;
+import ch.uzh.ifi.hase.soprafs21.repository.HandRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.swing.*;
@@ -18,11 +25,15 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
+// MOST OF THE GAMESERVICE TESTS ARE TESTS OUTSIDE IN HAND/DECK/CARD TESTS TO AVOID UNNECASSERY MOCKING AND COMPLICATIONS
 public class GameServiceTest {
 
 
+
+    @Autowired
     @Mock
-    private GameRepository gameRepository;
+    private HandRepository handRepository;
 
     @InjectMocks
     private GameService gameService;
@@ -45,30 +56,13 @@ public class GameServiceTest {
         testGame.setId(1L);
         testGame.setHost("testHost");
         testGame.setPlayerList(testPlayerList);
-
-
-
-
-        // when -> any object is being save in the lobbyRepository -> return the dummy testLobby
-        Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
     }
 
-  /**  // test creation of lobby with valid inputs
+
+
     @Test
-    public void createGame_validInputs_success(){
-        // save the dummy lobby to database and return it
-        Game createdGame = gameService.createGame(testGame);
-                // then test if the data was correctly saved
-        Mockito.verify(gameRepository, Mockito.times(1)).save(Mockito.any());
-
-
-
-        assertEquals(testGame.getId(), createdGame.getId());
-        assertEquals(testGame.getHost(), createdGame.getHost());
-        assertEquals(testGame.getPlayerList(), createdGame.getPlayerList());
-
+    public void checkWinTest(){
 
     }
-    */
 
 }

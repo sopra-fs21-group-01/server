@@ -1,6 +1,4 @@
 package ch.uzh.ifi.hase.soprafs21.rest.dto;
-import ch.uzh.ifi.hase.soprafs21.constant.Color;
-import ch.uzh.ifi.hase.soprafs21.constant.Value;
 
 public class PlayerMoveDTO {
     private long playerId;

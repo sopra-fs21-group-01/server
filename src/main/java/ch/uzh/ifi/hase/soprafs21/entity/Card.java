@@ -1,8 +1,5 @@
 package ch.uzh.ifi.hase.soprafs21.entity;
 
-import ch.uzh.ifi.hase.soprafs21.constant.Color;
-import ch.uzh.ifi.hase.soprafs21.constant.Value;
-
 public class Card {
 
     private String cardName;
