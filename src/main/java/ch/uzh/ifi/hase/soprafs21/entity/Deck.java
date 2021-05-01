@@ -117,6 +117,7 @@ public class Deck implements Serializable {
     public String drawCard(){
         boolean empty = this.cardDeck.isEmpty();
         if(empty) {
+            System.out.println("Deck Shuffled");
             this.Shuffle();
             this.cardDeck.addAll(this.playedCardsDeck);
         }
