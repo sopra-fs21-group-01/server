@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs21.service;
 import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs21.entity.*;
 
+import ch.uzh.ifi.hase.soprafs21.exceptions.DuplicatedUserException;
 import ch.uzh.ifi.hase.soprafs21.repository.*;
 import org.aspectj.apache.bcel.generic.Type;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +15,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.swing.*;
@@ -24,7 +26,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class GameServiceTest {
 
@@ -155,6 +157,80 @@ public class GameServiceTest {
 
     }
 
+// TEST NOT WOTRKING; CANNOT INVOKE CHECKIFEXTRACARD BECAUS CARDNAME IS NULL
+/**
+    @Test
+    public void playCardTest(){
+
+        userHand = new Hand();
+        List<String> myList = new ArrayList<>();
+        myList.add("5/Blue");
+        myList.add("9/Red");
+        userHand.setCards(myList);
+        userHand.setUnoStatus(false);
+        userHand.setId(1L);
+
+
+        testGame = new Game();
+        testGame.setCurrentColor("Blue");
+        testGame.setCurrentValue("0");
+        List<Long> testPlayerList = Collections.singletonList(1L);
+        testGame.setPlayerList(testPlayerList);
+
+        String allowedCard = "5/Blue";
+        String[] myListValues = new String[]{"5", "Blue"};
+
+
+        Mockito.when(handRepository.findById(Mockito.any())).thenReturn(Optional.of(userHand));
+        Mockito.when(deckRepository.findById(Mockito.any())).thenReturn(Optional.of(testDeck));
+
+
+        gameService.playCard(testGame, testUser, allowedCard);
+
+        // verify game is safed
+        Mockito.verify(gameRepository, Mockito.times(1)).save(Mockito.any());
+
+        // verify next player and the possibility for extra cards are determined
+        Mockito.verify(gameService, Mockito.times(2)).determineNextPlayer(Mockito.any(), Mockito.any());
+        Mockito.verify(gameService, Mockito.times(2)).checkIfExtraCard(Mockito.any());
+
+    }
+
+    // test when the played card is not in the user hand, throw exception
+    @Test
+    public void playCardTest_cardNotInUserHand(){
+        userHand = new Hand();
+        List<String> myList = new ArrayList<>();
+        myList.add("2/Yellow");
+        userHand.setCards(myList);
+        userHand.setUnoStatus(false);
+        userHand.setId(1L);
+
+        testGame = new Game();
+        testGame.setCurrentColor("Blue");
+        testGame.setCurrentValue("0");
+        List<Long> testPlayerList = Collections.singletonList(1L);
+        testGame.setPlayerList(testPlayerList);
+
+        String allowedCard = "5/Blue";
+
+        Mockito.when(handRepository.findById(Mockito.any())).thenReturn(Optional.of(userHand));
+        Mockito.when(deckRepository.findById(Mockito.any())).thenReturn(Optional.of(testDeck));
+
+        assertThrows(ResponseStatusException.class, () ->gameService.playCard(testGame, testUser, allowedCard));
+    }
+*/
+
+// throws exception because it cannot find the users Hand (user might be deleted or already out of the game)
+@Test
+public void playCardTest_userHandNotFound(){
+   String allowedCard = "5/Blue";
+
+   Mockito.when(deckRepository.findById(Mockito.any())).thenReturn(Optional.of(testDeck));
+
+    assertThrows(ResponseStatusException.class, () ->gameService.playCard(testGame, testUser, allowedCard));
+}
+
     // test for allowed color and allowed value
     @Test
     public void checkIfMoveAllowedTest_valid(){
@@ -183,6 +259,7 @@ public class GameServiceTest {
 
     }
 
+    // check with invalid cards, can be extended by all edge cases
      @Test
     public void checkIfMoveAllowedTest_invalid(){
         testGame = new Game();
@@ -250,6 +327,8 @@ public class GameServiceTest {
 
         List<Long> myPlayers = new ArrayList<>();
         myPlayers.add(2L);
+        myPlayers.add(3L);
+
         testGame.setHost("hostName");
         testGame.setId(3L);
         testGame.setPlayerList(myPlayers);
@@ -262,6 +341,11 @@ public class GameServiceTest {
         given(userService.getUseryById(Mockito.any())).willReturn(testUser);
 
         gameService.initializeHands(testGame);
+
+        // for every player a hand should be saved -> 2 players means 2 calls
+        Mockito.verify(handRepository, Mockito.times(2)).save(Mockito.any());
+
+        // check if the user got a hand assigned, if he has the id and if the hand has cards
         assertNotNull(testUser.getHandId());
         assertNotNull(gameService.getHandById(testUser.getHandId()));
         assertNotNull(gameService.getHandById(testUser.getHandId()).getCards());

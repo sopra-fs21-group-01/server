@@ -123,8 +123,6 @@ public class GameService {
             game.setCurrentValue(getValueOfCard(cardToPlay));
             game.setCurrentColor(getColorOfCard(cardToPlay));
 
-            System.out.println(game.getCurrentColor() + "/" + game.getCurrentValue());
-
             gameRepository.save(game);
             gameRepository.flush();
 
