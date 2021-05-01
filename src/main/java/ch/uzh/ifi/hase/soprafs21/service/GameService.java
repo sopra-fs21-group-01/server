@@ -245,7 +245,12 @@ public class GameService {
         if (playerHand.getHandSize()==1 && !playerHand.getUnoStatus()){
             return false;
         }
+
         if (lastPlayedCard == null){
+            return true;
+        }
+        //allows any card after a wild card
+        else if (color.equals("Wild")){
             return true;
         }
         else if (color.equals(getColorOfCard(card))){
