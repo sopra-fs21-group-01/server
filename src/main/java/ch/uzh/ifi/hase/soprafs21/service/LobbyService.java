@@ -66,7 +66,7 @@ public class LobbyService {
 
     public void playerJoinsLobby(Lobby lobby, String userName){
 
-        if (lobby.getPlayerList().size() >= 9){
+        if (lobby.getPlayerList().size() >= 8){
             throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED,
                     "This Lobby is already full!");
         }
