@@ -114,7 +114,7 @@ public class UserService {
     }
     
     public User editUser(User user) {
-        User usertoEdit = getUserbyId(user.getId());
+        User usertoEdit = getUseryById(user.getId());
         if (usertoEdit != null) {
 
             // handles the case if a user wants to change their username to an existing username
@@ -136,14 +136,6 @@ public class UserService {
         }   
     }
 
-    public User getUserbyId(Long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        User user = null;
-        if(optionalUser.isPresent()){
-            user = optionalUser.get();
-        }
-        return user;
-    }
 
     /**
      * This is a helper method that will check the uniqueness criteria of the username and the name

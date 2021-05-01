@@ -70,7 +70,7 @@ public class GameController {
     public void playCard(@PathVariable(value = "id") Long id, @RequestBody PlayerMoveDTO playerMoveDTO) {
         PlayerMove playerMove = DTOMapper.INSTANCE.convertPlayerMoveDTOToEntity(playerMoveDTO);
         Game gameOfId = gameService.getGameById(id);
-        User playerOfMove = userService.getUserbyId(playerMove.getPlayerId());
+        User playerOfMove = userService.getUseryById(playerMove.getPlayerId());
 
         Card cardToPlay = new Card(playerMove.getColor(), playerMove.getValue());
         String cardName = cardToPlay.getCardName();
