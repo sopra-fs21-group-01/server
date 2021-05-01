@@ -14,8 +14,10 @@ import org.mockito.junit.MockitoJUnit;
 import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
 
 import javax.swing.table.TableStringConverter;
+import java.util.Optional;
 
 public class UserServiceTest {
 
@@ -88,17 +90,22 @@ public class UserServiceTest {
     }
 
 
-  /**  @Test
+   @Test
     public void login_Test_valid(){
-       userService.createUser(testUser);
-       userService.login(testUser);
 
-        Mockito.when(userService.getUser(Mockito.any())).thenReturn(testUser);
+        userService.createUser(testUser);
+
+
         Mockito.when(userRepository.findByEmail(Mockito.any())).thenReturn(testUser);
         Mockito.when(userRepository.findByUsername(Mockito.any())).thenReturn(testUser);
+        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(testUser));
+       given(userService.getUser(Mockito.any())).willReturn(testUser);
+       given(userService.getUser(Mockito.any())).willReturn(testUser);
+       given(userService.getUser(Mockito.any())).willReturn(testUser);
 
+        userService.login(testUser);
 
-        assertSame(testUser.getStatus(), UserStatus.ONLINE);*/
+        assertSame(testUser.getStatus(), UserStatus.ONLINE);}
 
 
     @Test
