@@ -295,7 +295,7 @@ public class GameService {
             List<String> handCards = new ArrayList<String>();
             Hand newHand = new Hand();
             newHand.setId(userService.getUseryById(player).getId());
-            for (int i = 0; i < 7; i++) {
+            for (int i = 0; i < newHand.getInitialCards(); i++) {
 
                 // The decks seems to consisit of only WildFour/Wild cards
                 String drawnCard = deck.drawCard();
