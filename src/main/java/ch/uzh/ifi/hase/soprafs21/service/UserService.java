@@ -3,6 +3,9 @@ package ch.uzh.ifi.hase.soprafs21.service;
 import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs21.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs21.entity.User;
+import ch.uzh.ifi.hase.soprafs21.exceptions.DuplicatedUserException;
+import ch.uzh.ifi.hase.soprafs21.exceptions.InvalidCredentialsException;
+import ch.uzh.ifi.hase.soprafs21.exceptions.UserNotFoundException;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +50,7 @@ public class UserService {
         newUser.setStatus(UserStatus.OFFLINE);
 
         if(!isValid(newUser.getEmail())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "The provided email is invalid");
+            throw new InvalidCredentialsException("The provided email is invalid");
         }
 
         checkIfUserExists(newUser);
@@ -68,12 +71,12 @@ public class UserService {
 
     private User checkUser(User userInput) {
         if (getUser(userInput.getUsername()) == null) { // looking if user exists
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Username does not exist!");
+            throw new UserNotFoundException("Username does not exist!");
         }
         else {
             User user = getUser(userInput.getUsername()); //get user from userRepository
             if (!userInput.getPassword().equals(user.getPassword())){   // check password
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid Password!");
+                throw new InvalidCredentialsException("Invalid Password!");
             }
             else {
                 return user;
@@ -84,7 +87,7 @@ public class UserService {
     public User getUser(String username) {
 
         if (this.userRepository.findByUsername(username) == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No User for this username found:"+username);
+            throw new UserNotFoundException("No User for this username found:"+username);
         }
 
         return this.userRepository.findByUsername(username);
@@ -103,7 +106,7 @@ public class UserService {
             return userFoundById;
         }
         if (userFoundById == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with given ID was not found");}
+            throw new UserNotFoundException("User with given ID was not found");}
         return userFoundById;
     }
 
@@ -119,7 +122,7 @@ public class UserService {
 
             // handles the case if a user wants to change their username to an existing username
             if (this.userRepository.findByUsername(user.getUsername()) != null) {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "Username is already taken!");
+                throw new DuplicatedUserException("Username is already taken!");
             }
             if (user.getUsername() != null) {
                 usertoEdit.setUsername(user.getUsername());
@@ -132,7 +135,7 @@ public class UserService {
         }
         // status code 404 if user does not exist
         else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User does not exist");
+            throw new UserNotFoundException("User does not exist");
         }   
     }
 
@@ -151,10 +154,10 @@ public class UserService {
 
         String baseErrorMessage = "The %s provided %s not unique. Therefore, the user could not be created!";
         if (userByUsername != null) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, String.format(baseErrorMessage, "username", "is"));
+            throw new DuplicatedUserException(String.format(baseErrorMessage, "username", "is"));
         }
         else if (userByEmail != null) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "This email has already been used");
+            throw new DuplicatedUserException("This email has already been used");
         }
     }
 

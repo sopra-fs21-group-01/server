@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.context.request.WebRequest;
@@ -38,5 +39,25 @@ public class GlobalExceptionAdvice extends ResponseEntityExceptionHandler {
     public ResponseStatusException handleException(Exception ex) {
         log.error("Default Exception Handler -> caught:", ex);
         return new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
+    }
+    @ExceptionHandler(DuplicatedUserException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<String> handleDuplicatedUserException(DuplicatedUserException ex){
+        log.error(String.format("DuplicatedUserException raised:%s", ex));
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<String> handleInvalidCredentialsException(InvalidCredentialsException ex){
+        log.error(String.format("InvalidCredentialsException raised:%s", ex));
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException ex){
+        log.error(String.format("UserNotFoundException raised:%s", ex));
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 }
