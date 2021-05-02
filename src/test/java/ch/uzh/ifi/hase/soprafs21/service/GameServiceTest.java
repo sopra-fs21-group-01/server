@@ -119,6 +119,41 @@ public class GameServiceTest {
 
     }
 
+    // a game with one player is given, the deck and the hand are initialized
+    @Test
+    public void createGameTest_valid(){
+        Game testGame2 = new Game();
+        List<Long> testPlayerList = new ArrayList<>();
+        testPlayerList.add(2L);
+        testGame2.setId(1L);
+        testGame2.setHost("testHost");
+        testGame2.setPlayerList(testPlayerList);
+
+
+        // assert that only the testUser is in the playerList
+        assertEquals(testGame2.getPlayerList().size(), 1);
+
+        Mockito.when(deckRepository.findById(Mockito.any())).thenReturn(Optional.of(testDeck));
+        Mockito.when(handRepository.findById(Mockito.any())).thenReturn(Optional.of(userHand));
+        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(testUser));
+        Mockito.when(userService.getUseryById(Mockito.any())).thenReturn((testUser));
+
+        // create the game and make it be returned upon saving
+        Game createdGame = gameService.createGame(testGame2);
+        Mockito.when(gameRepository.save(Mockito.any())).thenReturn(createdGame);
+
+
+        // test that hand a deck is initialized, one deck should be initiatiated and one Hand is saved
+        Mockito.verify(deckRepository, Mockito.times(1)).save(Mockito.any());
+        Mockito.verify(handRepository, Mockito.times(1)).save(Mockito.any());
+
+        // test if data was received properly
+        assertSame("testHost", createdGame.getHost());
+        assertSame(1, createdGame.getPlayerList().size());
+        assertTrue(createdGame.getGameDirection());
+        assertSame(testGame2.getPlayerList().get(0), createdGame.getPlayerList().get(0));
+    }
+
     // test that it breaks the convertion when recognizing list is null
     @Test
     public void convertUserNamesToIdTest_PlayListWasNotSet() {
