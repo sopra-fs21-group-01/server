@@ -323,7 +323,7 @@ public class GameControllerTest {
     // GET tests the GET for the ID of the current player
     //
     @Test
-    public void getGame_whenGetHandOfPlayer_thenReturnArrayWithCardNames() throws Exception {
+    public void getGame_whengetCurrentID_thenLongOfPlayerWhosTurnItIs() throws Exception {
 
         Game testGame = new Game();
 
