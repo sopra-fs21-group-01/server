@@ -328,7 +328,6 @@ public void playCardTest_userHandNotFound(){
         List<Long> myPlayers = new ArrayList<>();
         myPlayers.add(2L);
         myPlayers.add(3L);
-
         testGame.setHost("hostName");
         testGame.setId(3L);
         testGame.setPlayerList(myPlayers);
@@ -345,15 +344,18 @@ public void playCardTest_userHandNotFound(){
         // for every player a hand should be saved -> 2 players means 2 calls
         Mockito.verify(handRepository, Mockito.times(2)).save(Mockito.any());
 
+        // verify every player gets pulled -> will always be twice the players in list because its pulled and saved
+        Mockito.verify(userService, Mockito.times(4)).getUseryById(Mockito.any());
+
         // check if the user got a hand assigned, if he has the id and if the hand has cards
         assertNotNull(testUser.getHandId());
         assertNotNull(gameService.getHandById(testUser.getHandId()));
-        assertNotNull(gameService.getHandById(testUser.getHandId()).getCards());
+
     }
 
     // test if it aborts when the deck could not be found
     @Test
-    public void initializeHandTest_failEmpptyOrNotFoundDeck(){
+    public void initializeHandTest_failEmpptyDeck_OrNotFoundDeck(){
         testUser.setId(1L);
         testUser.setUsername("firstname");
         testUser.setEmail("firstname@uzh.ch");

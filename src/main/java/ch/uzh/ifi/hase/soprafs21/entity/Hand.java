@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -66,7 +69,7 @@ public class Hand implements Serializable {
     }
 
     public void removeCard(Deck deck, String card){
-        deck.addPlayedCards(card);
+            deck.addPlayedCards(card);
         cards.remove(card);
     }
 

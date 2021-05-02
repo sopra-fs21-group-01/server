@@ -96,9 +96,7 @@ public class GameControllerTest {
         List<String> testPlayerListForLobby = new ArrayList<String>(){
           {
              add("Hans");
-         //       add("Jörg");
-          //      add("Peter");
-            }};
+                }};
 
         User testUser = new User();
         testUser.setId(2L);
@@ -106,8 +104,6 @@ public class GameControllerTest {
 
         Lobby testLobby = new Lobby();
         testLobby.setId(1L);
-        //   testLobby.setName("testName");
-        //  testLobby.setPassword("testPassword");
         testLobby.setHost("testHost");
         testLobby.setPlayerList(testPlayerListForLobby);
 
@@ -128,8 +124,6 @@ public class GameControllerTest {
         List<Long> testPlayerList = new ArrayList<Long>(){
             {
                 add(2L);
-          //      add(4L);
-          //      add(6L);
             }};
 
         testGame.setId(1L);
@@ -196,7 +190,7 @@ public class GameControllerTest {
     }
 
 
- /**   // HOW TO MOCK A HAND??? ALWAYS NULLL
+    /**   // HOW TO MOCK A HAND??? ALWAYS NULLL
     // -> How to control one return that is not a json File?
     @Test
     public void getGame_whenGetPlayerlist_thenReturnArrayWithNames() throws Exception {
@@ -247,8 +241,9 @@ public class GameControllerTest {
                 ;
 
     } */
- @Test
- public void getGame_whenGetPlayerlist_thenReturnArrayWithNames_wrongGameID() throws Exception {
+
+    @Test
+    public void getGame_whenGetPlayerlist_thenReturnArrayWithNames_wrongGameID() throws Exception {
 
 
      User testUser = new User();
@@ -292,7 +287,7 @@ public class GameControllerTest {
 
     // GET tests the  GET for single game playerList with invalid input. Test if if status is right
     @Test
-    public void getPlayerListoffGame_invalidID_throwsException() throws Exception {
+    public void getPlayerListOffGame_invalidID_throwsException() throws Exception {
         List<String> testPlayerListForLobby = new ArrayList<String>(){
             {
                 add("Hans");
@@ -326,55 +321,20 @@ public class GameControllerTest {
 
 
     // GET tests the GET for the ID of the current player
-    // -> How to control one return that is not a json File?
+    //
     @Test
     public void getGame_whenGetHandOfPlayer_thenReturnArrayWithCardNames() throws Exception {
-        List<String> testPlayerListForLobby = new ArrayList<String>(){
-            {
-                add("Hans");
-                //       add("Jörg");
-                //      add("Peter");
-            }};
-
-        User testUser = new User();
-        testUser.setId(2L);
-        testUser.setUsername("Hans");
-
-        Lobby testLobby = new Lobby();
-        testLobby.setId(1L);
-        //   testLobby.setName("testName");
-        //  testLobby.setPassword("testPassword");
-        testLobby.setHost("testHost");
-        testLobby.setPlayerList(testPlayerListForLobby);
 
         Game testGame = new Game();
 
-        List<String> testCardStack = new ArrayList<String >(){
-            {
-                add("ACE");
-                add("KING");
-                add("QUEEN");
-            }};
-
         // List of player ID's
         List<Long> testPlayerList = new ArrayList<Long>(){
-            {
-                add(2L);
-                //      add(4L);
-                //      add(6L);
-            }};
+            {add(2L);}};
 
         testGame.setId(1L);
         testGame.setHost("testHost");
         testGame.setPlayerList(testPlayerList);
         testGame.setCurrentPlayer(0);
-
-        given(gameService.convertUserNamesToIds(1L)).willReturn(testPlayerList);
-        given(lobbyService.getLobbyById(Mockito.any())).willReturn(testLobby);
-        given(gameService.createGame(Mockito.any())).willReturn(testGame);
-        given(lobbyService.getLobbyById(Mockito.any())).willReturn(testLobby);
-        given(lobby.getPlayerList()).willReturn(testPlayerListForLobby);
-        given(gameService.createGame(Mockito.any())).willReturn(testGame);
 
         given(gameService.updateGame(Mockito.any())).willReturn(testGame);
         given(gameService.getGameById(Mockito.any())).willReturn(testGame);
@@ -382,10 +342,8 @@ public class GameControllerTest {
         // when
         MockHttpServletRequestBuilder getRequest = get("/game/{id}/kickOff/currentPlayerIds", 1L)
                 .contentType(MediaType.APPLICATION_JSON);
-
         // then
-        mockMvc.perform(getRequest).andExpect(status().isOk())
-
+        mockMvc.perform(getRequest).andExpect(status().isOk()).andExpect(content().string("2"))
         ;
 
     }

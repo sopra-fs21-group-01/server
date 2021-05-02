@@ -30,11 +30,31 @@ public class DeckTest {
 
     // After initialization, the Deck should contain a list with all UNO Cards
     @Test
-    public void initializationTest(){
+    public void initializationTest_cards(){
         assertTrue(testDeck.getCardDeck().contains("0/Blue"));
         assertTrue(testDeck.getCardDeck().contains("Skip/Red"));
         assertTrue(testDeck.getCardDeck().contains("Wild/Wild"));
+
+        assertTrue(testDeck.getCardDeck().contains("3/Blue"));
+        assertTrue(testDeck.getCardDeck().contains("Reverse/Red"));
+        assertTrue(testDeck.getCardDeck().contains("WildFour/Wild"));
+
+        assertTrue(testDeck.getCardDeck().contains("6/Blue"));
+        assertTrue(testDeck.getCardDeck().contains("2/Red"));
+        assertTrue(testDeck.getCardDeck().contains("Wild/Wild"));
+
+        assertTrue(testDeck.getCardDeck().contains("9/Blue"));
+        assertTrue(testDeck.getCardDeck().contains("8/Red"));
+        assertTrue(testDeck.getCardDeck().contains("5/Yellow"));
     }
+
+    // test number of cards in the deck
+    @Test
+    public void initializationTest_deckSize(){
+
+        assertEquals(108, testDeck.getCardDeck().size());
+    }
+
 
     // Test if drawn card is the same as actually was on top of deck
     @Test
