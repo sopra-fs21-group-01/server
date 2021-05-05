@@ -7,6 +7,8 @@ public class PlayerMoveDTO {
 
     private String value;
 
+    private String wishedColor;
+
     public long getPlayerId() {
         return playerId;
     }
@@ -29,5 +31,13 @@ public class PlayerMoveDTO {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String getWishedColor() {
+        return wishedColor;
+    }
+
+    public void setWishedColor(String wishedColor) {
+        this.wishedColor = wishedColor;
     }
 }

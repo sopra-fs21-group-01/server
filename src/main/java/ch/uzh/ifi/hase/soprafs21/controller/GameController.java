@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs21.entity.*;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.GameGetDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.GamePostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.PlayerMoveDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.PlayerMoveWishColorDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs21.service.GameService;
 import ch.uzh.ifi.hase.soprafs21.service.LobbyService;
@@ -62,6 +63,24 @@ public class GameController {
         lobbyService.getLobbyById(id).setInGame(false);
     }
 
+    /**
+    // Put mapping when a player plays a WISH card and this card is put on top of the cardstack
+    @PutMapping("/game/{id}/playerTurn/wishColors")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void playCard_wishColor(@PathVariable(value = "id") Long id, @RequestBody PlayerMoveWishColorDTO playerMoveWishColorDTO) {
+        PlayerMove playerMove = DTOMapper.INSTANCE.convertPlayerMoveDTOToEntity(playerMoveDTO);
+        Game gameOfId = gameService.getGameById(id);
+        User playerOfMove = userService.getUseryById(playerMove.getPlayerId());
+
+        Card cardToPlay = new Card(playerMove.getColor(), playerMove.getValue());
+        String cardName = cardToPlay.getCardName();
+
+        Game updatedGame = gameService.playCard(gameOfId, playerOfMove, cardName);
+
+    }
+    */
+
 
     // Put mapping when a player plays a card and this card is put on top of the cardstack
     @PutMapping("/game/{id}/playerTurn")
@@ -76,6 +95,10 @@ public class GameController {
         String cardName = cardToPlay.getCardName();
 
         Game updatedGame = gameService.playCard(gameOfId, playerOfMove, cardName);
+
+        if(playerMoveDTO.getWishedColor() != null){
+             gameService.wishColor(playerMoveDTO.getWishedColor(), gameOfId);
+        }
 
     }
 

@@ -1,11 +1,13 @@
-package ch.uzh.ifi.hase.soprafs21.entity;
+package ch.uzh.ifi.hase.soprafs21.rest.dto;
 
-public class PlayerMove{
+public class PlayerMoveWishColorDTO {
     private long playerId;
 
     private String color;
 
     private String value;
+
+    private String wishedColor;
 
     public long getPlayerId() {
         return playerId;
@@ -31,4 +33,11 @@ public class PlayerMove{
         this.value = value;
     }
 
+    public String getWishedColor() {
+        return wishedColor;
+    }
+
+    public void setWishedColor(String wishedColor) {
+        this.wishedColor = wishedColor;
+    }
 }

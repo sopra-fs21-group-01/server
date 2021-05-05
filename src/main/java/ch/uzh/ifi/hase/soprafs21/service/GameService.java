@@ -202,6 +202,11 @@ public class GameService {
         game.setCurrentPlayerPlusOne();
     }
 
+    public void wishColor(String wishedColor, Game game){
+        game.setCurrentColor(wishedColor);
+        gameRepository.save(game);
+        gameRepository.flush();
+    }
 
     public void sayUno(Game game, Long playerId){
         Hand hand = getHandById(playerId);
