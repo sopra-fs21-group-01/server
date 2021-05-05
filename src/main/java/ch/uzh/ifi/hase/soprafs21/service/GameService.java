@@ -124,10 +124,6 @@ public class GameService {
 
             checkWin(game);
 
-            if (getValueOfCard(cardToPlay).equals("WildFour") || getColorOfCard(cardToPlay).equals("Wild")){
-              //  wishColor(game);
-            }
-
             determineNextPlayer(game, cardToPlay);
 
             checkIfExtraCard(game);}
@@ -240,6 +236,9 @@ public class GameService {
         String lastPlayedCard = getDeckById(game.getId()).getLastCardDeck();
         String color = game.getCurrentColor();
         String value = game.getCurrentValue();
+
+        System.out.println("Checkcking if played card with color " + getColorOfCard(card) + "matches the wished color " + game.getCurrentColor());
+
         //check if user status is uno
         if (playerHand.getHandSize()==1 && !playerHand.getUnoStatus()){
             return false;

@@ -99,6 +99,7 @@ public class GameController {
         if(playerMoveDTO.getWishedColor() != null){
              gameService.wishColor(playerMoveDTO.getWishedColor(), gameOfId);
         }
+        System.out.println("Set the the current color to" + playerMoveDTO.getWishedColor() + "In the controller");
 
     }
 
