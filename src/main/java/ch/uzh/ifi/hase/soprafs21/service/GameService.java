@@ -237,7 +237,8 @@ public class GameService {
         String color = game.getCurrentColor();
         String value = game.getCurrentValue();
 
-        System.out.println("Checkcking if played card with color " + getColorOfCard(card) + "matches the wished color " + game.getCurrentColor());
+        System.out.println("Checkcking if played card with color " + getColorOfCard(card)
+                + "matches the wished color " + game.getCurrentColor());
 
         //check if user status is uno
         if (playerHand.getHandSize()==1 && !playerHand.getUnoStatus()){

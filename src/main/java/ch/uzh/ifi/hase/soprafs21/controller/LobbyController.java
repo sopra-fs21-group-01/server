@@ -66,6 +66,13 @@ public class LobbyController {
         final Lobby updatedLobby = lobbyService.updateLobby(lobbyOfId);
     }
 
+    @PutMapping("/lobbies/{id}/resets")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void setIsInGameBoolToFalse(@PathVariable(value = "id") Long id) {
+        lobbyService.resetLobby(id);
+    }
+
     // Put mapping to for joining a Lobby
     @PutMapping("/lobbies/{id}/joinedLobbies")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -95,7 +102,7 @@ public class LobbyController {
         return lobbyGetDTOs;
     }
 
-    // get a single lobbie
+    // get a single lobby
     @GetMapping("/lobbies/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody

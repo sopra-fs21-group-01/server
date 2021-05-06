@@ -120,6 +120,22 @@ public class LobbyService {
         return updatedLobby;
     }
 
+    public void resetLobby(Long updatedLobby){
+
+        Lobby lobbyToReset = getLobbyById(updatedLobby);
+
+        if (lobbyToReset.getHost() == null || lobbyToReset.getId() == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error resetting lobby!");}
+
+        lobbyToReset.setInGame(false);
+
+        this.lobbyRepository.save(lobbyToReset);
+
+        log.debug("reset Lobby with ID {}", lobbyToReset.getId());
+
+    }
+
+
 
 
     public void deleteLobby(Long lobbyId){
