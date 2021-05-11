@@ -81,10 +81,12 @@ public interface DTOMapper {
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "message", target = "message")
+    @Mapping(source = "timestamp", target = "timestamp")
     Chat convertChatPostDTOtoEntity(ChatPostDTO chatPostDTO);
 
     @Mapping(source = "message", target = "message")
     @Mapping(source = "id", target = "id")
+    @Mapping(source = "timestamp", target = "timestamp")
     ChatGetDTO convertEntityToChatGetDTO(Chat chat);
 
 

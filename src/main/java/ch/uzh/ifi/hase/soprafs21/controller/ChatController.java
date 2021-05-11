@@ -26,7 +26,7 @@ public class ChatController {
             }
 
     // GET for all chats
-    @GetMapping("/chats")
+    @GetMapping("/chats/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<ChatGetDTO> getAllChats(@PathVariable(value = "id") Long id) {

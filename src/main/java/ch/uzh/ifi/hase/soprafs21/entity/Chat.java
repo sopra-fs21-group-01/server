@@ -13,6 +13,16 @@ public class Chat implements Serializable {
     @Column(nullable = false)
     private String message;
 
+    @Column(nullable = false)
+    private String timestamp;
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
 
     public String getMessage(){
         return this.message;
