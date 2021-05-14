@@ -149,7 +149,7 @@ public class GameController {
 
         List<String> userNameHandSize = new ArrayList<>();
         for (int i = 0; i < opponentList.size(); i++) {
-            String usernameHand = opponentList.get(i).toString() + "," + userService.getUseryById(opponentList.get(i)).getUsername() + "," + opponentHandSize.get(i).toString();
+            String usernameHand = opponentList.get(i).toString() + "," + userService.getUseryById(opponentList.get(i)).getUsername() + "," + opponentHandSize.get(i).toString() + "," +gameService.getHandById(opponentList.get(i)).getUnoStatus();
             userNameHandSize.add(usernameHand);
         }
 
