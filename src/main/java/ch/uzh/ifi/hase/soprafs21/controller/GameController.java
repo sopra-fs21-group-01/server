@@ -144,15 +144,18 @@ public class GameController {
 
         for (int i = 0; i < opponentList.size(); i++) {
             int handSize = gameService.getHandById(opponentList.get(i)).getHandSize();
-            opponentHandSize.add(i, handSize);
+            opponentHandSize.add(handSize);
         }
+
+        System.out.println(opponentList);
+        System.out.println(opponentHandSize);
 
         List<String> userNameHandSize = new ArrayList<>();
         for (int i = 0; i < opponentList.size(); i++) {
             String usernameHand = opponentList.get(i).toString() + "," + userService.getUseryById(opponentList.get(i)).getUsername() + "," + opponentHandSize.get(i).toString() + "," +gameService.getHandById(opponentList.get(i)).getUnoStatus();
             userNameHandSize.add(usernameHand);
         }
-
+System.out.println(userNameHandSize);
 
         GameGetDTO gameGetDTO = DTOMapper.INSTANCE.convertEntityToGameGetDTO(gameOfId);
         gameGetDTO.setOpponentListHands(userNameHandSize);
