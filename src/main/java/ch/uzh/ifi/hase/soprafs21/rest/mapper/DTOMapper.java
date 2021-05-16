@@ -79,13 +79,13 @@ public interface DTOMapper {
    //  @Mapping(source = "gamemode", target = "gamemode")
     GameGetDTO convertEntityToGameGetDTO(Game game);
 
-    @Mapping(source = "id", target = "id")
+    @Mapping(source = "lobby", target = "lobby")
     @Mapping(source = "message", target = "message")
     @Mapping(source = "timestamp", target = "timestamp")
     Chat convertChatPostDTOtoEntity(ChatPostDTO chatPostDTO);
 
     @Mapping(source = "message", target = "message")
-    @Mapping(source = "id", target = "id")
+    @Mapping(source = "lobby", target = "lobby")
     @Mapping(source = "timestamp", target = "timestamp")
     ChatGetDTO convertEntityToChatGetDTO(Chat chat);
 

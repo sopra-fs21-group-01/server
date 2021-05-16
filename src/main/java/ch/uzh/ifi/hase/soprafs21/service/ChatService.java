@@ -16,6 +16,7 @@ import java.util.List;
 
 @Service
 @Transactional
+@Qualifier("chatService")
 public class ChatService {
 
     private final Logger log = LoggerFactory.getLogger(ChatService.class);
@@ -38,16 +39,16 @@ public class ChatService {
     }
 
     public List<Chat> getChats(Long id){
-        if(this.chatRepository.findAllById(id)!= null){
-            return (List<Chat>) this.chatRepository.findAllById(id);
+        if(this.chatRepository.findAllBylobby(id)!= null){
+            return this.chatRepository.findAll();
         }else{
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "The chad with this id doesn't exist");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "The chat with this id doesn't exist");
         }
     }
 
 
     public void deleteChat(Long id) {
-        chatRepository.deleteById(id);
+        chatRepository.deleteAllBylobby(id);
     }
 
 }

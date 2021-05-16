@@ -10,5 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface ChatRepository extends JpaRepository<Chat, Long> {
     Chat findById(String id);
     Chat findAllById(Long id);
+    Chat findAllBylobby(Long lobby);
 
+    void deleteAllBylobby(Long lobby);
 }

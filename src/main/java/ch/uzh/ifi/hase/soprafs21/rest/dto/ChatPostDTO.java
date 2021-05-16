@@ -1,7 +1,7 @@
 package ch.uzh.ifi.hase.soprafs21.rest.dto;
 
 public class ChatPostDTO {
-    private long id;
+    private long lobby;
     private String message;
     private String timestamp;
 
@@ -19,12 +19,12 @@ public class ChatPostDTO {
     public void setMessage(String message){
         this.message = message;
     }
-    public long getId() {
-        return id;
+    public long getlobby() {
+        return lobby;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setlobby(long lobby) {
+        this.lobby = lobby;
     }
 
 

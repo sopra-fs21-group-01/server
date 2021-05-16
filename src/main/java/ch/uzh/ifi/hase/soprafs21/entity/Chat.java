@@ -8,7 +8,11 @@ public class Chat implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue
     private Long id;
+
+    @Column(nullable = false)
+    private Long lobby;
 
     @Column(nullable = false)
     private String message;
@@ -38,5 +42,13 @@ public class Chat implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getlobby() {
+        return lobby;
+    }
+
+    public void setlobby(Long lobby) {
+        this.lobby = lobby;
     }
 }

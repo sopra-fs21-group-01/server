@@ -2,7 +2,7 @@ package ch.uzh.ifi.hase.soprafs21.rest.dto;
 
 public  class ChatGetDTO {
     private String message;
-    private long id;
+    private long lobby;
     private String timestamp;
 
     public String getTimestamp() {
@@ -13,12 +13,12 @@ public  class ChatGetDTO {
         this.timestamp = timestamp;
     }
 
-    public Long getId() {
-        return id;
+    public Long getlobby() {
+        return lobby;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setlobby(Long id) {
+        this.lobby = id;
     }
 
     public String getMessage(){return message;}
