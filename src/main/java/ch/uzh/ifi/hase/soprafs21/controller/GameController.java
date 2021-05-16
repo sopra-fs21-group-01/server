@@ -1,10 +1,7 @@
 package ch.uzh.ifi.hase.soprafs21.controller;
 
 import ch.uzh.ifi.hase.soprafs21.entity.*;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.GameGetDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.GamePostDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.PlayerMoveDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.PlayerMoveWishColorDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs21.service.GameService;
 import ch.uzh.ifi.hase.soprafs21.service.LobbyService;
@@ -63,30 +60,12 @@ public class GameController {
         lobbyService.getLobbyById(id).setInGame(false);
     }
 
-    /**
-    // Put mapping when a player plays a WISH card and this card is put on top of the cardstack
-    @PutMapping("/game/{id}/playerTurn/wishColors")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @ResponseBody
-    public void playCard_wishColor(@PathVariable(value = "id") Long id, @RequestBody PlayerMoveWishColorDTO playerMoveWishColorDTO) {
-        PlayerMove playerMove = DTOMapper.INSTANCE.convertPlayerMoveDTOToEntity(playerMoveDTO);
-        Game gameOfId = gameService.getGameById(id);
-        User playerOfMove = userService.getUseryById(playerMove.getPlayerId());
-
-        Card cardToPlay = new Card(playerMove.getColor(), playerMove.getValue());
-        String cardName = cardToPlay.getCardName();
-
-        Game updatedGame = gameService.playCard(gameOfId, playerOfMove, cardName);
-
-    }
-    */
-
-
     // Put mapping when a player plays a card and this card is put on top of the cardstack
     @PutMapping("/game/{id}/playerTurn")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public void playCard(@PathVariable(value = "id") Long id, @RequestBody PlayerMoveDTO playerMoveDTO) {
+
         PlayerMove playerMove = DTOMapper.INSTANCE.convertPlayerMoveDTOToEntity(playerMoveDTO);
         Game gameOfId = gameService.getGameById(id);
         User playerOfMove = userService.getUseryById(playerMove.getPlayerId());
@@ -100,9 +79,17 @@ public class GameController {
              gameService.wishColor(playerMoveDTO.getWishedColor(), gameOfId);
         }
         System.out.println("Set the the current color to" + playerMoveDTO.getWishedColor() + "In the controller");
-
     }
 
+    // Put mapping when a player has finished his hand and is removed from the player pool
+    @PutMapping("/game/{id}/wins")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void playerFinishesHand(@PathVariable(value = "id") Long id, @RequestBody PlayerMoveDTO playerMoveDTO) {
+        PlayerMove playerMove = DTOMapper.INSTANCE.convertPlayerMoveDTOToEntity(playerMoveDTO);
+        Game gameOfId = gameService.getGameById(id);
+        gameService.removePlayerFromPlayerList(gameOfId, playerMove.getPlayerId());
+        }
 
     @PutMapping("/game/{id}/drawCard")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -127,35 +114,38 @@ public class GameController {
 
     }
 
-
-    // do we really need to different put methods? (on for kicking a player and one for updateing something else?
-
     // GetMapping for receiving the players
     @GetMapping("/game/{id}/kickOff")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public GameGetDTO getGamePlayers(@PathVariable(value = "id") Long id) {
 
-
         Game gameOfId = gameService.getGameById(id);
 
         List<Long> opponentList = gameOfId.getPlayerList();
         List<Integer> opponentHandSize = new ArrayList<>();
+
+        System.out.println("opponentList (before Loop) is: " + opponentList);
+
 
         for (int i = 0; i < opponentList.size(); i++) {
             int handSize = gameService.getHandById(opponentList.get(i)).getHandSize();
             opponentHandSize.add(handSize);
         }
 
-        System.out.println(opponentList);
-        System.out.println(opponentHandSize);
+        System.out.println("opponentList is: " + opponentList);
+        System.out.println("opponentHandSize is: " + opponentHandSize);
 
         List<String> userNameHandSize = new ArrayList<>();
         for (int i = 0; i < opponentList.size(); i++) {
-            String usernameHand = opponentList.get(i).toString() + "," + userService.getUseryById(opponentList.get(i)).getUsername() + "," + opponentHandSize.get(i).toString() + "," +gameService.getHandById(opponentList.get(i)).getUnoStatus();
+            String usernameHand = opponentList.get(i).toString() + ","
+                    + userService.getUseryById(opponentList.get(i)).getUsername()
+                    + "," + opponentHandSize.get(i).toString()
+                    + "," +gameService.getHandById(opponentList.get(i)).getUnoStatus();
             userNameHandSize.add(usernameHand);
         }
-System.out.println(userNameHandSize);
+
+        System.out.println("userNameHandSize is: " + userNameHandSize);
 
         GameGetDTO gameGetDTO = DTOMapper.INSTANCE.convertEntityToGameGetDTO(gameOfId);
         gameGetDTO.setOpponentListHands(userNameHandSize);

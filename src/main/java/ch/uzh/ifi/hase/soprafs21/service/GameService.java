@@ -104,12 +104,13 @@ public class GameService {
         log.debug("Deleted the game with ID: {}", gameId);
     }
 
-     public Game playCard(Game game, User user, String cardToPlay){
+    public Game playCard(Game game, User user, String cardToPlay){
 
          Hand playerHand = getHandById(game.getCurrentPlayerId());
 
         // will be replaced by hand overed card by controller
         if (checkIfMoveAllowed(game, cardToPlay)){
+
             if(! playerHand.getCards().contains(cardToPlay))
             {throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED,
                     "This card is not in the players hand!");}
@@ -119,6 +120,7 @@ public class GameService {
             game.setCurrentValue(getValueOfCard(cardToPlay));
             game.setCurrentColor(getColorOfCard(cardToPlay));
 
+
             gameRepository.save(game);
             gameRepository.flush();
 
@@ -127,6 +129,7 @@ public class GameService {
             determineNextPlayer(game, cardToPlay);
 
             checkIfExtraCard(game);}
+
         }
         //want to play last card but no uno = player has to draw a card and next player is on.
         else if (playerHand.getHandSize()==1 && !playerHand.getUnoStatus()){
@@ -220,8 +223,26 @@ public class GameService {
         Hand playerHand = getHandById(game.getCurrentPlayerId());
 
         if (playerHand.getHandSize()==0){
-            System.out.format("Player: %s wins!", userService.getUseryById(game.getCurrentPlayerId()).getUsername());
+
+            String userName = userService.getUseryById(game.getCurrentPlayerId()).getUsername();
+
+            removePlayerFromPlayerList(game, game.getCurrentPlayerId());
+
+            System.out.format("Player: %s wins!", userName);
         }
+    }
+
+    public void removePlayerFromPlayerList(Game game, Long playerId){
+        List<Long> currentPlayerList = game.getPlayerList();
+        for (int i = 0; i < currentPlayerList.size(); i++){
+            if (currentPlayerList.get(i).equals(playerId)){
+                currentPlayerList.remove(i);
+                break;
+            }
+        }
+        game.setPlayerList(currentPlayerList);
+        gameRepository.save(game);
+        gameRepository.flush();
     }
 
     public void wishColor(Game game){
@@ -237,8 +258,6 @@ public class GameService {
         String color = game.getCurrentColor();
         String value = game.getCurrentValue();
 
-        System.out.println("Checkcking if played card with color " + getColorOfCard(card)
-                + "matches the wished color " + game.getCurrentColor());
 
         //check if user status is uno
         if (playerHand.getHandSize()==1 && !playerHand.getUnoStatus()){

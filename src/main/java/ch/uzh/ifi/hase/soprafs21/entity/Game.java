@@ -100,6 +100,7 @@ public class Game implements Serializable {
     }
 
     public long getCurrentPlayerId() {
+
         return playerList.get(currentPlayer);
     }
 
