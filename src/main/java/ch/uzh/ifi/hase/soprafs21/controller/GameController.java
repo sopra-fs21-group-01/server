@@ -8,14 +8,16 @@ import ch.uzh.ifi.hase.soprafs21.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import org.json.*;
+import org.springframework.http.*;
 
-import javax.persistence.Lob;
 import java.util.ArrayList;
 import java.util.List;
+import org.json.*;
+
 
 @RestController
 @Qualifier("gameController")
@@ -165,20 +167,28 @@ public class GameController {
         return gameService.getGameById(id).getCurrentPlayerId();
     }
 
-    @Autowired
-    private RestTemplate restTemplate;
+
     @PostMapping("game/funTranslation")
-    public JSONObject funTranslation(@RequestBody ChatPostDTO chatPostDTO){
+    public String funTranslation(@RequestBody ChatPostDTO chatPostDTO){
 
         final String url = "https://api.funtranslations.com/translate/yoda.json";
 
         String message = chatPostDTO.getMessage();
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
         JSONObject json = new JSONObject();
         json.put("text", message);
 
+        HttpEntity<String> request =
+                new HttpEntity<String>(json.toString(), headers);
 
-        return restTemplate.postForObject(url, json, JSONObject.class);
+        RestTemplate restTemplate = new RestTemplate();
+
+        //ChatPostDTO chatPostDTO1 = restTemplate.postForObject(url, request, ChatPostDTO.class);
+
+        return restTemplate.postForObject(url, request, String.class);
     }
 
 

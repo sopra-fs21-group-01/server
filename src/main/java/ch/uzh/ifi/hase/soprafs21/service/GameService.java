@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs21.entity.*;
 import ch.uzh.ifi.hase.soprafs21.repository.DeckRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.HandRepository;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -361,21 +363,6 @@ public class GameService {
         deckRepository.flush();
     }
 
-    private static void funTranslation()
-    {
-        final String uri = "https://api.funtranslations.com/translate/yoda.json";
-
-        String json = "{\"text\":\"Hello, how are you?\"}";
-
-        //RestTemplate restTemplate = new RestTemplate();
-        //Object result = restTemplate.postForObject(uri, json, Object.class);
-
-        //System.out.println(result.toString());
-    }
-
-    public static void main(String[] args){
-        funTranslation();
-    }
 
 
 }

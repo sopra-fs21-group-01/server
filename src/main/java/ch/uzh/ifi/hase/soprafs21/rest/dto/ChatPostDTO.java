@@ -1,9 +1,12 @@
 package ch.uzh.ifi.hase.soprafs21.rest.dto;
 
+import java.util.Map;
+
 public class ChatPostDTO {
     private long lobby;
     private String message;
     private String timestamp;
+
 
 
     public String getTimestamp() {
