@@ -6,9 +6,11 @@ import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs21.service.GameService;
 import ch.uzh.ifi.hase.soprafs21.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.Lob;
 import java.util.ArrayList;
@@ -160,6 +162,23 @@ public class GameController {
     public long getCurrentPlayer(@PathVariable(value = "id") Long id) {
 
         return gameService.getGameById(id).getCurrentPlayerId();
+    }
+
+
+    @Autowired
+    private RestTemplate restTemplate;
+    @PostMapping("funTranslation")
+    public String funTranslation(String text){
+
+        final String url = "https://api.funtranslations.com/translate/yoda.json";
+
+        String json = "{\"text\":\"Hello, how are you?\"}";
+
+        RestTemplate restTemplate = new RestTemplate();
+        Object result = restTemplate.postForObject(url, json, Object.class);
+
+
+        return result.toString();
     }
 
 

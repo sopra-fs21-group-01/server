@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
@@ -359,4 +360,22 @@ public class GameService {
         deckRepository.save(deck);
         deckRepository.flush();
     }
+
+    private static void funTranslation()
+    {
+        final String uri = "https://api.funtranslations.com/translate/yoda.json";
+
+        String json = "{\"text\":\"Hello, how are you?\"}";
+
+        //RestTemplate restTemplate = new RestTemplate();
+        //Object result = restTemplate.postForObject(uri, json, Object.class);
+
+        //System.out.println(result.toString());
+    }
+
+    public static void main(String[] args){
+        funTranslation();
+    }
+
+
 }
