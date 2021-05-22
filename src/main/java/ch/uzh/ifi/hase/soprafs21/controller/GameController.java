@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.json.*;
 
 import javax.persistence.Lob;
 import java.util.ArrayList;
@@ -164,21 +165,20 @@ public class GameController {
         return gameService.getGameById(id).getCurrentPlayerId();
     }
 
-
     @Autowired
     private RestTemplate restTemplate;
-    @PostMapping("funTranslation")
-    public String funTranslation(String text){
+    @PostMapping("game/funTranslation")
+    public JSONObject funTranslation(@RequestBody ChatPostDTO chatPostDTO){
 
         final String url = "https://api.funtranslations.com/translate/yoda.json";
 
-        String json = "{\"text\":\"Hello, how are you?\"}";
+        String message = chatPostDTO.getMessage();
 
-        RestTemplate restTemplate = new RestTemplate();
-        Object result = restTemplate.postForObject(url, json, Object.class);
+        JSONObject json = new JSONObject();
+        json.put("text", message);
 
 
-        return result.toString();
+        return restTemplate.postForObject(url, json, JSONObject.class);
     }
 
 
