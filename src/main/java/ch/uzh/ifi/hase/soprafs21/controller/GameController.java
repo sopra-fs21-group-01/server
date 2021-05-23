@@ -168,28 +168,7 @@ public class GameController {
     }
 
 
-    @PostMapping("game/funTranslation")
-    public String funTranslation(@RequestBody ChatPostDTO chatPostDTO){
 
-        final String url = "https://api.funtranslations.com/translate/yoda.json";
-
-        String message = chatPostDTO.getMessage();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        JSONObject json = new JSONObject();
-        json.put("text", message);
-
-        HttpEntity<String> request =
-                new HttpEntity<String>(json.toString(), headers);
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        //ChatPostDTO chatPostDTO1 = restTemplate.postForObject(url, request, ChatPostDTO.class);
-
-        return restTemplate.postForObject(url, request, String.class);
-    }
 
 
 }
