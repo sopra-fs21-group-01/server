@@ -39,6 +39,17 @@ public class Game implements Serializable {
     @Column
     private String currentValue;
 
+    @Column
+    private Long initialCards;
+
+    public Long getInitialCards() {
+        return initialCards;
+    }
+
+    public void setInitialCards(Long initialCards) {
+        this.initialCards = initialCards;
+    }
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }

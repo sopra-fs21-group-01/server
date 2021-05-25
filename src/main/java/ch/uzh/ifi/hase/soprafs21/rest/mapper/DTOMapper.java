@@ -68,6 +68,7 @@ public interface DTOMapper {
     // Game mapping
     @Mapping(source = "host", target = "host")
     @Mapping(source = "id", target = "id")
+    @Mapping(source = "initialCards", target = "initialCards")
     Game convertGamePostDTOtoEntity(GamePostDTO gamePostDTO);
 
     @Mapping(source = "host", target = "host")
@@ -91,9 +92,8 @@ public interface DTOMapper {
 
 
     @Mapping(source = "id", target = "id")
-    @Mapping(source = "initialCards", target = "initialCards")
     @Mapping(source = "cards", target = "cards")
-    HandGetDto convertEntityTOHandGetDTO(Hand hand);
+    HandGetDTO convertEntityTOHandGetDTO(Hand hand);
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "cardDeck", target = "cardDeck")

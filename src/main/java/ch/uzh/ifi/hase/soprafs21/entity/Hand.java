@@ -35,7 +35,7 @@ public class Hand implements Serializable {
     private List<String> cards;
 
     @Column
-    public final int initialCards = 7;
+    public int initialCards = 7;
 
    //  public Hand(User user) {this.user = user; }
 

@@ -316,9 +316,14 @@ public class GameService {
             List<String> handCards = new ArrayList<String>();
             Hand newHand = new Hand();
             newHand.setId(userService.getUseryById(player).getId());
-            for (int i = 0; i < newHand.getInitialCards(); i++) {
 
-                // The decks seems to consisit of only WildFour/Wild cards
+            // initial handsize hardcoded as 7
+            long startCards = 7;
+            if (game.getInitialCards()!= null){
+                startCards = game.getInitialCards();
+            }
+            for (int i = 0; i < startCards; i++) {
+
                 String drawnCard = deck.drawCard();
                 handCards.add(drawnCard);
                 if (handCards.size() == 0){

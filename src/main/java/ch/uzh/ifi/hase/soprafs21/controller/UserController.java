@@ -51,7 +51,7 @@ public class UserController {
     @GetMapping("/users/{id}/hands")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public HandGetDto getUserHand(@PathVariable(value = "id") Long id) {
+    public HandGetDTO getUserHand(@PathVariable(value = "id") Long id) {
         // get User from repository
         User userOfID = userService.getUseryById(id);
         Hand handOfUser = gameService.getHandById(userOfID.getHandId());

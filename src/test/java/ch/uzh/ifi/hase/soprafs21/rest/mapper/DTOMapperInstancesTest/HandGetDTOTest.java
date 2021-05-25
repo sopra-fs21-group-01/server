@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapperInstancesTest;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.HandGetDto;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.HandGetDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.HandGetDTO;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
@@ -11,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class HandGetDTOTest{
 
     @Mock
-    private HandGetDto testhandGetDTO;
+    private HandGetDTO testhandGetDTO;
 
     @Test
     public void test_getters_and_setter(){
@@ -20,7 +21,7 @@ public class HandGetDTOTest{
         cardDeckTest.add("0/Blue");
         cardDeckTest.add("1/Red");
 
-        testhandGetDTO = new HandGetDto();
+        testhandGetDTO = new HandGetDTO();
         testhandGetDTO.setId(1L);
         testhandGetDTO.setCards(cardDeckTest);
 

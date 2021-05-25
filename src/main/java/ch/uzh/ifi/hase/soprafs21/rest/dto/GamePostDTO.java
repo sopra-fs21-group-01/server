@@ -8,6 +8,15 @@ public class GamePostDTO {
 
     private String host;
 
+    private Long initialCards;
+
+    public Long getInitialCards() {
+        return initialCards;
+    }
+
+    public void setInitialCards(Long initialCards) {
+        this.initialCards = initialCards;
+    }
 
     public long getId() {
         return id;
