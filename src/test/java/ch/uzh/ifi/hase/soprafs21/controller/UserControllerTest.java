@@ -179,7 +179,6 @@ public class UserControllerTest {
     }
 
     // GET single User
-    //!! THIS IS NOT WORKING ??
     @Test
     public void getSingleUser_validID() throws Exception {
         // given
@@ -200,38 +199,8 @@ public class UserControllerTest {
         // then
         mockMvc.perform(getRequest)
                 .andExpect(status().isOk())
-                // .andExpect(jsonPath("$.id", is(user.getId().intValue())))
-                // .andExpect(jsonPath("$.username", is(user.getUsername())))
-                // .andExpect(jsonPath("$.email", is(user.getEmail())))
-                // .andExpect(jsonPath("$.password", is(user.getPassword())))
-                // .andExpect(jsonPath("$.status", is(user.getStatus().toString())))
-        ;
+         ;
     }
-
-    // GET single User
-    //!! THIS IS NOT WORKING ?? -> NO RETURN; WORKS WITH POSTMAN THOUgh
-  /**  @Test
-    public void getSingleUser_InvalidID() throws Exception {
-        // given
-        User user = new User();
-        user.setId(1L);
-        user.setUsername("testUsername");
-        user.setEmail("test@uzh.ch");
-        user.setPassword("Test1234");
-        user.setToken("1");
-        user.setStatus(UserStatus.ONLINE);
-
-        given(userService.getUserbyId(1L)).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-        // when
-        MockHttpServletRequestBuilder getRequest = get("/users/{id}", 1L)
-                .contentType(MediaType.APPLICATION_JSON);
-
-        // then
-        mockMvc.perform(getRequest)
-                .andExpect(status().isNotFound())
-        ;
-    }*/
 
 
   @Test

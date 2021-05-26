@@ -318,20 +318,17 @@ public void joinLobby_gameStarted_throwsException() throws Exception {
 */
 
  // DELETE test for succesfully deleting a Lobby
- @Test
- public void deleteLobby_succesfully() throws Exception {
- Lobby testLobby = new Lobby();
- testLobby.setId(1L);
- //  testLobby.setName("testName");
- //  testLobby.setPassword("testPassword");
- testLobby.setHost("testHost");
+   @Test
+   public void deleteLobby_succesfully() throws Exception {
+     Lobby testLobby = new Lobby();
+       testLobby.setId(1L);
+       testLobby.setHost("testHost");
 
- given(lobbyService.getLobbyById(Mockito.any())).willReturn(testLobby);
+       given(lobbyService.getLobbyById(Mockito.any())).willReturn(testLobby);
+       MockHttpServletRequestBuilder deleteRequest = delete("/lobbies/{id}", 1L);
 
- MockHttpServletRequestBuilder deleteRequest = delete("/lobbies/{id}", 1L);
-
- mockMvc.perform(deleteRequest)
- .andExpect(status().isOk());}
+       mockMvc.perform(deleteRequest)
+       .andExpect(status().isOk());}
 
 
  // DELETE test for unsuccesfully deleting a Lobby beacuse of invalid id

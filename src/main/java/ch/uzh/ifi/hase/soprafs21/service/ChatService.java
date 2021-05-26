@@ -39,7 +39,7 @@ public class ChatService {
     }
 
     public List<Chat> getChats(Long id){
-        if(this.chatRepository.findAllBylobby(id)!= null){
+        if(this.chatRepository.findAllBylobby(id).size() > 0){
             return this.chatRepository.findAllBylobby(id);
         }else{
             throw new ResponseStatusException(HttpStatus.CONFLICT, "The chat with this id doesn't exist");

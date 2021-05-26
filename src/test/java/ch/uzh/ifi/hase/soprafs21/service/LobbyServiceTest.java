@@ -32,14 +32,9 @@ public class LobbyServiceTest {
     public void setup() {
         MockitoAnnotations.openMocks(this);
 
-        // given
         testLobby = new Lobby();
         testLobby.setId(1L);
-       // testLobby.setName("testName");
-       // testLobby.setPassword("testPassword");
         testLobby.setHost("testHost");
-
-
 
         // when -> any object is being save in the lobbyRepository -> return the dummy testLobby
         Mockito.when(lobbyRepository.save(Mockito.any())).thenReturn(testLobby);
