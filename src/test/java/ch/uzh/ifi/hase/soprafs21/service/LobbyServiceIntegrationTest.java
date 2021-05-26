@@ -48,15 +48,14 @@ public class LobbyServiceIntegrationTest {
 
         Lobby createdLobby = lobbyService.createLobby(testLobby);
 
-
         // then
         assertEquals(testLobby.getId(), testLobby.getId());
         assertEquals(testLobby.getHost(), testLobby.getHost());
         assertEquals(testLobby.getPlayerList(), testLobby.getPlayerList());
         assertEquals(testLobby.getGamemode(), testLobby.getGamemode());
         assertEquals(testLobby.isInGame(), testLobby.isInGame());
-
     }
+
     // since a lobby is always created with the corresponding Host ID, it should never get duplicated ID.
     // However if in the same session a Host gets deleted from the databank but the Lobby remains, it might happen
     // that two lobbies with same ID are tried to initiate. This might give Problems later when initializing the game.
