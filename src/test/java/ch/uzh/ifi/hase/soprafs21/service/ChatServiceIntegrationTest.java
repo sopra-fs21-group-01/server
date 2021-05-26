@@ -2,11 +2,7 @@ package ch.uzh.ifi.hase.soprafs21.service;
 
 import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs21.entity.Chat;
-import ch.uzh.ifi.hase.soprafs21.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs21.entity.User;
-import ch.uzh.ifi.hase.soprafs21.exceptions.DuplicatedUserException;
-import ch.uzh.ifi.hase.soprafs21.repository.GameRepository;
-import ch.uzh.ifi.hase.soprafs21.repository.LobbyRepository;
+
 import ch.uzh.ifi.hase.soprafs21.repository.ChatRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,7 +40,7 @@ public class ChatServiceIntegrationTest {
 
 
         Chat testChat = new Chat();
-        testChat.setId(3L);
+        testChat.setId(1L);
         testChat.setlobby(2L);
         testChat.setMessage("I am a test message");
         testChat.setTimestamp("01/01/2021");
