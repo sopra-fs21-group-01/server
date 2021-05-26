@@ -76,8 +76,7 @@ public interface DTOMapper {
     @Mapping(source = "currentPlayerId", target = "currentPlayer")
     @Mapping(source = "currentColor", target = "currentColor")
     @Mapping(source = "currentValue", target = "currentValue")
-   // @Mapping(source = "playerList", target = "playerList")
-   //  @Mapping(source = "gamemode", target = "gamemode")
+
     GameGetDTO convertEntityToGameGetDTO(Game game);
 
     @Mapping(source = "lobby", target = "lobby")

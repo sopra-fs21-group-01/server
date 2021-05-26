@@ -5,6 +5,7 @@ import ch.uzh.ifi.hase.soprafs21.entity.Chat;
 import ch.uzh.ifi.hase.soprafs21.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs21.entity.User;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.ChatPostDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.FunPostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.LobbyPostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.PlayByNamePutDTO;
 import ch.uzh.ifi.hase.soprafs21.service.ChatService;
@@ -19,11 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import org.springframework.web.client.RestTemplate;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -73,7 +70,10 @@ public class ChatControllerTest {
     private UserService userService;
 
     @MockBean
-    private Lobby lobby;
+    private Chat chat;
+
+    @Mock
+    private RestTemplate restTemplate;
 
 
     @Test
@@ -197,6 +197,25 @@ public class ChatControllerTest {
         mockMvc.perform(deleteRequest)
                 .andExpect(status().isOk());}
 
+    // send an empty message to the external API will give a 400 with text "text is missing"
+    @Test
+    public void externalAPI_FunTranslation_invalidInput_noMessage_badRequest() throws Exception {
+        // given (chatPostDTO has no message)
+        ChatPostDTO chatPostDTO = new ChatPostDTO();
+        FunPostDTO funPostDTO = new FunPostDTO();
+
+        given(restTemplate.postForObject(Mockito.any(), Mockito.any(), Mockito.any())).willReturn(funPostDTO);
+
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder postRequest = post("/chat/funTranslation")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(chatPostDTO));
+
+        // then !! Just Check for the expected output output and for the status type
+        mockMvc.perform(postRequest)
+                .andExpect(status().isBadRequest());
+
+    }
 
     private String asJsonString(final Object object) {
         try {

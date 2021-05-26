@@ -256,9 +256,9 @@ public class GameServiceTest {
     }
 */
 
-// throws exception because it cannot find the users Hand (user might be deleted or already out of the game)
-@Test
-public void playCardTest_userHandNotFound(){
+    // throws exception because it cannot find the users Hand (user might be deleted or already out of the game)
+     @Test
+     public void playCardTest_userHandNotFound(){
    String allowedCard = "5/Blue";
 
    Mockito.when(deckRepository.findById(Mockito.any())).thenReturn(Optional.of(testDeck));
