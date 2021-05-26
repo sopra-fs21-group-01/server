@@ -1,11 +1,7 @@
 package ch.uzh.ifi.hase.soprafs21.service;
-
 import ch.uzh.ifi.hase.soprafs21.entity.Chat;
-import ch.uzh.ifi.hase.soprafs21.entity.Lobby;
-
 import ch.uzh.ifi.hase.soprafs21.repository.ChatRepository;
-import ch.uzh.ifi.hase.soprafs21.repository.LobbyRepository;
-import com.sun.jdi.CharValue;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -13,12 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.BDDMockito.given;
 
 public class ChatServiceTest {
 
