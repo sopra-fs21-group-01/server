@@ -103,7 +103,8 @@ public class GameService {
 
     public void deleteGame(Long gameId){
          gameRepository.deleteById(gameId);
-
+        gameRepository.flush();
+System.out.println("Deleted the game with ID: ");
         log.debug("Deleted the game with ID: {}", gameId);
     }
 
@@ -366,6 +367,13 @@ public class GameService {
         // save deck
         deckRepository.save(deck);
         deckRepository.flush();
+    }
+
+    public void changeHost(Game game){
+        game.setHost("NOHOST");
+
+        gameRepository.save(game);
+        gameRepository.flush();
     }
 
 

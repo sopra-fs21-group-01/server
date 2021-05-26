@@ -63,6 +63,7 @@ public class GameController {
         //delete the game and say the lobby is not in a game anymore
         gameService.deleteGame(id);
         lobbyService.getLobbyById(id).setInGame(false);
+        lobbyService.deleteLobby(id);
     }
 
     // Put mapping when a player plays a card and this card is put on top of the cardstack
@@ -95,6 +96,36 @@ public class GameController {
         Game gameOfId = gameService.getGameById(id);
         gameService.removePlayerFromPlayerList(gameOfId, playerMove.getPlayerId());
         }
+
+    @PutMapping("/game/{id}/leave")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void playerLeavesGame(@PathVariable(value = "id") Long id, @RequestBody PlayerMoveDTO playerMoveDTO) {
+        PlayerMove playerMove = DTOMapper.INSTANCE.convertPlayerMoveDTOToEntity(playerMoveDTO);
+        Game gameOfId = gameService.getGameById(id);
+
+
+        if (userService.getUseryById(playerMove.getPlayerId()).getUsername().equals(gameOfId.getHost())){
+            gameService.removePlayerFromPlayerList(gameOfId, playerMove.getPlayerId());
+            gameService.changeHost(gameOfId);
+
+
+        } else{
+            long currentPlayer = gameOfId.getCurrentPlayerId();
+
+
+            gameService.removePlayerFromPlayerList(gameOfId, playerMove.getPlayerId());
+
+            //if persons leaves an is the currentPLayer: currentplayer +1
+            if (playerMoveDTO.getPlayerId() == currentPlayer){
+                gameOfId.setCurrentPlayerPlusOne();
+            }
+        }
+    }
+
+
+
+
 
     @PutMapping("/game/{id}/drawCard")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -132,7 +163,6 @@ public class GameController {
         List<Long> opponentList = gameOfId.getPlayerList();
         List<Integer> opponentHandSize = new ArrayList<>();
 
-        System.out.println("opponentList (before Loop) is: " + opponentList);
 
 
         for (int i = 0; i < opponentList.size(); i++) {
@@ -140,8 +170,6 @@ public class GameController {
             opponentHandSize.add(handSize);
         }
 
-        System.out.println("opponentList is: " + opponentList);
-        System.out.println("opponentHandSize is: " + opponentHandSize);
 
         List<String> userNameHandSize = new ArrayList<>();
         for (int i = 0; i < opponentList.size(); i++) {
@@ -152,9 +180,10 @@ public class GameController {
             userNameHandSize.add(usernameHand);
         }
 
-        System.out.println("userNameHandSize is: " + userNameHandSize);
+
 
         GameGetDTO gameGetDTO = DTOMapper.INSTANCE.convertEntityToGameGetDTO(gameOfId);
+        System.out.println("Current host is:" + gameGetDTO.getHost());
         gameGetDTO.setOpponentListHands(userNameHandSize);
 
         return gameGetDTO;

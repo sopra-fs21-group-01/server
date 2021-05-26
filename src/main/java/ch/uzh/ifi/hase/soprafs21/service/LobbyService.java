@@ -146,6 +146,7 @@ public class LobbyService {
 
         Lobby dummyLobby = getLobbyById(lobbyId);
         lobbyRepository.deleteById(lobbyId);
+        lobbyRepository.flush();
 
         log.debug("Deleted the lobby with ID: {}", lobbyId);
     }
