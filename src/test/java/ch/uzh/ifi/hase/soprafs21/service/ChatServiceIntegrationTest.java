@@ -14,6 +14,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -30,17 +31,15 @@ public class ChatServiceIntegrationTest {
     private ChatService chatService;
 
     @BeforeEach
-    public void setup() {chatRepository.deleteAll();}
+    public void setup() { chatRepository.deleteAll(); }
 
     // test for valid Chat creation
     @Test
     public void createChat_validInputs_success() {
         // given
-        assertThrows(NoSuchElementException.class, () -> {chatRepository.findById(1L).get();});
-
+        assertEquals(chatRepository.findById(1L), Optional.empty());
 
         Chat testChat = new Chat();
-        testChat.setId(1L);
         testChat.setlobby(2L);
         testChat.setMessage("I am a test message");
         testChat.setTimestamp("01/01/2021");
@@ -48,7 +47,6 @@ public class ChatServiceIntegrationTest {
         Chat createdChat = chatService.createChat(testChat);
 
         // then
-        assertEquals(testChat.getId(), createdChat.getId());
         assertEquals(testChat.getlobby(), createdChat.getlobby());
         assertEquals(testChat.getMessage(), createdChat.getMessage());
         assertEquals(testChat.getTimestamp(), createdChat.getTimestamp());
