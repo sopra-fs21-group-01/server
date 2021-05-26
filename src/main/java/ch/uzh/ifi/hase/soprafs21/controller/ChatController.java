@@ -96,12 +96,11 @@ public class ChatController {
         final String url = "https://api.funtranslations.com/translate/"+ languages.get(0) +".json";
 
         String text = chatPostDTO.getMessage();
-        String[] arrOfStr = text.split("/");
-        String message = arrOfStr[1];
-
-        if (message == null){
+        if (text == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not translate empty message!");
         }
+        String[] arrOfStr = text.split("/");
+        String message = arrOfStr[1];
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
