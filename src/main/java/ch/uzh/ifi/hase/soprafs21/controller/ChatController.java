@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import org.json.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @Qualifier("chatController")
@@ -74,8 +75,12 @@ public class ChatController {
         chatService.deleteChat(id);
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////
 
-    @PostMapping("game/funTranslation")
+    // POST for external API translation
+    @PostMapping("chat/funTranslation")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
     public ChatGetDTO funTranslation(@RequestBody ChatPostDTO chatPostDTO){
 
         List<String> languages = new ArrayList<String>(){{
@@ -91,6 +96,10 @@ public class ChatController {
         final String url = "https://api.funtranslations.com/translate/"+ languages.get(0) +".json";
 
         String message = chatPostDTO.getMessage();
+
+        if (message == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not translate empty message!");
+        }
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -112,7 +121,5 @@ public class ChatController {
         Chat createdChat = chatService.createChat(userInput);
 
         return DTOMapper.INSTANCE.convertEntityToChatGetDTO(createdChat);
-
-
     }
 }

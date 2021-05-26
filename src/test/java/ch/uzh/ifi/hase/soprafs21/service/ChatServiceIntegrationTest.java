@@ -44,7 +44,7 @@ public class ChatServiceIntegrationTest {
 
 
         Chat testChat = new Chat();
-        testChat.setId(1L);
+        testChat.setId(3L);
         testChat.setlobby(2L);
         testChat.setMessage("I am a test message");
         testChat.setTimestamp("01/01/2021");

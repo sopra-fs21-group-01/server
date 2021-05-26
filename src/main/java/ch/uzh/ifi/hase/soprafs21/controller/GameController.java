@@ -116,10 +116,7 @@ public class GameController {
         Long playerId = playerMove.getPlayerId();
 
         gameService.sayUno(gameOfId, playerId);
-
-
-
-    }
+        }
 
     // GetMapping for receiving the players
     @GetMapping("/game/{id}/kickOff")
