@@ -90,7 +90,9 @@ public class ChatController {
 
         final String url = "https://api.funtranslations.com/translate/"+ languages.get(0) +".json";
 
-        String message = chatPostDTO.getMessage();
+        String text = chatPostDTO.getMessage();
+        String[] arrOfStr = text.split("/");
+        String message = arrOfStr[1];
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -106,7 +108,8 @@ public class ChatController {
         FunPostDTO funPostDTO = restTemplate.postForObject(url, request, FunPostDTO.class);
 
         assert funPostDTO != null;
-        chatPostDTO.setMessage(funPostDTO.getContents().get("translated"));
+        String newMessage = arrOfStr[0] + "/" + funPostDTO.getContents().get("translated");
+        chatPostDTO.setMessage(newMessage);
 
         Chat userInput = DTOMapper.INSTANCE.convertChatPostDTOtoEntity(chatPostDTO);
         Chat createdChat = chatService.createChat(userInput);
