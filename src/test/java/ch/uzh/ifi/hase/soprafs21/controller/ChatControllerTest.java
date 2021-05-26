@@ -197,38 +197,6 @@ public class ChatControllerTest {
         mockMvc.perform(deleteRequest)
                 .andExpect(status().isOk());}
 
-   /** // test if external API is called. Test if a chat was created and if it has right timestamp and lobbyid
-    @Test
-    public void externalAPI_FunTranslation_validInput_ChatCreated() throws Exception {
-        // given
-        ChatPostDTO chatPostDTO = new ChatPostDTO();
-        chatPostDTO.setMessage("Bratan/Im a test message for the postDTO");
-
-        FunPostDTO funPostDTO = new FunPostDTO();
-
-        Chat testChat = new Chat();
-        testChat.setId(1L);
-        testChat.setlobby(2L);
-        testChat.setMessage("I am a test message");
-        testChat.setTimestamp("01/01/2021");
-
-        given(chatService.createChat(Mockito.any())).willReturn(testChat);
-        given(restTemplate.postForObject(Mockito.any(), Mockito.any(), Mockito.any())).willReturn(funPostDTO);
-
-
-        // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder postRequest = post("/chat/funTranslation")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(chatPostDTO));
-
-        // then !! Just Check for the expected output output and for the status type
-        mockMvc.perform(postRequest)
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.lobby", is(testChat.getlobby().intValue())))
-                .andExpect(jsonPath("$.timestamp", is(testChat.getTimestamp())));
-    } */
-
-
     // send an empty message to the external API will give a 400 with text "text is missing"
     @Test
     public void externalAPI_FunTranslation_invalidInput_noMessage_badRequest() throws Exception {
