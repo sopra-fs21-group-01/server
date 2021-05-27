@@ -93,6 +93,7 @@ public class GameController {
         gameService.removePlayerFromPlayerList(gameOfId, playerMove.getPlayerId());
         }
 
+
     @PutMapping("/game/{id}/leave")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody

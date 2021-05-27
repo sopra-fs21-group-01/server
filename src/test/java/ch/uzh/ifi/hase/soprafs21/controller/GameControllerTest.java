@@ -39,21 +39,15 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
-import org.springframework.test.web.servlet.ResultMatcher;
+import static org.junit.jupiter.api.Assertions.*;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collections;
 import java.util.*;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+
 
 @WebMvcTest(GameController.class)
 public class GameControllerTest {
@@ -571,6 +565,8 @@ public class GameControllerTest {
         mockMvc.perform(putRequest)
                 .andExpect(status().isNotFound());}
 
+
+    // PUT test for succesfully leaving the game
     @Test
     public void leaveGame_succesfully() throws Exception{
         GamePostDTO gamePostDTO = new GamePostDTO();
@@ -593,6 +589,11 @@ public class GameControllerTest {
         testGame.setPlayerList(testPlayerList);
         testGame.setId(1L);
         testGame.setHost("Hans");
+        testGame.setCurrentPlayer(2);
+
+
+
+
 
         given(userService.getUseryById(Mockito.any())).willReturn(testUser);
         given(gameService.getGameById(Mockito.any())).willReturn(testGame);
@@ -605,12 +606,89 @@ public class GameControllerTest {
 
         // then
         mockMvc.perform(putRequest).andExpect(status().isNoContent());
+        assertEquals(2, testGame.getCurrentPlayer());
+        Mockito.verify(gameService, Mockito.times(1)).removePlayerFromPlayerList(Mockito.any(), Mockito.any());
+
 
 
 
     }
 
+    // PUT test saying UNO
+    @Test
+    public void sayUNO_succesfully() throws Exception{
+        GamePostDTO gamePostDTO = new GamePostDTO();
+        gamePostDTO.setId(2L);
 
+        testUser = new User();
+        testUser.setUsername("Hans");
+        testUser.setId(2L);
+
+        Game testGame = new Game();
+        // List of player ID's
+        List<Long> testPlayerList = new ArrayList<Long>(){
+            {
+                add(2L);
+                add(3L);
+                add(5L);
+            }};
+
+        testGame = new Game();
+        testGame.setPlayerList(testPlayerList);
+        testGame.setId(1L);
+        testGame.setHost("Hans");
+        testGame.setCurrentPlayer(2);
+
+        given(userService.getUseryById(Mockito.any())).willReturn(testUser);
+        given(gameService.getGameById(Mockito.any())).willReturn(testGame);
+
+        // when
+        MockHttpServletRequestBuilder putRequest = put("/game/{id}/sayUno", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(gamePostDTO));
+
+        // then
+        mockMvc.perform(putRequest).andExpect(status().isNoContent());
+        Mockito.verify(gameService, Mockito.times(1)).sayUno(Mockito.any(), Mockito.any());
+        }
+
+    // PUT test for when a player wins
+    @Test
+    public void playerWins_succesfully() throws Exception{
+        GamePostDTO gamePostDTO = new GamePostDTO();
+        gamePostDTO.setId(2L);
+
+        testUser = new User();
+        testUser.setUsername("Hans");
+        testUser.setId(2L);
+
+        Game testGame = new Game();
+        // List of player ID's
+        List<Long> testPlayerList = new ArrayList<Long>(){
+            {
+                add(2L);
+                add(3L);
+                add(5L);
+            }};
+
+        testGame = new Game();
+        testGame.setPlayerList(testPlayerList);
+        testGame.setId(1L);
+        testGame.setHost("Hans");
+        testGame.setCurrentPlayer(2);
+
+        given(userService.getUseryById(Mockito.any())).willReturn(testUser);
+        given(gameService.getGameById(Mockito.any())).willReturn(testGame);
+
+        // when
+        MockHttpServletRequestBuilder putRequest = put("/game/{id}/wins", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(gamePostDTO));
+
+        // then
+        mockMvc.perform(putRequest).andExpect(status().isNoContent());
+        Mockito.verify(gameService, Mockito.times(1)).removePlayerFromPlayerList(Mockito.any(), Mockito.any());
+    }
     // DELETE test for successfully deleting a Game
     @Test
     public void deleteGame_succesfully() throws Exception {
