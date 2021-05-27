@@ -113,14 +113,19 @@ public class LobbyController {
     @ResponseBody
     public LobbyGetDTO getSingleLobby(@PathVariable(value = "id") Long id){
 
+try{
+    Lobby lobbyOfId = lobbyService.getLobbyById(id);
 
+    LobbyGetDTO lobbyGetDTO = DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobbyOfId);
+    lobbyGetDTO.setWinnerList(gameService.getWinner(id));
+    return lobbyGetDTO;
+}catch (Exception e){
+    return null;
+}
         // get Lobby from repository
-        Lobby lobbyOfId = lobbyService.getLobbyById(id);
 
-        LobbyGetDTO lobbyGetDTO = DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobbyOfId);
-        lobbyGetDTO.setWinnerList(gameService.getWinner(id));
 
-        return lobbyGetDTO;
+
 
     }
 
