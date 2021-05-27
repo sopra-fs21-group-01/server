@@ -1,30 +1,28 @@
 package ch.uzh.ifi.hase.soprafs21.controller;
-
-import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs21.entity.Chat;
-import ch.uzh.ifi.hase.soprafs21.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs21.entity.User;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.ChatPostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.FunPostDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.LobbyPostDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.PlayByNamePutDTO;
+
 import ch.uzh.ifi.hase.soprafs21.service.ChatService;
 import ch.uzh.ifi.hase.soprafs21.service.GameService;
 import ch.uzh.ifi.hase.soprafs21.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.aspectj.lang.annotation.Before;
-import org.junit.jupiter.api.BeforeEach;
+
+import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.RestTemplate;
+
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,22 +31,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.util.Collections;
 import java.util.List;
-
 import static org.hamcrest.Matchers.*;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+
 
 @WebMvcTest(ChatController.class)
 public class ChatControllerTest {
@@ -56,6 +45,17 @@ public class ChatControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @MockBean
+    private HttpHeaders httpHeaders;
+
+    @MockBean
+    private JSONObject jsonObject;
+
+    @MockBean
+    private FunPostDTO funPostDTO;
+
+    @MockBean
+    private RestTemplate restTemplate;
 
     @MockBean
     private ChatService chatService;
@@ -71,9 +71,6 @@ public class ChatControllerTest {
 
     @MockBean
     private Chat chat;
-
-    @Mock
-    private RestTemplate restTemplate;
 
 
     @Test
@@ -197,6 +194,32 @@ public class ChatControllerTest {
         mockMvc.perform(deleteRequest)
                 .andExpect(status().isOk());}
 
+    // test external API"
+    @Test
+    public void externalAPI_FunTranslation_valid() throws Exception {
+        // given (chatPostDTO has no message)
+
+        ChatPostDTO chatPostDTO = new ChatPostDTO();
+        chatPostDTO.setMessage("Bratan/Im a test message");
+        FunPostDTO funPostDTO = new FunPostDTO();
+
+        when(restTemplate.postForObject(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(funPostDTO);
+
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder postRequest = post("/chat/funTranslation")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(chatPostDTO));
+
+        // then !! Just Check for the expected output output and for the status type
+        mockMvc.perform(postRequest)
+                .andExpect(status().isCreated());
+          Mockito.verify(chatService, Mockito.times(1)).createChat(Mockito.any());
+      //  Mockito.verify(httpHeaders, Mockito.times(1)).setContentType(Mockito.any());
+      //  Mockito.verify(jsonObject, Mockito.times(1)).put(Mockito.any(), Mockito.any());
+      //   Mockito.verify(restTemplate, Mockito.times(1)).postForObject(Mockito.any(), Mockito.any(), Mockito.any());
+
+
+    }
     // send an empty message to the external API will give a 400 with text "text is missing"
     @Test
     public void externalAPI_FunTranslation_invalidInput_noMessage_badRequest() throws Exception {
@@ -214,7 +237,6 @@ public class ChatControllerTest {
         // then !! Just Check for the expected output output and for the status type
         mockMvc.perform(postRequest)
                 .andExpect(status().isBadRequest());
-
     }
 
     private String asJsonString(final Object object) {
