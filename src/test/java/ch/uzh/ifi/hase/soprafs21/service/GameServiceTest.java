@@ -252,7 +252,7 @@ public class GameServiceTest {
 
     }
 
-    // test when the played card is not in the user hand, throw exception
+   /** // test when the played card is not in the user hand, throw exception
     @Test
     public void playCardTest_cardNotInUserHand(){
         userHand = new Hand();
@@ -278,7 +278,7 @@ public class GameServiceTest {
 
         assertThrows(ResponseStatusException.class, () ->gameService.playCard(testGame, testUser, NotAllowedCard));
     }
-
+*/
 
     // throws exception because it cannot find the users Hand (user might be deleted or already out of the game)
      @Test
@@ -318,7 +318,7 @@ public class GameServiceTest {
 
     }
 
-  /**  // check with invalid cards, can be extended by all edge cases
+   // check with invalid cards, can be extended by all edge cases
      @Test
     public void checkIfMoveAllowedTest_invalid(){
         testGame = new Game();
@@ -335,7 +335,7 @@ public class GameServiceTest {
         Mockito.when(deckRepository.findById(Mockito.any())).thenReturn(Optional.of(testDeck));
 
         assertFalse(gameService.checkIfMoveAllowed(testGame, notallowedCard));}
-*/
+
 
    // Test if the Uno boolean of a Hand is set to True if player calls it and handsize is 1
    @Test

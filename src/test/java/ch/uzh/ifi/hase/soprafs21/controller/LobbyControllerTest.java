@@ -130,7 +130,7 @@ public class LobbyControllerTest {
 
  //GET tests the GET for single Lobby with valid id. Test for Status and Output content
  @Test
- public void singleUser_whenGetSingleLobby_thenReturnJsonArray() throws Exception {
+ public void singleLobby_whenGetSingleLobby_thenReturnJsonArray() throws Exception {
  // given
  Lobby testLobby = new Lobby();
  testLobby.setId(1L);
@@ -148,20 +148,17 @@ public class LobbyControllerTest {
  // then
  mockMvc.perform(getRequest).andExpect(status().isOk())
  .andExpect(jsonPath("$.id", is(testLobby.getId().intValue())))
- //    .andExpect(jsonPath("$.name", is(testLobby.getName())))
- //    .andExpect(jsonPath("$.password", is(testLobby.getPassword())))
  .andExpect(jsonPath("$.host", is(testLobby.getHost())));
  }
 
 
- // GET tests the  GET for single lobby with invalid input. Test if if status is right
+ // GET tests the  GET for single lobby with invalid input. This will not throw the erro but catch it and return null
  @Test
- public void getLobby_invalidID_throwsException() throws Exception {
+ public void getLobby_invalidID_willReturnNull() throws Exception {
  // given
  Lobby testLobby = new Lobby();
  testLobby.setId(1L);
- //   testLobby.setName("testName");
- //  testLobby.setPassword("testPassword");
+
  testLobby.setHost("testHost");
 
 
@@ -169,11 +166,12 @@ public class LobbyControllerTest {
  given(lobbyService.getLobbyById(Mockito.any())).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby with given ID was not found"));
 
  // when
- MockHttpServletRequestBuilder getRequest = get("/lobbies/{id}", 1L)
+ MockHttpServletRequestBuilder getRequest = get("/lobbies/{id}", 2L)
  .contentType(MediaType.APPLICATION_JSON);
  // then
- mockMvc.perform(getRequest).andExpect(status().isNotFound())
- ; }
+ mockMvc.perform(getRequest).andExpect(status().isOk());
+Mockito.verify(lobbyService, Mockito.times(1)).getLobbyById(Mockito.any());
+ }
 
  // GET test to get all lobbies
  @Test
@@ -257,8 +255,7 @@ public class LobbyControllerTest {
 
      Lobby testLobby = new Lobby();
      testLobby.setId(1L);
-     // testLobby.setName("testName");
-     // testLobby.setPassword("testPassword");
+
      testLobby.setHost("testHost");
 
      PlayByNamePutDTO playByNamePutDTO = new PlayByNamePutDTO();
