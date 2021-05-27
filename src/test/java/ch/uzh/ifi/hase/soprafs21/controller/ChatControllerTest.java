@@ -214,9 +214,6 @@ public class ChatControllerTest {
         mockMvc.perform(postRequest)
                 .andExpect(status().isCreated());
           Mockito.verify(chatService, Mockito.times(1)).createChat(Mockito.any());
-      //  Mockito.verify(httpHeaders, Mockito.times(1)).setContentType(Mockito.any());
-      //  Mockito.verify(jsonObject, Mockito.times(1)).put(Mockito.any(), Mockito.any());
-      //   Mockito.verify(restTemplate, Mockito.times(1)).postForObject(Mockito.any(), Mockito.any(), Mockito.any());
 
 
     }
