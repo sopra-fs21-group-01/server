@@ -73,16 +73,16 @@ public class GameControllerTest {
     private UserService userService;
 
     @MockBean
-    private Lobby lobby;
+    private Lobby testLobby;
 
     @MockBean
-    private  Game game;
+    private  Game testGame;
 
     @MockBean
-    private Hand hand;
+    private Hand testHand;
 
     @MockBean
-    private User user;
+    private User testUser;
 
     @MockBean
     private HandRepository handRepository;
@@ -190,27 +190,27 @@ public class GameControllerTest {
     }
 
 
-    /**   // HOW TO MOCK A HAND??? ALWAYS NULLL
-    // -> How to control one return that is not a json File?
+    // GET test for the whole game object
     @Test
-    public void getGame_whenGetPlayerlist_thenReturnArrayWithNames() throws Exception {
-        Hand testHand = new Hand();
+    public void getGame_whenGetPlayerlist_thenReturnGame() throws Exception {
+        testHand = new Hand();
+        testHand.setId(1L);
+        List<String> testCards =new ArrayList<>();
+        testCards.add("red/8");
+        testCards.add("blue/1");
+        testHand.setCards(testCards);
 
-        User testUser = new User();
+        testUser = new User();
         testUser.setUsername("Hans");
         testUser.setId(2L);
         List<String> testPlayerListForLobby = new ArrayList<String>(){
             {
                 add("Hans");
-                add("Jörg");
-                add("Peter");
             }};
         testUser.setHandId(testHand.getId());
 
-        Lobby testLobby = new Lobby();
+        testLobby = new Lobby();
         testLobby.setId(1L);
-        //   testLobby.setName("testName");
-        //  testLobby.setPassword("testPassword");
         testLobby.setHost("testHost");
         testLobby.setPlayerList(testPlayerListForLobby);
 
@@ -220,16 +220,16 @@ public class GameControllerTest {
                 add(2L);
             }};
 
-        game.setPlayerList(testPlayerList);
-        game.setId(1L);
+        testGame = new Game();
+        testGame.setPlayerList(testPlayerList);
+        testGame.setId(1L);
+        testGame.setHost("Hans");
 
         Mockito.when(handRepository.save(Mockito.any())).thenReturn(testHand);
-        given(userService.getUserbyId(Mockito.any())).willReturn(testUser);
         given(gameService.getHandById(Mockito.any())).willReturn(testHand);
-        given(gameService.getGameById(Mockito.any())).willReturn(game);
-        given(game.getPlayerList()).willReturn(testPlayerList);
+        given(gameService.getGameById(Mockito.any())).willReturn(testGame);
+        given(userService.getUseryById(Mockito.any())).willReturn(testUser);
         given(lobbyService.getLobbyById(Mockito.any())).willReturn(testLobby);
-        given(lobby.getPlayerList()).willReturn(testPlayerListForLobby);
 
 
         // when
@@ -237,10 +237,14 @@ public class GameControllerTest {
                 .contentType(MediaType.APPLICATION_JSON);
 
         // then
-        mockMvc.perform(getRequest).andExpect(status().isOk()).andExpect(jsonPath("id", is(1L)))
+        mockMvc.perform(getRequest).andExpect(status().isOk())
+                .andExpect(jsonPath("currentPlayer", is(2)))
+                .andExpect(jsonPath("id", is(1)))
+                .andExpect(jsonPath("host", is("Hans")))
+                .andExpect(jsonPath("$.opponentListHands[0]", is("2,Hans,2,false")))
                 ;
 
-    } */
+    }
 
     @Test
     public void getGame_whenGetPlayerlist_thenReturnArrayWithNames_wrongGameID() throws Exception {
@@ -270,8 +274,8 @@ public class GameControllerTest {
              add(2L);
          }};
 
-     game.setPlayerList(testPlayerList);
-     game.setId(1L);
+     testGame.setPlayerList(testPlayerList);
+     testGame.setId(1L);
 
      given(gameService.getGameById(1L)).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with given ID was not found"));
 
@@ -321,7 +325,6 @@ public class GameControllerTest {
 
 
     // GET tests the GET for the ID of the current player
-    //
     @Test
     public void getGame_whengetCurrentID_thenLongOfPlayerWhosTurnItIs() throws Exception {
 
@@ -567,6 +570,45 @@ public class GameControllerTest {
         // then !!! Just check for NULL output and status code
         mockMvc.perform(putRequest)
                 .andExpect(status().isNotFound());}
+
+    @Test
+    public void leaveGame_succesfully() throws Exception{
+        GamePostDTO gamePostDTO = new GamePostDTO();
+        gamePostDTO.setId(2L);
+
+        testUser = new User();
+        testUser.setUsername("Hans");
+        testUser.setId(2L);
+
+        Game testGame = new Game();
+        // List of player ID's
+        List<Long> testPlayerList = new ArrayList<Long>(){
+            {
+                add(2L);
+                add(3L);
+                add(5L);
+            }};
+
+        testGame = new Game();
+        testGame.setPlayerList(testPlayerList);
+        testGame.setId(1L);
+        testGame.setHost("Hans");
+
+        given(userService.getUseryById(Mockito.any())).willReturn(testUser);
+        given(gameService.getGameById(Mockito.any())).willReturn(testGame);
+
+
+        // when
+        MockHttpServletRequestBuilder putRequest = put("/game/{id}/leave", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(gamePostDTO));
+
+        // then
+        mockMvc.perform(putRequest).andExpect(status().isNoContent());
+
+
+
+    }
 
 
     // DELETE test for successfully deleting a Game
