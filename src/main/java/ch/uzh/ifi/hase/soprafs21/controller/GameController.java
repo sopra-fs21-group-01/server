@@ -94,7 +94,12 @@ public class GameController {
     public void playerFinishesHand(@PathVariable(value = "id") Long id, @RequestBody PlayerMoveDTO playerMoveDTO) {
         PlayerMove playerMove = DTOMapper.INSTANCE.convertPlayerMoveDTOToEntity(playerMoveDTO);
         Game gameOfId = gameService.getGameById(id);
+
+        gameService.addWinner(gameOfId,playerMove.getPlayerId());
+
         gameService.removePlayerFromPlayerList(gameOfId, playerMove.getPlayerId());
+
+
         }
 
     @PutMapping("/game/{id}/leave")
@@ -106,11 +111,13 @@ public class GameController {
 
 
         if (userService.getUseryById(playerMove.getPlayerId()).getUsername().equals(gameOfId.getHost())){
+
             gameService.removePlayerFromPlayerList(gameOfId, playerMove.getPlayerId());
             gameService.changeHost(gameOfId);
 
 
         } else if (gameOfId.getPlayerList().size()==1){
+
             gameService.removePlayerFromPlayerList(gameOfId, playerMove.getPlayerId());
 
         }

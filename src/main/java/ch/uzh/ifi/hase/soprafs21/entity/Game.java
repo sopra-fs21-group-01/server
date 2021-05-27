@@ -42,6 +42,18 @@ public class Game implements Serializable {
     @Column
     private Long initialCards;
 
+
+    public List<String> getWinner() {
+        return winner;
+    }
+
+    public void setWinner(List<String> winner) {
+        this.winner = winner;
+    }
+
+    @ElementCollection
+    private List<String> winner =null;
+
     public Long getInitialCards() {
         return initialCards;
     }
@@ -142,6 +154,8 @@ public class Game implements Serializable {
 public int getCurrentPlayer() {
         return currentPlayer;
 }
+
+
 
 
 

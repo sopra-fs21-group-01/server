@@ -14,6 +14,16 @@ public class LobbyGetDTO {
 
     private List<String> playerList;
 
+    public List<String> getWinnerList() {
+        return WinnerList;
+    }
+
+    public void setWinnerList(List<String> winnerList) {
+        WinnerList = winnerList;
+    }
+
+    private List<String> WinnerList;
+
     private String gamemode;
 
     private boolean isInGame;

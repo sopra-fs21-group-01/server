@@ -22,9 +22,15 @@ public class GameGetDTO {
 
     private String chat;
 
+
+
+    private List<String> winner;
+
     public List<String> getOpponentListHands() {
         return opponentListHands;
     }
+
+
 
     public void setOpponentListHands(List<String> opponentListHands) {
         this.opponentListHands = opponentListHands;
@@ -79,6 +85,14 @@ public class GameGetDTO {
     public void setHost(String host) {
 
         this.host = host;
+    }
+
+    public List<String> getWinner() {
+        return winner;
+    }
+
+    public void setWinner(List<String> winner) {
+        this.winner = winner;
     }
 
  /**   public Deck getCardStack() {

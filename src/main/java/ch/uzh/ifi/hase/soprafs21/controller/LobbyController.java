@@ -1,11 +1,13 @@
 package ch.uzh.ifi.hase.soprafs21.controller;
 
+import ch.uzh.ifi.hase.soprafs21.entity.Game;
 import ch.uzh.ifi.hase.soprafs21.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs21.entity.User;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.LobbyGetDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.LobbyPostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.PlayByNamePutDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapper;
+import ch.uzh.ifi.hase.soprafs21.service.GameService;
 import ch.uzh.ifi.hase.soprafs21.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,8 +23,9 @@ public class LobbyController {
 
     private  final LobbyService lobbyService;
     private  final UserService userService;
+    private  final GameService gameService;
 
-    LobbyController(LobbyService lobbyService, UserService userService){this.lobbyService = lobbyService; this.userService = userService; }
+    LobbyController(LobbyService lobbyService, UserService userService, GameService gameService){this.lobbyService = lobbyService; this.userService = userService; this.gameService = gameService;}
 
     // post a lobby
     @PostMapping("/lobbies")
@@ -71,6 +74,8 @@ public class LobbyController {
     @ResponseBody
     public void setIsInGameBoolToFalse(@PathVariable(value = "id") Long id) {
         lobbyService.resetLobby(id);
+        Game game = gameService.getGameById(id);
+        gameService.addWinner(game, game.getPlayerList().get(0) );
     }
 
     // Put mapping to for joining a Lobby
@@ -108,10 +113,15 @@ public class LobbyController {
     @ResponseBody
     public LobbyGetDTO getSingleLobby(@PathVariable(value = "id") Long id){
 
+
         // get Lobby from repository
         Lobby lobbyOfId = lobbyService.getLobbyById(id);
 
-        // convert internal representation of lobby back to API
-        return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobbyOfId);}
+        LobbyGetDTO lobbyGetDTO = DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobbyOfId);
+        lobbyGetDTO.setWinnerList(gameService.getWinner(id));
+
+        return lobbyGetDTO;
+
+    }
 
 }

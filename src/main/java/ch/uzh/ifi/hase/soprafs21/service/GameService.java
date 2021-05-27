@@ -376,6 +376,36 @@ System.out.println("Deleted the game with ID: ");
         gameRepository.flush();
     }
 
+    public void addWinner(Game game, Long winner){
+        if (game.getWinner()==null){
+                List<String> winnerList = new ArrayList<>();
+                winnerList.add(userService.getUseryById(winner).getUsername());
+
+                game.setWinner(winnerList);
+
+            } else{
+            game.getWinner().add(userService.getUseryById(winner).getUsername());
+        }
+
+
+        gameRepository.save(game);
+        gameRepository.flush();
+    }
+
+    public List<String> getWinner(Long id){
+        try {
+            Game game = getGameById(id);
+
+
+            return game.getWinner();
+        } catch (Exception e){
+            return null;
+        }
+
+
+
+
+    }
 
 
 }
