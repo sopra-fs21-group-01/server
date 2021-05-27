@@ -100,18 +100,14 @@ public class GameController {
         PlayerMove playerMove = DTOMapper.INSTANCE.convertPlayerMoveDTOToEntity(playerMoveDTO);
         Game gameOfId = gameService.getGameById(id);
 
-        if (userService.getUseryById(playerMove.getPlayerId()).getUsername().equals(gameOfId.getHost())){
+        if (userService.getUseryById(playerMove.getPlayerId()).getUsername().equals(gameOfId.getHost())) {
             gameService.removePlayerFromPlayerList(gameOfId, playerMove.getPlayerId());
-            gameService.changeHost(gameOfId);
+            gameService.changeHost(gameOfId);}
 
-
-        } else if (gameOfId.getPlayerList().size()==1){
-            gameService.removePlayerFromPlayerList(gameOfId, playerMove.getPlayerId());
-
-        }
+        else if (gameOfId.getPlayerList().size()==1){
+        gameService.removePlayerFromPlayerList(gameOfId, playerMove.getPlayerId());}
 
         else {
-        } {
             long currentPlayer = gameOfId.getCurrentPlayerId();
 
             gameService.removePlayerFromPlayerList(gameOfId, playerMove.getPlayerId());
