@@ -104,7 +104,14 @@ public class GameController {
             gameService.removePlayerFromPlayerList(gameOfId, playerMove.getPlayerId());
             gameService.changeHost(gameOfId);
 
-        } else{
+
+        } else if (gameOfId.getPlayerList().size()==1){
+            gameService.removePlayerFromPlayerList(gameOfId, playerMove.getPlayerId());
+
+        }
+
+        else {
+        } {
             long currentPlayer = gameOfId.getCurrentPlayerId();
 
             gameService.removePlayerFromPlayerList(gameOfId, playerMove.getPlayerId());

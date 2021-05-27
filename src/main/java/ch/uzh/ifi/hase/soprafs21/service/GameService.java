@@ -319,7 +319,7 @@ System.out.println("Deleted the game with ID: ");
             newHand.setId(userService.getUseryById(player).getId());
 
             // initial handsize hardcoded as 7
-            long startCards = 7;
+            long startCards = 1;
             if (game.getInitialCards()!= null){
                 startCards = game.getInitialCards();
             }
