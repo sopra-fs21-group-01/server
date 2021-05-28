@@ -134,6 +134,7 @@ public class LobbyService {
         lobbyToReset.setInGame(false);
 
         this.lobbyRepository.save(lobbyToReset);
+        lobbyRepository.flush();
 
         log.debug("reset Lobby with ID {}", lobbyToReset.getId());
 
