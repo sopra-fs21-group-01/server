@@ -106,7 +106,7 @@ public class UserService {
             return userFoundById;
         }
         if (userFoundById == null){
-            throw new UserNotFoundException("User with given ID was not found");}
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with given ID was not found");}
         return userFoundById;
     }
 
@@ -131,6 +131,7 @@ public class UserService {
                 usertoEdit.setPassword(user.getPassword());
             }
             userRepository.save(usertoEdit);
+            userRepository.flush();
             return usertoEdit;
         }
         // status code 404 if user does not exist
