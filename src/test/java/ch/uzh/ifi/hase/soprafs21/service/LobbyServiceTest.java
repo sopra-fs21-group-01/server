@@ -189,7 +189,7 @@ public class LobbyServiceTest {
     // update a lobby, change the lobby object
     @Test
     public void updateLobbyTest_valid(){
-       Lobby createdLobby = lobbyService.createLobby(testLobby);
+       Lobby createdLobby = new Lobby();
 
        Lobby updatedLobby = new Lobby();
        updatedLobby.setId(1L);

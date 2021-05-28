@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs21.service;
 
+import ch.qos.logback.classic.gaffer.GafferUtil;
 import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs21.entity.*;
 
@@ -389,6 +390,34 @@ public class GameServiceTest {
         assertSame("Blue", testGame.getCurrentColor());
         Mockito.verify(gameRepository, Mockito.times(1)).save(Mockito.any());
         Mockito.verify(gameRepository, Mockito.times(1)).flush();
+    }
+
+    // test delete a game
+    @Test
+    public void deleteGame_success(){
+
+        when(gameRepository.findById(Mockito.any())).thenReturn(Optional.of(testGame));
+
+        gameService.deleteGame(1L);
+
+        Mockito.verify(gameRepository, Mockito.times(1)).deleteById(Mockito.any());
+        Mockito.verify(gameRepository, Mockito.times(1)).flush();
+
+    }
+
+    // update a game, change the game object
+    @Test
+    public void updateGameTest_valid(){
+        Game createdGame = new Game();
+
+        Game updatedGame = new Game();
+        updatedGame.setId(1L);
+        updatedGame.setHost("newHost");
+
+        createdGame = gameService.updateGame(updatedGame);
+
+        assertSame(createdGame.getId(), updatedGame.getId());
+        assertSame("newHost", createdGame.getHost());
     }
 
 
