@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.swing.*;
@@ -93,22 +94,29 @@ public class GameServiceTest {
         testUser = new User();
         testUser.setId(1L);
         testUser.setHandId(1L);
+        testUser.setUsername("Hans");
 
         // given
         testLobby = new Lobby();
         testLobby.setId(1L);
         testLobby.setHost("testHost");
+        List<String> testPlayerList_names = Collections.singletonList("Hans");
+        testLobby.setPlayerList(testPlayerList_names);
+
 
         testDeck= new Deck();
         testDeck.setId(1L);
 
         testGame = new Game();
-        List<Long> testPlayerList = Collections.singletonList(2L);
+        List<Long> testPlayerList = new ArrayList<>();
+        testPlayerList.add(1L);
+        testPlayerList.add(2L);
         testGame.setId(1L);
         testGame.setHost("testHost");
         testGame.setPlayerList(testPlayerList);
         testGame.setCurrentColor("Blue");
         testGame.setCurrentValue("0");
+        testGame.setCurrentPlayer(1);
 
         userHand = new Hand();
         List<String> myList = new ArrayList<>();
@@ -142,14 +150,15 @@ public class GameServiceTest {
     public void createGameTest_valid(){
         Game testGame2 = new Game();
         List<Long> testPlayerList = new ArrayList<>();
+        testPlayerList.add(1L);
         testPlayerList.add(2L);
         testGame2.setId(1L);
         testGame2.setHost("testHost");
         testGame2.setPlayerList(testPlayerList);
 
 
-        // assert that only the testUser is in the playerList
-        assertEquals(testGame2.getPlayerList().size(), 1);
+        // assert that two users are present
+        assertEquals(testGame2.getPlayerList().size(), 2);
 
         Mockito.when(deckRepository.findById(Mockito.any())).thenReturn(Optional.of(testDeck));
         Mockito.when(handRepository.findById(Mockito.any())).thenReturn(Optional.of(userHand));
@@ -161,40 +170,60 @@ public class GameServiceTest {
         Mockito.when(gameRepository.save(Mockito.any())).thenReturn(createdGame);
 
 
-        // test that hand a deck is initialized, one deck should be initiatiated and one Hand is saved
+        // test that hand a deck is initialized, one deck should be initiatiated and two Hands are saved
         Mockito.verify(deckRepository, Mockito.times(1)).save(Mockito.any());
-        Mockito.verify(handRepository, Mockito.times(1)).save(Mockito.any());
+        Mockito.verify(handRepository, Mockito.times(2)).save(Mockito.any());
 
         // test if data was received properly
         assertSame("testHost", createdGame.getHost());
-        assertSame(1, createdGame.getPlayerList().size());
+        assertSame(2, createdGame.getPlayerList().size());
         assertTrue(createdGame.getGameDirection());
         assertSame(testGame2.getPlayerList().get(0), createdGame.getPlayerList().get(0));
     }
 
     // test that it breaks the convertion when recognizing list is null
     @Test
+    public void convertUserNamesToIdTest_Sucess() {
+
+        when(lobbyRepository.findById(Mockito.any())).thenReturn(Optional.of(testLobby));
+        when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(testUser));
+        when(userRepository.findByUsername(Mockito.any())).thenReturn(testUser);
+        when(userService.getUser(Mockito.any())).thenReturn(testUser);
+
+       List<Long> expectedList = new ArrayList<>();
+       expectedList.add(1L);
+
+        List<Long> producedList = gameService.convertUserNamesToIds(testGame.getId());
+
+       assertEquals(expectedList, producedList);
+    }
+
+    // test that it breaks the convertion when recognizing list is null
+    @Test
     public void convertUserNamesToIdTest_PlayListWasNotSet() {
 
-        testGame.setPlayerList(null);
+        testLobby.setPlayerList(null);
         assertThrows(ResponseStatusException.class, () -> gameService.convertUserNamesToIds(testGame.getId()));
     }
 
     // Test that proofs convertion breaks when there are no players
     @Test
     public void convertUserNamesToIdTest_PlayListHasNoPlayers() {
-        List<Long> myEmptyList = new ArrayList<>();
-        testGame.setPlayerList(myEmptyList);
+        List<String> myEmptyList = new ArrayList<>();
+        testLobby.setPlayerList(myEmptyList);
         assertThrows(ResponseStatusException.class, () -> gameService.convertUserNamesToIds(testGame.getId()));
     }
 
-    // test for invalid game IDs of Game
+    // test for valid game IDs of Game
     @Test
-    public void getGameByIdTest_Invalid_ID_(){
-        given(gameRepository.save(Mockito.any())).willReturn(testGame);
-        assertThrows(ResponseStatusException.class, () -> gameService.getGameById(23331L));
+    public void getGameByIdTest_Valid_ID_(){
+        when(gameRepository.findById(Mockito.any())).thenReturn(Optional.of(testGame));
 
+        Game gameOfId = gameService.getGameById(testGame.getId());
+        Mockito.verify(gameRepository, Mockito.times(1)).findById(Mockito.any());
+        assertSame(gameOfId, testGame);
     }
+
     // test for invalid game IDs of Deck
     @Test
     public void getDeckByIdTest_Invalid_ID_(){
@@ -319,7 +348,7 @@ public class GameServiceTest {
     }
 
    // check with invalid cards, can be extended by all edge cases
-     @Test
+    @Test
     public void checkIfMoveAllowedTest_invalid(){
         testGame = new Game();
         testGame.setCurrentColor("Blue");
@@ -337,7 +366,33 @@ public class GameServiceTest {
         assertFalse(gameService.checkIfMoveAllowed(testGame, notallowedCard));}
 
 
-   // Test if the Uno boolean of a Hand is set to True if player calls it and handsize is 1
+    // test that player is succesfully removed from the playerList
+    @Test
+    public void removePlayerFromList_succesfull(){
+        Mockito.when(deckRepository.findById(Mockito.any())).thenReturn(Optional.of(testDeck));
+
+        // assert player is in playerList
+        assertTrue(testGame.getPlayerList().contains(1L));
+
+        gameService.removePlayerFromPlayerList(testGame, 1L);
+        assertFalse(testGame.getPlayerList().contains(1L));
+        Mockito.verify(gameRepository, Mockito.times(1)).save(Mockito.any());
+        Mockito.verify(gameRepository, Mockito.times(1)).flush();
+    }
+
+    // test that player is succesfully removed from the playerList
+    @Test
+    public void wishColor_succesfull(){
+        Mockito.when(deckRepository.findById(Mockito.any())).thenReturn(Optional.of(testDeck));
+
+        gameService.wishColor("Blue", testGame);
+        assertSame("Blue", testGame.getCurrentColor());
+        Mockito.verify(gameRepository, Mockito.times(1)).save(Mockito.any());
+        Mockito.verify(gameRepository, Mockito.times(1)).flush();
+    }
+
+
+    // Test if the Uno boolean of a Hand is set to True if player calls it and handsize is 1
    @Test
    public void sayUnoTest(){
 
