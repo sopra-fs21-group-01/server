@@ -1,13 +1,10 @@
 package ch.uzh.ifi.hase.soprafs21.entity;
 import ch.uzh.ifi.hase.soprafs21.repository.DeckRepository;
-import ch.uzh.ifi.hase.soprafs21.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs21.service.GameService;
-import ch.uzh.ifi.hase.soprafs21.service.LobbyService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -54,7 +51,6 @@ public class DeckTest {
 
         assertEquals(108, testDeck.getCardDeck().size());
     }
-
 
     // Test if drawn card is the same as actually was on top of deck
     @Test

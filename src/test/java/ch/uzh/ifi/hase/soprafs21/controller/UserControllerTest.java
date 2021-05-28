@@ -114,6 +114,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.password", is(user.getPassword())))
                 .andExpect(jsonPath("$.status", is(user.getStatus().toString())));
     }
+
     // POST for registration with invalid data
     @Test
     public void createUser_invalidInput_throwsException() throws Exception {

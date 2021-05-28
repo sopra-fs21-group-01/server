@@ -12,18 +12,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.RestTemplate;
-
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -72,7 +67,7 @@ public class ChatControllerTest {
     @MockBean
     private Chat chat;
 
-
+    // test valid chat creation
     @Test
     public void createChat_validInput_ChatCreated() throws Exception {
         // given
@@ -99,6 +94,7 @@ public class ChatControllerTest {
         .andExpect(jsonPath("$.timestamp", is(testChat.getTimestamp())));
     }
 
+    // test invalid chat creation
     @Test
     public void createChat_inValidInput_throwsException() throws Exception {
         // given

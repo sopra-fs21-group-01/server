@@ -2,7 +2,6 @@ package ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapperInstancesTest;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.DeckGetDTO;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;

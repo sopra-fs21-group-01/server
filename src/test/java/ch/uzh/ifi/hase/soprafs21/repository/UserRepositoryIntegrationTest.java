@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -22,6 +21,7 @@ public class UserRepositoryIntegrationTest {
     private UserRepository userRepository;
 
 
+    // test to find user by name
     @Test
     public void findByName_success() {
         // given
@@ -46,6 +46,8 @@ public class UserRepositoryIntegrationTest {
         assertEquals(found.getEmail(), user.getEmail());
         assertEquals(found.getPassword(), user.getPassword());
     }
+
+    // test to find user by email
     @Test
     public void findByEmail_success() {
         // given
@@ -71,6 +73,7 @@ public class UserRepositoryIntegrationTest {
         assertEquals(found.getPassword(), user.getPassword());
     }
 
+    // test to find user by token
     @Test
     public void findByToken_success() {
         // given

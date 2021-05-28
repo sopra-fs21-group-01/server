@@ -1,6 +1,5 @@
 package ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapperInstancesTest;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.HandGetDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.HandGetDTO;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 

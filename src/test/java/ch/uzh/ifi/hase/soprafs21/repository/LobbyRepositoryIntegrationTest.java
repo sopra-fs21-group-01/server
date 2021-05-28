@@ -1,14 +1,11 @@
 package ch.uzh.ifi.hase.soprafs21.repository;
 
 import ch.uzh.ifi.hase.soprafs21.entity.Lobby;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.dao.EmptyResultDataAccessException;
-
-
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -22,6 +19,7 @@ public class LobbyRepositoryIntegrationTest {
     private LobbyRepository lobbyRepository;
 
     // consider that lobby creates its own ID
+    // delete a game succesfully, a second attempt will throw an exception because it is already deleted
     @Test
     public void deleteById_valid() {
         Lobby testLobby = new Lobby();
@@ -40,6 +38,7 @@ public class LobbyRepositoryIntegrationTest {
         assertThrows(EmptyResultDataAccessException.class, () -> lobbyRepository.deleteById(Id));
     }
 
+    // invalid id, throws exception
     @Test
     public void deleteById_inValid() {
         Lobby testLobby = new Lobby();

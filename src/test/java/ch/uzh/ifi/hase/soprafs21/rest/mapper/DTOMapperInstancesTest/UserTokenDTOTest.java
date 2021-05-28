@@ -1,5 +1,4 @@
 package ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapperInstancesTest;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.GameGetDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.UserTokenDTO;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

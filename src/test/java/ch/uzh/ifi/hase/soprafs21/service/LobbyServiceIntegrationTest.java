@@ -1,12 +1,7 @@
 package ch.uzh.ifi.hase.soprafs21.service;
 
-import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs21.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs21.entity.User;
-import ch.uzh.ifi.hase.soprafs21.exceptions.DuplicatedUserException;
-import ch.uzh.ifi.hase.soprafs21.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.LobbyRepository;
-import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.util.NoSuchElementException;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -57,7 +50,7 @@ public class LobbyServiceIntegrationTest {
     }
 
     // since a lobby is always created with the corresponding Host ID, it should never get duplicated ID.
-    // However if in the same session a Host gets deleted from the databank but the Lobby remains, it might happen
+    // However if in the same session a Host gets deleted from the database but the Lobby remains, it might happen
     // that two lobbies with same ID are tried to initiate. This might give Problems later when initializing the game.
     @Test
     public void createLobby_duplicateID_throwsException() {

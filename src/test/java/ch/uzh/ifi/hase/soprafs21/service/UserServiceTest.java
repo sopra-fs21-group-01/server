@@ -12,8 +12,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.server.ResponseStatusException;
-
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
@@ -49,6 +47,7 @@ public class UserServiceTest {
 
     }
 
+    // test for valid user creation
     @Test
     public void createUser_validInputs_success() {
         // when -> any object is being save in the userRepository -> return the dummy testUser
@@ -65,6 +64,7 @@ public class UserServiceTest {
         assertEquals(UserStatus.OFFLINE, createdUser.getStatus());
     }
 
+    // test invalid creation with already existing name
     @Test
     public void createUser_duplicateName_throwsException() {
         // given -> a first user has already been created
@@ -78,6 +78,7 @@ public class UserServiceTest {
         assertThrows(DuplicatedUserException.class, () -> userService.createUser(testUser));
     }
 
+    // attempt to create user with all duplicats, throws exeption
     @Test
     public void createUser_duplicateInputs_throwsException() {
         // given -> a first user has already been created
@@ -102,7 +103,7 @@ public class UserServiceTest {
         assertSame(userByID, testUser);
     }
 
-    // find User by Id, Unsuccesfull, throws exception
+    // find User by Id, unsuccessful, throws exception
     @Test
     public void getuserById_unSuccesfully_throwException(){
 
@@ -110,7 +111,7 @@ public class UserServiceTest {
         assertThrows(ResponseStatusException.class, () -> userService.getUseryById(testUser.getId()+1));
     }
 
-    // edit user succesfully
+    // edit user successfully
     @Test
     public void editUser_succesfully_returnsUser(){
 
@@ -152,7 +153,7 @@ public class UserServiceTest {
         assertThrows(ResponseStatusException.class, () -> userService.editUser(testUser_edited));
     }
 
-    // edit user succesfully, but no name given
+    // edit user successfully, but no name given
     @Test
     public void editUser_noNameGiven_succesfully_returnsUser(){
 
@@ -178,7 +179,7 @@ public class UserServiceTest {
         assertSame(editedUser.getUsername(), testUser.getUsername());
     }
 
-    // edit user succesfully, but no password given
+    // edit user successfully, but no password given
     @Test
     public void editUser_noPaswordGiven_succesfully_returnsUser(){
 
@@ -204,7 +205,7 @@ public class UserServiceTest {
         assertSame(editedUser.getPassword(), testUser.getPassword());
     }
 
-
+    // test got valid login
     @Test
     public void login_Test_valid(){
 
@@ -222,25 +223,24 @@ public class UserServiceTest {
 
         assertSame(testUser.getStatus(), UserStatus.ONLINE);}
 
-
+    // test for valid email input
     @Test
     public void isValidTest_valid(){
         String email = "I.am@perfectlyfi.ne";
-
         assertTrue(UserService.isValid(email));
     }
 
+    // test for mail with invalid (no @)
     @Test
     public void isValidTest_Invalid_noAT(){
         String email = "IdonthaveAnAt.ch";
-
         assertFalse(UserService.isValid(email));
     }
 
+    // test for mail with invalid (no domain)
     @Test
     public void isValidTest_Invalid_notValidEnding(){
         String email = "Ihavenotgoot@Ending.c";
-
         assertFalse(UserService.isValid(email));
     }
 

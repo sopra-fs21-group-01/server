@@ -128,7 +128,6 @@ public class LobbyServiceTest {
 
     }
 
-
     // test reset lobby. noHost found, will throw error
     @Test
     public void changeResetLobby_NoSuccess_noHost(){
@@ -138,6 +137,7 @@ public class LobbyServiceTest {
 
         assertThrows(ResponseStatusException.class, () -> lobbyService.resetLobby(1L));
     }
+
     // test reset lobby. no ID, lobby not found, will throw error
     @Test
     public void changeResetLobby_NoSuccess_noID(){
@@ -162,7 +162,6 @@ public class LobbyServiceTest {
 
     }
 
-
     // test if a player can join a lobby
     @Test
     public void playerJoinsLobbyTest_succesfully(){
@@ -183,8 +182,6 @@ public class LobbyServiceTest {
 
         assertThrows(ResponseStatusException.class, () ->  lobbyService.playerJoinsLobby(createdLobby, "nextPlayer"));
     }
-
-
 
     // update a lobby, change the lobby object
     @Test
@@ -212,7 +209,6 @@ public class LobbyServiceTest {
 
         assertThrows(ResponseStatusException.class, () -> lobbyService.updateLobby(updatedLobby));
     }
-
     }
 
 

@@ -1,16 +1,10 @@
 package ch.uzh.ifi.hase.soprafs21.repository;
-import java.util.Optional;
-import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
-import ch.uzh.ifi.hase.soprafs21.entity.Game;
-import ch.uzh.ifi.hase.soprafs21.entity.User;
 import ch.uzh.ifi.hase.soprafs21.entity.Deck;
-import javassist.NotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,6 +19,7 @@ public class DeckRepositoryIntegrationTest {
     private DeckRepository deckRepository;
 
 
+    // test to delete a Deck with valid id
     @Test
     public void deleteById_valid() {
         Deck testDeck = new Deck();
@@ -39,11 +34,11 @@ public class DeckRepositoryIntegrationTest {
         assertThrows(EmptyResultDataAccessException.class, () -> deckRepository.deleteById(1L));
     }
 
+    // test to delete a deck with non existing id, throws exception
     @Test
     public void deleteById_inValid() {
         Deck testDeck = new Deck();
         testDeck.setId(1L);
-
 
         entityManager.persist(testDeck);
         entityManager.flush();

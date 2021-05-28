@@ -34,7 +34,7 @@ public class UserServiceIntegrationTest {
         userRepository.deleteAll();
     }
 
-
+    // test for valid user creation
     @Test
     public void createUser_validInputs_success() {
         // given
@@ -57,6 +57,7 @@ public class UserServiceIntegrationTest {
         assertEquals(UserStatus.OFFLINE, createdUser.getStatus());
     }
 
+    // test creation with already existing name, throws exception
     @Test
     public void createUser_duplicateUsername_throwsException() {
         assertNull(userRepository.findByUsername("testUsername"));

@@ -1,17 +1,11 @@
 package ch.uzh.ifi.hase.soprafs21.repository;
-import java.util.Optional;
-import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
-import ch.uzh.ifi.hase.soprafs21.entity.Game;
 import ch.uzh.ifi.hase.soprafs21.entity.Hand;
-import ch.uzh.ifi.hase.soprafs21.entity.User;
-import ch.uzh.ifi.hase.soprafs21.entity.Deck;
-import javassist.NotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.web.server.ResponseStatusException;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,7 +19,7 @@ public class HandRepositoryIntegrationTest {
     @Autowired
     private HandRepository handRepository;
 
-
+    // delete a hand succesfully, a second attempt will throw an exception because it is already deleted
     @Test
     public void deleteById_valid() {
         Hand testHand = new Hand();
@@ -40,6 +34,7 @@ public class HandRepositoryIntegrationTest {
         assertThrows(EmptyResultDataAccessException.class, () -> handRepository.deleteById(1L));
     }
 
+    // delete with invalid id, exception
     @Test
     public void deleteById_inValid() {
         Hand testHand = new Hand();

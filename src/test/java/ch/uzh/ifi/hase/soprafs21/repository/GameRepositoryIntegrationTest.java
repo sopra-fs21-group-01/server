@@ -1,16 +1,11 @@
 package ch.uzh.ifi.hase.soprafs21.repository;
-import java.util.Optional;
-import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs21.entity.Game;
-import ch.uzh.ifi.hase.soprafs21.entity.User;
-import javassist.NotFoundException;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.web.server.ResponseStatusException;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -23,7 +18,7 @@ public class GameRepositoryIntegrationTest {
     @Autowired
     private GameRepository gameRepository;
 
-
+    // delete a game succesfully, a second attempt will throw an exception because it is already deleted
     @Test
     public void deleteById_valid() {
         Game testGame = new Game();
@@ -39,6 +34,7 @@ public class GameRepositoryIntegrationTest {
         assertThrows(EmptyResultDataAccessException.class, () -> gameRepository.deleteById(1L));
     }
 
+    // test with invalid id, throws exception
     @Test
     public void deleteById_inValid() {
         Game testGame = new Game();

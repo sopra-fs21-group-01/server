@@ -6,26 +6,13 @@ import ch.uzh.ifi.hase.soprafs21.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs21.entity.User;
 import ch.uzh.ifi.hase.soprafs21.repository.HandRepository;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.GamePostDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.LobbyPostDTO;
 import ch.uzh.ifi.hase.soprafs21.service.GameService;
 import ch.uzh.ifi.hase.soprafs21.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.aspectj.lang.annotation.Before;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatcher;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-
-import static org.mockito.ArgumentMatchers.anyDouble;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -33,13 +20,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import static org.junit.jupiter.api.Assertions.*;
+
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import org.springframework.web.server.ResponseStatusException;
@@ -257,8 +243,6 @@ public class GameControllerTest {
 
      Lobby testLobby = new Lobby();
      testLobby.setId(1L);
-     //   testLobby.setName("testName");
-     //  testLobby.setPassword("testPassword");
      testLobby.setHost("testHost");
      testLobby.setPlayerList(testPlayerListForLobby);
 
@@ -295,8 +279,6 @@ public class GameControllerTest {
 
         Lobby testLobby = new Lobby();
         testLobby.setId(1L);
-        //   testLobby.setName("testName");
-        //  testLobby.setPassword("testPassword");
         testLobby.setHost("testHost");
         testLobby.setPlayerList(testPlayerListForLobby);
 
@@ -346,14 +328,11 @@ public class GameControllerTest {
     }
 
     // GET tests the GET for the ID of the current player
-    // -> How to control one return that is not a json File?
     @Test
     public void getGame_whenGetHandOfPlayer_InvalidIdWillReturnError() throws Exception {
         List<String> testPlayerListForLobby = new ArrayList<String>(){
             {
                 add("Hans");
-                //       add("Jörg");
-                //      add("Peter");
             }};
 
         User testUser = new User();
@@ -362,8 +341,6 @@ public class GameControllerTest {
 
         Lobby testLobby = new Lobby();
         testLobby.setId(1L);
-        //   testLobby.setName("testName");
-        //  testLobby.setPassword("testPassword");
         testLobby.setHost("testHost");
         testLobby.setPlayerList(testPlayerListForLobby);
 
@@ -401,6 +378,7 @@ public class GameControllerTest {
 
     }
 
+    // test valid draw card method, returns nothing
     @Test
     public void drawCard_validInput_returnsNothing() throws Exception {
 
@@ -461,7 +439,6 @@ public class GameControllerTest {
         mockMvc.perform(putRequest)
                 .andExpect(status().isNoContent());}
 
-
     // PUT tests valid PUT method for Playerturn, returns a game
     @Test
     public void updateGame_validInput_returnsNothing() throws Exception {
@@ -473,8 +450,6 @@ public class GameControllerTest {
         List<String> testPlayerListForLobby = new ArrayList<String>(){
             {
                 add("Hans");
-                //       add("Jörg");
-                //      add("Peter");
             }};
 
         User testUser = new User();
@@ -483,8 +458,6 @@ public class GameControllerTest {
 
         Lobby testLobby = new Lobby();
         testLobby.setId(1L);
-        //   testLobby.setName("testName");
-        //  testLobby.setPassword("testPassword");
         testLobby.setHost("testHost");
         testLobby.setPlayerList(testPlayerListForLobby);
 
@@ -501,8 +474,6 @@ public class GameControllerTest {
         List<Long> testPlayerList = new ArrayList<Long>(){
             {
                 add(2L);
-                //      add(4L);
-                //      add(6L);
             }};
 
         testGame.setId(1L);
@@ -577,6 +548,7 @@ public class GameControllerTest {
         testUser.setId(2L);
 
         Game testGame = new Game();
+
         // List of player ID's
         List<Long> testPlayerList = new ArrayList<Long>(){
             {

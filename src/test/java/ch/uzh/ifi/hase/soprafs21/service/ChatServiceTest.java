@@ -53,7 +53,7 @@ public class ChatServiceTest {
 
     }
 
-    // test for wrong host
+    // test for wrong lobby id, throws exception
     @Test
     public void getAllChats_InvalidID_exception(){
         testChat.setId(5L);

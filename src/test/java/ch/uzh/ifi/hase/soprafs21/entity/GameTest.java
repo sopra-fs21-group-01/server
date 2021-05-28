@@ -7,10 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GameTest {
@@ -39,12 +37,14 @@ public class GameTest {
 
     }
 
+    // test if game direction boolean is changed
     @Test
     public void reverseGameDirectionTest(){
         testGame.reverseGameDirection();
         assertFalse(testGame.getGameDirection());
     }
 
+    // test to set the current one further
     @Test
     public void setCurrentPlayerPlusOneTest(){
 
