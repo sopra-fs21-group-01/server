@@ -75,7 +75,10 @@ public class LobbyController {
     public void setIsInGameBoolToFalse(@PathVariable(value = "id") Long id) {
         lobbyService.resetLobby(id);
         Game game = gameService.getGameById(id);
-        gameService.addWinner(game, game.getPlayerList().get(0) );
+        if (game.getPlayerList().size()==1){
+            gameService.addWinner(game, game.getPlayerList().get(0) );
+        }
+
     }
 
     // Put mapping to for joining a Lobby

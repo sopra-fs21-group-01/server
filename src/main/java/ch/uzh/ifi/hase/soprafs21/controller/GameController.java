@@ -174,6 +174,8 @@ public class GameController {
             opponentHandSize.add(handSize);
         }
 
+        System.out.println("opli:"+opponentList.size());
+        System.out.println("oh"+opponentHandSize.size());
 
         List<String> userNameHandSize = new ArrayList<>();
         for (int i = 0; i < opponentList.size(); i++) {
@@ -187,7 +189,7 @@ public class GameController {
 
 
         GameGetDTO gameGetDTO = DTOMapper.INSTANCE.convertEntityToGameGetDTO(gameOfId);
-        System.out.println("Current host is:" + gameGetDTO.getHost());
+        //System.out.println("Current host is:" + gameGetDTO.getHost());
         gameGetDTO.setOpponentListHands(userNameHandSize);
 
         return gameGetDTO;
