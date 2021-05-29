@@ -1,11 +1,9 @@
-# SoPra RESTful Service Template FS21
+# UNO card game
 
-## Getting started with Spring Boot
+## Introduction
 
--   Documentation: https://docs.spring.io/spring-boot/docs/current/reference/html/index.html
--   Guides: http://spring.io/guides
-    -   Building a RESTful Web Service: http://spring.io/guides/gs/rest-service/
-    -   Building REST services with Spring: http://spring.io/guides/tutorials/bookmarks/
+In this project we wanted to replicate the UNO card game with a client/server architecture. UNO is a popular family game, who can be played from a young to an old age. It consists of 108 cards with cards of 4 different colors from the number 0 to 9. In Addition there exists a "wild" and "wildfour" cards which 
+#47
 
 ## Setup this Template with your IDE of choice
 
