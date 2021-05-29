@@ -21,10 +21,7 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
@@ -492,6 +489,7 @@ public class GameServiceTest {
 
     }
 
+    // tests for  getting card coler, value and both
     @Test
     public void getColorTest(){
         assertEquals("Blue", gameService.getColorOfCard("0/Blue"));
@@ -508,4 +506,95 @@ public class GameServiceTest {
         assertEquals("0", gameService.getCardValuies("0/Blue")[0]);
     }
 
+    // test if changeHoseMethod sets the host to no host and that its saved
+    @Test
+    public void changeHoseTest(){
+        gameService.changeHost(testGame);
+
+        assertEquals(testGame.getHost(),  "NOHOST");
+        Mockito.verify(gameRepository, Mockito.times(1)).save(Mockito.any());
+        Mockito.verify(gameRepository, Mockito.times(1)).flush();
+    }
+
+    // test for when the first player of a game wins. A new list will be initialized
+    @Test
+    public void addWinnerTest_firstWinner_success(){
+        when(userService.getUseryById(Mockito.any())).thenReturn(testUser);
+
+        gameService.addWinner(testGame, 1L);
+
+        assertEquals(testGame.getWinner().get(0), testUser.getUsername() );
+
+        Mockito.verify(gameRepository, Mockito.times(1)).save(Mockito.any());
+        Mockito.verify(gameRepository, Mockito.times(1)).flush();
+        Mockito.verify(userService, Mockito.times(1)).getUseryById(Mockito.any());
+    }
+
+    // test for when a player wins but is not the first, will be added to the list
+    @Test
+    public void addWinnerTest_thirdWinner_success(){
+        when(userService.getUseryById(Mockito.any())).thenReturn(testUser);
+        List<String> winnerList = new ArrayList<>();
+        winnerList.add("winnerDude 1");
+        winnerList.add("winnerDude 2");
+        testGame.setWinner(winnerList);
+
+        gameService.addWinner(testGame, 1L);
+
+        assertEquals(testGame.getWinner().get(2), testUser.getUsername() );
+        assertEquals(testGame.getWinner().size(), 3);
+
+        Mockito.verify(gameRepository, Mockito.times(1)).save(Mockito.any());
+        Mockito.verify(gameRepository, Mockito.times(1)).flush();
+        Mockito.verify(userService, Mockito.times(1)).getUseryById(Mockito.any());
+    }
+
+    // normal getWinner() should return normal list of winners
+    @Test
+    public void getWinnerTest_success(){
+        List<String> winnerList = new ArrayList<>();
+        winnerList.add("winnerDude 1");
+        winnerList.add("winnerDude 2");
+        testGame.setWinner(winnerList);
+
+        Mockito.when(gameRepository.findById(Mockito.any())).thenReturn(Optional.of(testGame));
+
+        assertSame(winnerList, gameService.getWinner(testGame.getId()));
+    }
+
+    // If the method cannot find the game or a winnersList, it should return Null
+    @Test
+    public void getWinnerTest_noWinnerList_returnNull(){
+
+        Mockito.when(gameRepository.findById(Mockito.any())).thenReturn(Optional.of(testGame));
+
+        assertSame(null, gameService.getWinner(testGame.getId()));
+    }
+
+    // If the method cannot find the game or a winnersList, it should return Null
+    @Test
+    public void getWinnerList_noValidGameID_returnNull(){
+
+        // call the method with a wrong Id
+        assertSame(null, gameService.getWinner(testGame.getId()+1));
+    }
+
+    // test for drawing a card. Calls the hand and the deck and changes the unoStatus to false
+    @Test
+    public void drawCardTest(){
+
+        Mockito.when(handRepository.findById(Mockito.any())).thenReturn(Optional.of(userHand));
+        Mockito.when(gameRepository.findById(Mockito.any())).thenReturn(Optional.of(testGame));
+        Mockito.when(deckRepository.findById(Mockito.any())).thenReturn(Optional.of(testDeck));
+
+        // set uneStatus to true
+        userHand.setUnoStatus(true);
+
+        gameService.drawCard(testGame);
+
+        assertFalse(userHand.getUnoStatus());
+        Mockito.verify(handRepository, Mockito.times(1)).findById(Mockito.any());
+        Mockito.verify(deckRepository, Mockito.times(1)).findById(Mockito.any());
+
+    }
 }
