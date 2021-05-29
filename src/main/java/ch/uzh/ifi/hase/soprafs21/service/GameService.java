@@ -46,6 +46,12 @@ public class GameService {
     // the host is added to the list of players, the gamemode is set to standard
     public Game createGame(Game newGame){
 
+        // verify that this Game doesnt exist
+        Optional<Game> optionalChat = gameRepository.findById(newGame.getId());
+        if (optionalChat.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Game with given ID already exists");
+        }
+
         initializeDeck(newGame);
 
         initializeHands(newGame);

@@ -60,7 +60,6 @@ public class User implements Serializable {
         this.handId = handId;
     }
 
-
     public Long getId() {
         return id;
     }
@@ -68,7 +67,6 @@ public class User implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
 
     public String getUsername() {
         return username;

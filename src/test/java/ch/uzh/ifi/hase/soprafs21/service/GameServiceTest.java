@@ -240,8 +240,6 @@ public class GameServiceTest {
 
     }
 
-// TEST NOT WOTRKING; CANNOT INVOKE CHECKIFEXTRACARD BECAUS CARDNAME IS NULL
-
     @Test
     public void playCardTest(){
         testDeckBean = new Deck();
@@ -281,34 +279,6 @@ public class GameServiceTest {
        // Mockito.verify(gameService, Mockito.times(1)).determineNextPlayer(Mockito.any(),Mockito.any());
 
     }
-
-   /** // test when the played card is not in the user hand, throw exception
-    @Test
-    public void playCardTest_cardNotInUserHand(){
-        userHand = new Hand();
-        List<String> myList = new ArrayList<>();
-        myList.add("2/Yellow");
-        userHand.setCards(myList);
-        userHand.setUnoStatus(false);
-        userHand.setId(1L);
-
-        testGame = new Game();
-        testGame.setCurrentColor("Blue");
-        testGame.setCurrentValue("0");
-        String[] cardValues = {"Blue", "0"};
-        List<Long> testPlayerList = Collections.singletonList(1L);
-        testGame.setPlayerList(testPlayerList);
-
-
-
-        String NotAllowedCard = "5/Blue";
-
-        Mockito.when(handRepository.findById(Mockito.any())).thenReturn(Optional.of(userHand));
-        Mockito.when(deckRepository.findById(Mockito.any())).thenReturn(Optional.of(testDeck));
-
-        assertThrows(ResponseStatusException.class, () ->gameService.playCard(testGame, testUser, NotAllowedCard));
-    }
-*/
 
     // throws exception because it cannot find the users Hand (user might be deleted or already out of the game)
      @Test
@@ -419,7 +389,6 @@ public class GameServiceTest {
         assertSame(createdGame.getId(), updatedGame.getId());
         assertSame("newHost", createdGame.getHost());
     }
-
 
     // Test if the Uno boolean of a Hand is set to True if player calls it and handsize is 1
    @Test

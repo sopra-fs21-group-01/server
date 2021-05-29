@@ -4,12 +4,15 @@ import ch.uzh.ifi.hase.soprafs21.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs21.repository.LobbyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.NoSuchElementException;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -47,27 +50,5 @@ public class LobbyServiceIntegrationTest {
         assertEquals(testLobby.getPlayerList(), testLobby.getPlayerList());
         assertEquals(testLobby.getGamemode(), testLobby.getGamemode());
         assertEquals(testLobby.isInGame(), testLobby.isInGame());
-    }
-
-    // since a lobby is always created with the corresponding Host ID, it should never get duplicated ID.
-    // However if in the same session a Host gets deleted from the database but the Lobby remains, it might happen
-    // that two lobbies with same ID are tried to initiate. This might give Problems later when initializing the game.
-    @Test
-    public void createLobby_duplicateID_throwsException() {
-        assertThrows(NoSuchElementException.class, () -> {lobbyRepository.findById(1L).get();});
-
-
-        Lobby testLobby = new Lobby();
-        testLobby.setHost("testHost");
-        testLobby.setId(1L);
-        lobbyService.createLobby(testLobby);
-
-        // attempt to create second user with same username
-        Lobby testLobby2 = new Lobby();
-        testLobby.setHost("testHost2");
-        testLobby.setId(1L);
-
-        // check that an error is thrown
-        assertThrows(ResponseStatusException.class, () ->   lobbyService.createLobby(testLobby2));
     }
 }

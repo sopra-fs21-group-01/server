@@ -13,7 +13,6 @@ import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,11 +124,6 @@ try{
 }catch (Exception e){
     return null;
 }
-        // get Lobby from repository
-
-
-
-
     }
 
 }

@@ -125,7 +125,6 @@ public class GameControllerTest {
                 .andExpect(content().string("game/"+testGame.getId()+"/kickOff"));
     }
 
-
     // POST Test invalid post, no hostname given, Conflict is thrown
     @Test
     public void createGame_invalidInput_gameCreationUnsuccessful() throws Exception {
@@ -168,7 +167,6 @@ public class GameControllerTest {
                 .andExpect(status().isConflict())
         ;
     }
-
 
     // GET test for the whole game object
     @Test
@@ -226,6 +224,7 @@ public class GameControllerTest {
 
     }
 
+    // GET test for the whole game object, wrong ID, throws exception
     @Test
     public void getGame_whenGetPlayerlist_thenReturnArrayWithNames_wrongGameID() throws Exception {
 
@@ -266,7 +265,6 @@ public class GameControllerTest {
      mockMvc.perform(getRequest).andExpect(status().isNotFound())
      ;}
 
-
     // GET tests the  GET for single game playerList with invalid input. Test if if status is right
     @Test
     public void getPlayerListOffGame_invalidID_throwsException() throws Exception {
@@ -299,7 +297,6 @@ public class GameControllerTest {
         mockMvc.perform(getRequest).andExpect(status().isNotFound())
         ; }
 
-
     // GET tests the GET for the ID of the current player
     @Test
     public void getGame_whengetCurrentID_thenLongOfPlayerWhosTurnItIs() throws Exception {
@@ -309,11 +306,13 @@ public class GameControllerTest {
         // List of player ID's
         List<Long> testPlayerList = new ArrayList<Long>(){
             {add(2L);}};
+        testPlayerList.add(3L);
+        testPlayerList.add(4L);
 
         testGame.setId(1L);
         testGame.setHost("testHost");
         testGame.setPlayerList(testPlayerList);
-        testGame.setCurrentPlayer(0);
+        testGame.setCurrentPlayer(1);
 
         given(gameService.updateGame(Mockito.any())).willReturn(testGame);
         given(gameService.getGameById(Mockito.any())).willReturn(testGame);
@@ -322,7 +321,7 @@ public class GameControllerTest {
         MockHttpServletRequestBuilder getRequest = get("/game/{id}/kickOff/currentPlayerIds", 1L)
                 .contentType(MediaType.APPLICATION_JSON);
         // then
-        mockMvc.perform(getRequest).andExpect(status().isOk()).andExpect(content().string("2"))
+        mockMvc.perform(getRequest).andExpect(status().isOk()).andExpect(content().string("3"))
         ;
 
     }
@@ -495,7 +494,6 @@ public class GameControllerTest {
         mockMvc.perform(putRequest)
                 .andExpect(status().isNoContent());}
 
-
     // PUT tests invalid PUT method for Game update with not existing lobby
     @Test
     public void updateGame_invalidID() throws Exception {
@@ -535,7 +533,6 @@ public class GameControllerTest {
         // then !!! Just check for NULL output and status code
         mockMvc.perform(putRequest)
                 .andExpect(status().isNotFound());}
-
 
     // PUT test for succesfully leaving the game
     @Test
@@ -661,6 +658,7 @@ public class GameControllerTest {
         mockMvc.perform(putRequest).andExpect(status().isNoContent());
         Mockito.verify(gameService, Mockito.times(1)).removePlayerFromPlayerList(Mockito.any(), Mockito.any());
     }
+
     // DELETE test for successfully deleting a Game
     @Test
     public void deleteGame_succesfully() throws Exception {

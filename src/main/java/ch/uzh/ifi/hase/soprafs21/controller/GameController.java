@@ -9,7 +9,6 @@ import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,10 +128,6 @@ public class GameController {
             }
         }
     }
-
-
-
-
 
     @PutMapping("/game/{id}/drawCard")
     @ResponseStatus(HttpStatus.NO_CONTENT)

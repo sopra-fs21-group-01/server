@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs21.service;
 
 import ch.uzh.ifi.hase.soprafs21.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs21.entity.User;
+import ch.uzh.ifi.hase.soprafs21.exceptions.DuplicatedUserException;
 import ch.uzh.ifi.hase.soprafs21.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
 import org.apache.catalina.Host;
@@ -40,7 +41,6 @@ public class LobbyService {
         return this.lobbyRepository.findAll();
     }
 
-
     // the host is added to the list of players, the gamemode is set to standard
     public Lobby createLobby(Lobby newLobby){
 
@@ -50,6 +50,13 @@ public class LobbyService {
         if (newLobby.getHost() == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error creating Lobby with this Host!");
         }
+
+        // verify that this lobby doesnt exist
+        Optional<Lobby> optionalLobby = lobbyRepository.findById(newLobby.getId());
+        if (optionalLobby.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Lobby with given ID already exists");
+        }
+
         playerList.add(newLobby.getHost());
 
         newLobby.setPlayerList(playerList);
@@ -139,9 +146,6 @@ public class LobbyService {
         log.debug("reset Lobby with ID {}", lobbyToReset.getId());
 
     }
-
-
-
 
     public void deleteLobby(Long lobbyId){
 
