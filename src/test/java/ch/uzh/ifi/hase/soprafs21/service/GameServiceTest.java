@@ -591,7 +591,7 @@ public class GameServiceTest {
 
         Mockito.verify(gameRepository, Mockito.times(1)).save(Mockito.any());
         Mockito.verify(gameRepository, Mockito.times(1)).flush();
-        Mockito.verify(userService, Mockito.times(1)).getUseryById(Mockito.any());
+        Mockito.verify(userService, Mockito.times(2)).getUseryById(Mockito.any());
     }
 
     // normal getWinner() should return normal list of winners

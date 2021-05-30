@@ -377,8 +377,10 @@ public class GameService {
 
                 game.setWinner(winnerList);
 
-            } else{
-            game.getWinner().add(userService.getUseryById(winner).getUsername());
+            } else {
+            if (!game.getWinner().contains(userService.getUseryById(winner).getUsername())) {
+                game.getWinner().add(userService.getUseryById(winner).getUsername());
+            }
         }
 
         gameRepository.save(game);
