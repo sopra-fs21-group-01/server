@@ -61,8 +61,9 @@ public class GameServiceIntegrationTest {
         assertEquals(testGame.getGameDirection(), createdGame.getGameDirection());
     }
 
-    // since a Game is always created with the corresponding Lobby ID, it should never get duplicated ID.
-/*
+    // games can be created with ID's of already existing one witout giving an error
+    // will be handled in the service previously
+
     @Test
     public void createGame_duplicateID_throwsException() {
 
@@ -82,12 +83,16 @@ public class GameServiceIntegrationTest {
         testGame2.setHost("testHost");
         testGame2.setId(1L);
         List<Long> playerList2 = new ArrayList<>();
-        playerList.add(1L);
+        playerList2.add(1L);
         testGame2.setPlayerList(playerList2);
 
-        // check that an error is thrown
-        Mockito.verify(gameRepository,Mockito.times(1)).deleteById(Mockito.any());
-    }
+        Game createdGame2 = gameRepository.save(testGame);
 
- */
+        // then
+        assertEquals(testGame2.getId(), createdGame2.getId());
+        assertEquals(testGame2.getHost(), createdGame2.getHost());
+        assertEquals(testGame2.getPlayerList(), createdGame2.getPlayerList());
+        assertEquals(testGame2.getCurrentColor(), createdGame2.getCurrentColor());
+        assertEquals(testGame2.getGameDirection(), createdGame2.getGameDirection());
+    }
 }

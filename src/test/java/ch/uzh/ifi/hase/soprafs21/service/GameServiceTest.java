@@ -53,6 +53,8 @@ public class GameServiceTest {
     @Mock
     private UserService userService;
 
+    @Mock
+    private ChatService chatService;
 
     @Mock
     private User testUser;
@@ -84,7 +86,6 @@ public class GameServiceTest {
 
     @MockBean
     private Deck testDeckBean;
-
 
     @BeforeEach
     public void setup() {
@@ -177,6 +178,50 @@ public class GameServiceTest {
         assertSame(2, createdGame.getPlayerList().size());
         assertTrue(createdGame.getGameDirection());
         assertSame(testGame2.getPlayerList().get(0), createdGame.getPlayerList().get(0));
+    }
+
+    // a game with one player is given, the deck and the hand are initialized
+    @Test
+    public void createGameTest_valid_sameID_oldGameGetsDeleted(){
+        Game testGame = new Game();
+        List<Long> testPlayerList = new ArrayList<>();
+        testPlayerList.add(1L);
+        testPlayerList.add(2L);
+        testGame.setId(1L);
+        testGame.setHost("testHost");
+        testGame.setPlayerList(testPlayerList);
+
+        Game testGame2 = new Game();
+        List<Long> testPlayerList2 = new ArrayList<>();
+        testPlayerList2.add(1L);
+        testPlayerList2.add(2L);
+        testGame2.setId(1L);
+        testGame2.setHost("testHost");
+        testGame2.setPlayerList(testPlayerList2);
+
+        Mockito.when(deckRepository.findById(Mockito.any())).thenReturn(Optional.of(testDeck));
+        Mockito.when(handRepository.findById(Mockito.any())).thenReturn(Optional.of(userHand));
+        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(testUser));
+        Mockito.when(userService.getUseryById(Mockito.any())).thenReturn((testUser));
+
+
+        // create the game and make it be returned upon saving
+        Game createdGame = gameService.createGame(testGame);
+                Mockito.when(gameRepository.findById(Mockito.any())).thenReturn(Optional.of(createdGame));
+
+        Game createdGame2 = gameService.createGame(testGame2);
+        Mockito.when(gameRepository.save(Mockito.any())).thenReturn(createdGame2);
+
+
+
+        // test that hand a deck is initialized, one deck should be initiatiated and two Hands are saved
+        Mockito.verify(gameRepository, Mockito.times(1)).deleteById(Mockito.any());
+
+        // test if data was received properly
+        assertSame("testHost", createdGame2.getHost());
+        assertSame(2, createdGame2.getPlayerList().size());
+        assertTrue(createdGame2.getGameDirection());
+        assertSame(testGame2.getPlayerList().get(0), createdGame2.getPlayerList().get(0));
     }
 
     // test that it breaks the convertion when recognizing list is null
