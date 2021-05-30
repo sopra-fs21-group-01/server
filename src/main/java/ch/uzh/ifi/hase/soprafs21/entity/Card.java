@@ -9,14 +9,12 @@ public class Card {
 
     public void setColor(String color){
         this.color = color;
-
     }
-    // ist getColor überhaupt nötig?
+
     public String getColor(){
         return this.color;
-
     }
-    // ist getValue überhaupt nötig?
+
     public String getValue(){
         return this.value;
     }
@@ -24,7 +22,6 @@ public class Card {
     private void setValue(String value){
         this.value = value;
     }
-
 
     public int getCardId() {
         return cardId;
@@ -42,7 +39,6 @@ public class Card {
         this.cardName = cardName;
     }
 
-    // methode wird von Class deck aufgerufen
     public Card(String color, String value){
         this.setColor(color);
         this.setValue(value);

@@ -41,17 +41,12 @@ public interface DTOMapper {
     @Mapping(target  = "status", ignore = true)
     User convertUserToEditDTOtoEntity(UserEditDTO userEditDTO);
 
-
-        // Mapper for when Lobby gets posted
+    // Mapper for when Lobby gets posted
     @Mapping(source = "host", target = "host")
-    // @Mapping(source = "name", target = "name")
-    // @Mapping(source = "password", target = "password")
     @Mapping(source = "playerList", target = "playerList")
     Lobby convertLobbyPostDTOtoEntity(LobbyPostDTO lobbyPostDTO);
 
     @Mapping(source = "host", target = "host")
-   // @Mapping(source = "name", target = "name")
-   // @Mapping(source = "password", target = "password")
     @Mapping(source = "playerList", target = "playerList")
     @Mapping(source = "id", target = "id")
     @Mapping(source = "inGame", target = "inGame")
@@ -76,7 +71,6 @@ public interface DTOMapper {
     @Mapping(source = "currentPlayerId", target = "currentPlayer")
     @Mapping(source = "currentColor", target = "currentColor")
     @Mapping(source = "currentValue", target = "currentValue")
-
     GameGetDTO convertEntityToGameGetDTO(Game game);
 
     @Mapping(source = "lobby", target = "lobby")
@@ -88,7 +82,6 @@ public interface DTOMapper {
     @Mapping(source = "lobby", target = "lobby")
     @Mapping(source = "timestamp", target = "timestamp")
     ChatGetDTO convertEntityToChatGetDTO(Chat chat);
-
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "cards", target = "cards")

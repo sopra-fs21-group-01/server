@@ -4,8 +4,6 @@ import javax.persistence.Table;
 import java.io.Serial;
 import java.util.*;
 
-import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -51,8 +49,6 @@ public class Deck implements Serializable {
         return playedCardsDeck;
     }
 
-
-
     private List<String> createColorlist(){
         List<String> colors = new ArrayList<>();
         colors.add("Red");
@@ -62,7 +58,6 @@ public class Deck implements Serializable {
         colors.add("Wild");
         return colors;
     }
-
     private List<String> createValuelist(){
         List<String> values = new ArrayList<>();
         values.add("0");

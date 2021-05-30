@@ -42,7 +42,6 @@ public class Game implements Serializable {
     @Column
     private Long initialCards;
 
-
     public List<String> getWinner() {
         return winner;
     }
@@ -90,17 +89,6 @@ public class Game implements Serializable {
         return playerList;
     }
 
-  /** public Hand getHandByPlayerId(int playerId){
-        return userService.getUserById(playerID).getHand();
-    }
-
-    public Deck getCardStack() {
-        return deck;
-    }
-   */
-
-
-
     public String getCurrentColor() {
         return currentColor;
     }
@@ -108,7 +96,6 @@ public class Game implements Serializable {
     public void setCurrentColor(String wishedColor) {
         this.currentColor = wishedColor;
     }
-
 
     public String getCurrentValue() {
         return currentValue;
@@ -140,7 +127,6 @@ public class Game implements Serializable {
         }
     }
 
-
     public void reverseGameDirection(){
         this.gameDirection = !gameDirection;
         if (this.playerList.size() == 2){
@@ -153,42 +139,8 @@ public class Game implements Serializable {
         return gameDirection;
     }
 
-
-public int getCurrentPlayer() {
+    public int getCurrentPlayer() {
         return currentPlayer;
 }
-
-
-
-
-
-    /**
-    @Column(nullable = false)
-    private String gamemode; */
-
-    /**
-    public ArrayList<Hand> players = new ArrayList<Hand>();
-    public ArrayList<Card> playedCards = new ArrayList<Card>();
-    public boolean gameDirection = false; //true = clockwise
-
-    //index of players ArrayList
-    public int currentPlayer = 0;
-
-
-
-    public void setPlayers(Hand hand){
-        this.players.add(hand);
-    }
-
-
-    public void initializeHands() {
-        for (Hand i : players) {
-            i.initializeHand();
-        }
-    }
-
-
-
-     */
 
 }

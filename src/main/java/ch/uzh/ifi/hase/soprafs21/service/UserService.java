@@ -1,7 +1,6 @@
 package ch.uzh.ifi.hase.soprafs21.service;
 
 import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
-import ch.uzh.ifi.hase.soprafs21.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs21.entity.User;
 import ch.uzh.ifi.hase.soprafs21.exceptions.DuplicatedUserException;
 import ch.uzh.ifi.hase.soprafs21.exceptions.InvalidCredentialsException;
@@ -15,12 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -89,7 +85,6 @@ public class UserService {
         if (this.userRepository.findByUsername(username) == null) {
             throw new UserNotFoundException("No User for this username found:"+username);
         }
-
         return this.userRepository.findByUsername(username);
     }
 
@@ -139,7 +134,6 @@ public class UserService {
             throw new UserNotFoundException("User does not exist");
         }   
     }
-
 
     /**
      * This is a helper method that will check the uniqueness criteria of the username and the name

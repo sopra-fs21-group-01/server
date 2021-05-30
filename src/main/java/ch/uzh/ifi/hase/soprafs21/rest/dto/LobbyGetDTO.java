@@ -1,6 +1,5 @@
 package ch.uzh.ifi.hase.soprafs21.rest.dto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LobbyGetDTO {
@@ -59,7 +58,6 @@ public class LobbyGetDTO {
     public String getGamemode() {
         return gamemode;
     }
-
 
     public void setGamemode(String gamemode) {
         this.gamemode = gamemode;

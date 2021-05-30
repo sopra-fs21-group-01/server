@@ -1,5 +1,4 @@
 package ch.uzh.ifi.hase.soprafs21.rest.dto;
-
 import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
 
 public class UserGetDTO {
@@ -19,7 +18,6 @@ public class UserGetDTO {
         this.id = id;
     }
 
-
     public String getUsername() {
         return username;
     }
@@ -27,7 +25,6 @@ public class UserGetDTO {
     public void setUsername(String username) {
         this.username = username;
     }
-
 
     public String getEmail() {
         return email;
@@ -44,7 +41,6 @@ public class UserGetDTO {
     public void setPassword(String password) {
         this.password = password;
     }
-
 
     public UserStatus getStatus() {
         return status;

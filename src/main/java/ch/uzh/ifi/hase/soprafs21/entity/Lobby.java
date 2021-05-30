@@ -1,9 +1,7 @@
 package ch.uzh.ifi.hase.soprafs21.entity;
-
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,7 +27,6 @@ public class Lobby implements Serializable {
     @GeneratedValue
     private Long id;
 
-
     @Column(nullable = false)
     private String host;
 
@@ -42,7 +39,6 @@ public class Lobby implements Serializable {
     @Column(nullable = false)
     private String gamemode;
 
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -50,7 +46,6 @@ public class Lobby implements Serializable {
     public void setHost(String host) {
         this.host = host;
     }
-
 
     public void setPlayerList(List<String> PlayerList) {
         this.PlayerList = PlayerList;
@@ -75,7 +70,6 @@ public class Lobby implements Serializable {
     public Long getId() {
         return id;
     }
-
 
     public String getHost(){ return host;
     }

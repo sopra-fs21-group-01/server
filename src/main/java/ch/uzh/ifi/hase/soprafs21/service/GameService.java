@@ -4,7 +4,6 @@ import ch.uzh.ifi.hase.soprafs21.entity.*;
 import ch.uzh.ifi.hase.soprafs21.repository.DeckRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.HandRepository;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +11,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 
 @Service
 @Transactional
@@ -73,7 +68,6 @@ public class GameService {
         if (playerListOfLobby == null || playerListOfLobby.size()==0){
             throw new ResponseStatusException(HttpStatus.NO_CONTENT, "The Lobby dosent contain any or enough players to start the game");
         }
-
         //Set all players from Lobby into Map playerList of Game class.
         List<Long> playerListForGame = new ArrayList<>();
         for (String playerName : playerListOfLobby){
@@ -108,9 +102,8 @@ public class GameService {
     }
 
     public void deleteGame(Long gameId){
-         gameRepository.deleteById(gameId);
+        gameRepository.deleteById(gameId);
         gameRepository.flush();
-System.out.println("Deleted the game with ID: ");
         log.debug("Deleted the game with ID: {}", gameId);
     }
 
@@ -130,7 +123,6 @@ System.out.println("Deleted the game with ID: ");
             game.setCurrentValue(getValueOfCard(cardToPlay));
             game.setCurrentColor(getColorOfCard(cardToPlay));
 
-
             gameRepository.save(game);
             gameRepository.flush();
 
@@ -139,8 +131,8 @@ System.out.println("Deleted the game with ID: ");
             determineNextPlayer(game, cardToPlay);
 
             checkIfExtraCard(game);}
-
         }
+
         //want to play last card but no uno = player has to draw a card and next player is on.
         else if (playerHand.getHandSize()==1 && !playerHand.getUnoStatus()){
             System.out.println("Can't play because no UNO Status, draw a card");
@@ -237,8 +229,6 @@ System.out.println("Deleted the game with ID: ");
             String userName = userService.getUseryById(game.getCurrentPlayerId()).getUsername();
 
             removePlayerFromPlayerList(game, game.getCurrentPlayerId());
-
-            System.out.format("Player: %s wins!", userName);
         }
     }
 
@@ -267,7 +257,6 @@ System.out.println("Deleted the game with ID: ");
         String lastPlayedCard = getDeckById(game.getId()).getLastCardDeck();
         String color = game.getCurrentColor();
         String value = game.getCurrentValue();
-
 
         //check if user status is uno
         if (playerHand.getHandSize()==1 && !playerHand.getUnoStatus()){
@@ -305,7 +294,6 @@ System.out.println("Deleted the game with ID: ");
         if (optionalLobby.isPresent()){
             handFoundById = optionalLobby.get();
 
-            log.debug("Found and returned Hand with ID: {}", handId);
             return handFoundById;
         }
         if (handFoundById == null){
@@ -357,7 +345,6 @@ System.out.println("Deleted the game with ID: ");
         if (optionalDeck.isPresent()){
             deckFoundById = optionalDeck.get();
 
-            log.debug("Found and returned Deck with ID: {}", deckId);
             return deckFoundById;
         }
         if (deckFoundById == null){
@@ -393,7 +380,6 @@ System.out.println("Deleted the game with ID: ");
             game.getWinner().add(userService.getUseryById(winner).getUsername());
         }
 
-
         gameRepository.save(game);
         gameRepository.flush();
     }
@@ -412,6 +398,4 @@ System.out.println("Deleted the game with ID: ");
 
 
     }
-
-
-}
+    }
