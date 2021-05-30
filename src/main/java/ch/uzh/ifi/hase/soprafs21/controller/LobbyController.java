@@ -43,7 +43,6 @@ public class LobbyController {
         return url;
     }
 
-
     // delete the lobby by its ID
     @DeleteMapping("/lobbies/{id}")
     @ResponseStatus(HttpStatus.OK)

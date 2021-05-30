@@ -156,7 +156,6 @@ public class LobbyServiceTest {
 
         lobbyService.deleteLobby(1L);
 
-        Mockito.verify(lobbyRepository, Mockito.times(1)).findById(Mockito.any());
         Mockito.verify(lobbyRepository, Mockito.times(1)).deleteById(Mockito.any());
         Mockito.verify(lobbyRepository, Mockito.times(1)).flush();
 
