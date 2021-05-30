@@ -27,7 +27,7 @@ Our main components from the projects are the Game, Chat, User and Lobby compone
 ## Launch & Deployment
 In case someone wants to distribute to this project there are different steps to do for the server and client
 ### Server
-In order to run the server someone needs to have installed Gradle a
+In order to run the server someone needs to have installed Gradle and needs to execute the gradlew.bat file 
 #### Build
 
 ```bash
@@ -45,23 +45,7 @@ In order to run the server someone needs to have installed Gradle a
 ```bash
 ./gradlew test
 ```
-
-## Illustrations
-## Roadmap
-Some features that could be integrated is to implement a music player which contains files either from a local storage or e.g. from spotify. Another one could be to create more complicated gamemodes as there exists many different rules that could be applied. Last most challenging feature to implement could be to integrate a voice chat, which may cause to extend the current architecture.
-
-## Authors and Acknowledgement
-Last we want to thank all the Authors who contributed to this great project and also our TA Jan Willi who helped us in situation where we needed help.
-- Claudius Knecht (claudius.knecht@uzh.ch)
-- Dean Heizmann (dean.heizmann@uzh.ch)
-- Tony Bang (tony.bang@uzh.ch)
-- Marco Heiniger (marco.heiniger@uzh.ch)
-## License
-This Project is licensed under the terms of the [MIT](https://choosealicense.com/licenses/mit/) license and is available for free
-
-
-
-### Development Mode
+#### Development Mode
 
 You can start the backend in development mode, this will automatically trigger a new build and reload the application
 once the content of a file has been changed and you save the file.
@@ -78,27 +62,60 @@ If you want to avoid running all tests with every change, use the following comm
 
 `./gradlew build --continuous -xtest`
 
-## API Endpoint Testing
+#### Testing
+To run the tests for the backend you can excute the tests which are allocated in the following folder: [Tests](https://github.com/sopra-fs21-group-01/server/tree/master/src/test/java/ch/uzh/ifi/hase/soprafs21)
 
-### Postman
+#### External Dependencies
+At the moment the single dependencie which is installed is the external API named: [Funtranslation](https://funtranslations.com/api/). 
+**Information**: This API is limited to 5 calls per hour and 60 calls in total per day because of the free usage, in case this game gets released we strongly recommend to access the paid version to avoid the restriction.
 
--   We highly recommend to use [Postman](https://www.getpostman.com) in order to test your API Endpoints.
+#### Release
+When you want to release you just have to push you code to github which is automatically connected with [HEROKU](https://dashboard.heroku.com/apps/sopra-fs21-group-01-server) where it gets deployed
 
-## Debugging
+### Client
 
-If something is not working and/or you don't know what is going on. We highly recommend that you use a debugger and step
-through the process step-by-step.
+#### Prerequisites and Installation
 
-To configure a debugger for SpringBoot's Tomcat servlet (i.e. the process you start with `./gradlew bootRun` command),
-do the following:
+For your local development environment you'll need Node.js >= 8.10. You can download it [here](https://nodejs.org). All other dependencies including React get installed with:
 
-1. Open Tab: **Run**/Edit Configurations
-2. Add a new Remote Configuration and name it properly
-3. Start the Server in Debug mode: `./gradlew bootRun --debug-jvm`
-4. Press `Shift + F9` or the use **Run**/Debug"Name of your task"
-5. Set breakpoints in the application where you need it
-6. Step through the process one step at a time
+#### `npm install`
 
-## Testing
+This has to be done before starting the application for the first time (only once).
 
-Have a look here: https://www.baeldung.com/spring-boot-testing
+#### `npm run dev`
+
+Runs the app in the development mode.<br>
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+The page will reload if you make edits.<br>
+You will also see any lint errors in the console (use Google Chrome!).
+
+#### `npm run test`
+
+Launches the test runner in the interactive watch mode.<br>
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+
+> For macOS user running into an 'fsevents' error: https://github.com/jest-community/vscode-jest/issues/423
+
+#### `npm run build`
+
+## Illustrations
+## Roadmap
+Some features that could be integrated is to implement a music player which contains files either from a local storage or e.g. from spotify. Another one could be to create more complicated gamemodes as there exists many different rules that could be applied. Last most challenging feature to implement could be to integrate a voice chat, which may cause to extend the current architecture.
+
+## Authors and Acknowledgement
+Last we want to thank all the Authors who contributed to this great project and also our TA Jan Willi who helped us in situation where we needed help.
+- Claudius Knecht (claudius.knecht@uzh.ch)
+- Dean Heizmann (dean.heizmann@uzh.ch)
+- Tony Bang (tony.bang@uzh.ch)
+- Marco Heiniger (marco.heiniger@uzh.ch)
+## License
+This Project is licensed under the terms of the [MIT](https://choosealicense.com/licenses/mit/) license and is available for free
+
+
+
+
+
+
+
+
