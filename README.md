@@ -25,6 +25,26 @@ Our main components from the projects are the Game, Chat, User and Lobby compone
 - **Lobby**: This component defines how players can join lobbies and which gamemode is selected. It is a crucial preprocessing part for the game component.
 
 ## Launch & Deployment
+In case someone wants to distribute to this project there are different steps to do for the server and client
+### Server
+In order to run the server someone needs to have installed Gradle a
+#### Build
+
+```bash
+./gradlew build
+```
+
+#### Run
+
+```bash
+./gradlew bootRun
+```
+
+#### Test
+
+```bash
+./gradlew test
+```
 
 ## Illustrations
 ## Roadmap
@@ -39,23 +59,7 @@ Last we want to thank all the Authors who contributed to this great project and 
 ## License
 This Project is licensed under the terms of the [MIT](https://choosealicense.com/licenses/mit/) license and is available for free
 
-### Build
 
-```bash
-./gradlew build
-```
-
-### Run
-
-```bash
-./gradlew bootRun
-```
-
-### Test
-
-```bash
-./gradlew test
-```
 
 ### Development Mode
 
