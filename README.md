@@ -70,7 +70,7 @@ At the moment the single dependencie which is installed is the external API name
 **Information**: This API is limited to 5 calls per hour and 60 calls in total per day because of the free usage, in case this game gets released we strongly recommend to access the paid version to avoid the restriction.
 
 #### Release
-When you want to release you just have to push you code to github which is automatically connected with [HEROKU](https://dashboard.heroku.com/apps/sopra-fs21-group-01-server) where it gets deployed
+When you want to release you just have to push you code to github which is automatically connected with [HEROKU](https://dashboard.heroku.com/apps/sopra-fs21-group-01-server) where it gets deployed.
 
 ### Client
 
@@ -98,6 +98,8 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 > For macOS user running into an 'fsevents' error: https://github.com/jest-community/vscode-jest/issues/423
 
 #### `npm run build`
+#### Release
+When you want to release you just have to push you code to github which is automatically connected with [HEROKU](https://sopra-fs21-group-01-client.herokuapp.com/register) where it gets deployed.
 
 ## Illustrations
 ## Roadmap
