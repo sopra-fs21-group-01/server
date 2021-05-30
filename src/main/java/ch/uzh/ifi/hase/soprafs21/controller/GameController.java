@@ -58,8 +58,7 @@ public class GameController {
         //delete the game and say the lobby is not in a game anymore
         gameService.deleteGame(id);
         lobbyService.getLobbyById(id).setInGame(false);
-        lobbyService.deleteLobby(id);
-    }
+   }
 
     // Put mapping when a player plays a card and this card is put on top of the cardstack
     @PutMapping("/game/{id}/playerTurn")

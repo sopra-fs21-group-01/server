@@ -84,7 +84,6 @@ public class LobbyService {
         List<String> playerList = lobby.getPlayerList();
         playerList.add(userName);
         lobby.setPlayerList(playerList);
-
         }
     }
 
