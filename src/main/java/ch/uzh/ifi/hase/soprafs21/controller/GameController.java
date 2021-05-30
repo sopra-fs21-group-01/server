@@ -161,7 +161,7 @@ public class GameController {
         List<Long> opponentList = gameOfId.getPlayerList();
         List<Integer> opponentHandSize = new ArrayList<>();
 
-
+        try {
 
         for (int i = 0; i < opponentList.size(); i++) {
             int handSize = gameService.getHandById(opponentList.get(i)).getHandSize();
@@ -180,14 +180,13 @@ public class GameController {
             userNameHandSize.add(usernameHand);
         }
 
-
-
         GameGetDTO gameGetDTO = DTOMapper.INSTANCE.convertEntityToGameGetDTO(gameOfId);
-        //System.out.println("Current host is:" + gameGetDTO.getHost());
         gameGetDTO.setOpponentListHands(userNameHandSize);
 
         return gameGetDTO;
-    }
+    } catch (Exception e){ GameGetDTO gameGetDTO = DTOMapper.INSTANCE.convertEntityToGameGetDTO(gameOfId);
+            gameGetDTO.setOpponentListHands(null);
+            return gameGetDTO;}}
 
     // GetMapping for getting the current player of a running game, returns single Id
     @GetMapping("/game/{id}/kickOff/currentPlayerIds")
