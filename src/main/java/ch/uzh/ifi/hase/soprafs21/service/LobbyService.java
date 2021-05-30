@@ -51,11 +51,6 @@ public class LobbyService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error creating Lobby with this Host!");
         }
 
-        // verify that this lobby doesnt exist
-        Optional<Lobby> optionalLobby = lobbyRepository.findById(newLobby.getId());
-        if (optionalLobby.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Lobby with given ID already exists");
-        }
 
         playerList.add(newLobby.getHost());
 
