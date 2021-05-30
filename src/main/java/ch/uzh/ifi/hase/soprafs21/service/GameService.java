@@ -266,11 +266,9 @@ public class GameService {
             return false;
         }
 
-        if (lastPlayedCard == null){
-            return true;
-        }
+
         //allows any card after a wild card
-        else if (color.equals("Wild")){
+        if (color.equals("Wild")){
             return true;
         }
         else if (color.equals(getColorOfCard(card))){
