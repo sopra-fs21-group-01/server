@@ -172,11 +172,11 @@ public class GameController {
         System.out.println("oh"+opponentHandSize.size());
 
         List<String> userNameHandSize = new ArrayList<>();
-        for (int i = 0; i < opponentList.size(); i++) {
-            String usernameHand = opponentList.get(i).toString() + ","
-                    + userService.getUseryById(opponentList.get(i)).getUsername()
-                    + "," + opponentHandSize.get(i).toString()
-                    + "," +gameService.getHandById(opponentList.get(i)).getUnoStatus();
+        for (int j = 0; j < opponentList.size(); j++) {
+            String usernameHand = opponentList.get(j).toString() + ","
+                    + userService.getUseryById(opponentList.get(j)).getUsername()
+                    + "," + opponentHandSize.get(j).toString()
+                    + "," +gameService.getHandById(opponentList.get(j)).getUnoStatus();
             userNameHandSize.add(usernameHand);
         }
 

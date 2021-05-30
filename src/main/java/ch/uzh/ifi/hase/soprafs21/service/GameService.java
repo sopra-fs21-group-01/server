@@ -28,14 +28,16 @@ public class GameService {
     private final HandRepository handRepository;
     private final DeckRepository deckRepository;
     private final LobbyService lobbyService;
+    private final ChatService chatService;
 
     @Autowired
-    public GameService(@Qualifier("gameRepository") GameRepository gameRepository, @Qualifier("deckRepository") DeckRepository deckRepository, UserService userService, LobbyService lobbyService, @Qualifier("handRepository") HandRepository handRepository) {
+    public GameService(@Qualifier("gameRepository") GameRepository gameRepository, @Qualifier("deckRepository") DeckRepository deckRepository, UserService userService, ChatService chatService, LobbyService lobbyService, @Qualifier("handRepository") HandRepository handRepository) {
         this.gameRepository = gameRepository;
         this.userService = userService;
         this.handRepository = handRepository;
         this.deckRepository = deckRepository;
         this.lobbyService = lobbyService;
+        this.chatService = chatService;
     }
 
     // the host is added to the list of players, the gamemode is set to standard
@@ -44,7 +46,8 @@ public class GameService {
         // verify that this Game doesnt exist
         Optional<Game> optionalChat = gameRepository.findById(newGame.getId());
         if (optionalChat.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Game with given ID already exists");
+            deleteGame(newGame.getId());
+            chatService.deleteChat(newGame.getId());
         }
 
         initializeDeck(newGame);
