@@ -9,7 +9,7 @@ In this project we wanted to replicate the UNO card game. UNO is a popular famil
 - **Wild four card**: This card allows you to call the next color played and requires the next player to pick 4 cards from the DRAW pile.
 ### Game play
 The Host of the Lobby first has to decide which gamemode is played and based upon that, each player becomes the selected amount of cards in the beginning of the game.
-Now the player who begins has to look at the discard pile if there is for example a Green 7, you must play a Green card or any color with the number 7. Or, you may play any Wild card or a Wild Draw 4 card. If you don't have anything that matches, you must pick a card from the DRAW pile and the next player's turn begins. (explain what happen with uno genaue logik)
+Now the player who begins has to look at the discard pile if there is for example a Green 7, you must play a Green card or any color with the number 7. Or, you may play any Wild card or a Wild Draw 4 card. If you don't have anything that matches, you must pick a card from the DRAW pile and the next player's turn begins. In case that you are playing your second last card, you have to push the UNO button until your next turn, if you don't press the button you receive a extra card. As soon as you have put down all cards xou win the game. 
 
 ## Technologies
 For this Project we used the client/server archictecture. And in order to connect both components we used the standardized REST interface.
@@ -31,7 +31,7 @@ Our main components from the projects are the Game, Chat, User and Lobby compone
 Some features that could be integrated is to implement a music player which contains files either from a local storage or e.g. from spotify. Another one could be to create more complicated gamemodes as there exists many different rules that could be applied. Last most challenging feature to implement could be to integrate a voice chat, which may cause to extend the current architecture.
 
 ## Authors and Acknowledgement
-Last we want to thank all the Authors who contributed to this great project and also our TA Jan Willi who helped us in situation where we needed help
+Last we want to thank all the Authors who contributed to this great project and also our TA Jan Willi who helped us in situation where we needed help.
 - Claudius Knecht (claudius.knecht@uzh.ch)
 - Dean Heizmann (dean.heizmann@uzh.ch)
 - Tony Bang (tony.bang@uzh.ch)
