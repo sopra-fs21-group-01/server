@@ -143,6 +143,9 @@ public class Game implements Serializable {
 
     public void reverseGameDirection(){
         this.gameDirection = !gameDirection;
+        if (this.playerList.size() == 2){
+            this.setCurrentPlayerPlusOne();
+        }
         System.out.println(gameDirection);
     }
 
